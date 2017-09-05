@@ -36,7 +36,7 @@ namespace eae6320
 		// so that it's easy to tell at a glance what kind of build is running.
 		virtual const char* GetMainWindowName() const override
 		{
-			return "John-Paul's EAE6320 Example Game"
+			return "Joyce Chen's Game"
 				" -- "
 #if defined( EAE6320_PLATFORM_D3D )
 				"Direct3D"
@@ -63,8 +63,8 @@ namespace eae6320
 		//	* IDI_EAEALIEN
 		//	* IDI_VSDEFAULT_LARGE / IDI_VSDEFAULT_SMALL
 		// If you want to try creating your own a convenient website that will help is: http://icoconvert.com/
-		virtual const WORD* GetLargeIconId() const override { static constexpr WORD iconId_large = IDI_VSDEFAULT_LARGE; return &iconId_large; }
-		virtual const WORD* GetSmallIconId() const override { static constexpr WORD iconId_small = IDI_VSDEFAULT_SMALL; return &iconId_small; }
+		virtual const WORD* GetLargeIconId() const override { static constexpr WORD iconId_large = IDI_EAEGAMEPAD; return &iconId_large; }
+		virtual const WORD* GetSmallIconId() const override { static constexpr WORD iconId_small = IDI_EAEGAMEPAD; return &iconId_small; }
 #endif
 
 		// Run

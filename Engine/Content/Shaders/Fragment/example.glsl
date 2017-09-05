@@ -38,6 +38,8 @@ void main()
 		1.0, 1.0, 1.0,
 		// Alpha
 		1.0 );
+	
+	o_color.r = sin( g_elapsedSecondCount_simulationTime );
 
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
