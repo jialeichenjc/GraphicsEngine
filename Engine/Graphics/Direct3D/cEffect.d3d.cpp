@@ -54,4 +54,6 @@ eae6320::cResult cEffectD3D::CleanUp() {
 			}
 		}
 	}
+
+	return result;
 }
