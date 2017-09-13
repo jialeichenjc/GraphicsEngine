@@ -30,6 +30,8 @@ public:
 
 	eae6320::cResult Initialize();
 
+	void Bind();
+
 	eae6320::cResult CleanUp();
 
 #if defined( EAE6320_PLATFORM_GL )
@@ -39,6 +41,6 @@ public:
 private:
 	eae6320::cResult Initialize_Platform();
 
-	eae6320::cResult CleanUp_Platform();
+	void Bind_Platform();
 
 };

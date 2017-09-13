@@ -169,27 +169,8 @@ void eae6320::Graphics::RenderFrame()
 	}
 
 	// Bind the shading data
-	{
-		{
-			ID3D11ClassInstance* const* noInterfaces = nullptr;
-			constexpr unsigned int interfaceCount = 0;
-			// Vertex shader
-			{
-				EAE6320_ASSERT(effect.s_vertexShader);
-				auto* const shader = cShader::s_manager.Get(effect.s_vertexShader);
-				EAE6320_ASSERT(shader && shader->m_shaderObject.vertex);
-				direct3dImmediateContext->VSSetShader(shader->m_shaderObject.vertex, noInterfaces, interfaceCount);
-			}
-			// Fragment shader
-			{
-				EAE6320_ASSERT(effect.s_fragmentShader);
-				auto* const shader = cShader::s_manager.Get(effect.s_fragmentShader);
-				EAE6320_ASSERT(shader && shader->m_shaderObject.fragment);
-				direct3dImmediateContext->PSSetShader(shader->m_shaderObject.fragment, noInterfaces, interfaceCount);
-			}
-		}
-		effect.s_renderState.Bind();
-	}
+	effect.Bind();
+	
 	// Draw the geometry
 	{
 		// Bind a specific vertex buffer to the device as a data source

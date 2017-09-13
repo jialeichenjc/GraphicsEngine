@@ -1,4 +1,7 @@
 #include "cEffect.h" 
+void cEffect::Bind() {
+	Bind_Platform();
+}
 
 eae6320::cResult cEffect::Initialize() {
 	auto result = eae6320::Results::Success;
