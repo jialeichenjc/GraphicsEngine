@@ -5,6 +5,14 @@
 #include "sContext.h"
 #include "VertexFormats.h"
 
+#if defined( EAE6320_PLATFORM_GL )
+	#include "OpenGL\Includes.h"
+#endif
+
+#if defined(EAE6320_PLATFORM_WINDOWS)
+	#include "Direct3D\Includes.h" 
+#endif
+
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>
 #include <Engine/Logging/Logging.h>
@@ -15,10 +23,10 @@
 
 class cEffect {
 public:
-	eae6320::Graphics::cShader::Handle m_vertexShader;
-	eae6320::Graphics::cShader::Handle m_fragmentShader;
+	eae6320::Graphics::cShader::Handle s_vertexShader;
+	eae6320::Graphics::cShader::Handle s_fragmentShader;
 
-	eae6320::Graphics::cRenderState m_renderState;
+	eae6320::Graphics::cRenderState s_renderState;
 
 	eae6320::cResult Initialize();
 

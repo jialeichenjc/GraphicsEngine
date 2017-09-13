@@ -47,6 +47,9 @@
       <Filter>Direct3D</Filter>
     </ClCompile>
     <ClCompile Include="cEffect.cpp" />
+    <ClCompile Include="cEffect.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cConstantBuffer.h" />

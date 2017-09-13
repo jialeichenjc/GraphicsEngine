@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="cConstantBuffer.cpp" />
     <ClCompile Include="cEffect.cpp" />
+    <ClCompile Include="cEffect.gl.cpp" />
     <ClCompile Include="cRenderState.cpp" />
     <ClCompile Include="cSamplerState.cpp" />
     <ClCompile Include="cShader.cpp" />
