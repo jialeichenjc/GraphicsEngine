@@ -11,6 +11,7 @@
 #include "../cShader.h"
 #include "../sContext.h"
 #include "../VertexFormats.h"
+#include "cEffect.h"
 
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>
@@ -64,11 +65,7 @@ namespace
 
 	// Shading Data
 	//-------------
-
-	eae6320::Graphics::cShader::Handle s_vertexShader;
-	eae6320::Graphics::cShader::Handle s_fragmentShader;
-
-	eae6320::Graphics::cRenderState s_renderState;
+	cEffect effect;
 
 	// Geometry Data
 	//--------------
@@ -178,20 +175,20 @@ void eae6320::Graphics::RenderFrame()
 			constexpr unsigned int interfaceCount = 0;
 			// Vertex shader
 			{
-				EAE6320_ASSERT(s_vertexShader);
-				auto* const shader = cShader::s_manager.Get(s_vertexShader);
+				EAE6320_ASSERT(effect.s_vertexShader);
+				auto* const shader = cShader::s_manager.Get(effect.s_vertexShader);
 				EAE6320_ASSERT(shader && shader->m_shaderObject.vertex);
 				direct3dImmediateContext->VSSetShader(shader->m_shaderObject.vertex, noInterfaces, interfaceCount);
 			}
 			// Fragment shader
 			{
-				EAE6320_ASSERT(s_fragmentShader);
-				auto* const shader = cShader::s_manager.Get(s_fragmentShader);
+				EAE6320_ASSERT(effect.s_fragmentShader);
+				auto* const shader = cShader::s_manager.Get(effect.s_fragmentShader);
 				EAE6320_ASSERT(shader && shader->m_shaderObject.fragment);
 				direct3dImmediateContext->PSSetShader(shader->m_shaderObject.fragment, noInterfaces, interfaceCount);
 			}
 		}
-		s_renderState.Bind();
+		effect.s_renderState.Bind();
 	}
 	// Draw the geometry
 	{
@@ -368,41 +365,8 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 		s_vertexInputLayout->Release();
 		s_vertexInputLayout = nullptr;
 	}
-	if (s_vertexShader)
-	{
-		const auto localResult = cShader::s_manager.Release(s_vertexShader);
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
-	}
-	if (s_fragmentShader)
-	{
-		const auto localResult = cShader::s_manager.Release(s_fragmentShader);
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
-	}
-	{
-		const auto localResult = s_renderState.CleanUp();
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
-	}
+	
+	result = effect.CleanUp();
 
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
@@ -570,32 +534,7 @@ namespace
 
 	eae6320::cResult InitializeShadingData()
 	{
-		auto result = eae6320::Results::Success;
-
-		if (!(result = eae6320::Graphics::cShader::s_manager.Load("data/Shaders/Vertex/example.shd",
-			s_vertexShader, eae6320::Graphics::ShaderTypes::Vertex)))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-		if (!(result = eae6320::Graphics::cShader::s_manager.Load("data/Shaders/Fragment/example.shd",
-			s_fragmentShader, eae6320::Graphics::ShaderTypes::Fragment)))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-		{
-			constexpr uint8_t defaultRenderState = 0;
-			if (!(result = s_renderState.Initialize(defaultRenderState)))
-			{
-				EAE6320_ASSERT(false);
-				goto OnExit;
-			}
-		}
-
-	OnExit:
-
-		return result;
+		return effect.Initialize();
 	}
 
 	eae6320::cResult InitializeViews(const unsigned int i_resolutionWidth, const unsigned int i_resolutionHeight)

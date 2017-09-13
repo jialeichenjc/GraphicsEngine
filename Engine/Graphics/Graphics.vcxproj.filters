@@ -70,9 +70,6 @@
     <ClInclude Include="Windows\ExternalLibraries.win.h">
       <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Direct3D\cEffect.d3d.h">
-      <Filter>Direct3D</Filter>
-    </ClInclude>
     <ClInclude Include="cEffect.h" />
   </ItemGroup>
   <ItemGroup>
