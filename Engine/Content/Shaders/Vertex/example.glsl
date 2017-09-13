@@ -54,7 +54,6 @@ void main()
 		// Both of the following lines are exactly equivalent to the one above
 		gl_Position = vec4( i_position.xy, 0.0, 1.0 );
 		gl_Position = vec4( i_position, 0.0, 1.0 );
-		gl_Position.x *= sin( g_elapsedSecondCount_simulationTime );
 		
 	}
 

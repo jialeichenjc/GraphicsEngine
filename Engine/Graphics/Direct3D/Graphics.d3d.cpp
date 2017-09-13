@@ -11,8 +11,8 @@
 #include "../cShader.h"
 #include "../sContext.h"
 #include "../VertexFormats.h"
-#include "cEffect.h"
-#include "cSprite.h"
+#include "Engine\Graphics\cEffect.h"
+#include "Engine\Graphics\cSprite.h"
 
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>

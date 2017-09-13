@@ -59,7 +59,7 @@ eae6320::cResult cSprite::Initialize() {
 	}
 	// Assign the data to the buffer
 	{
-		constexpr unsigned int triangleCount = 1;
+		constexpr unsigned int triangleCount = 2;
 		constexpr unsigned int vertexCountPerTriangle = 3;
 		const auto vertexCount = triangleCount * vertexCountPerTriangle;
 		eae6320::Graphics::VertexFormats::sGeometry vertexData[vertexCount];
@@ -72,6 +72,16 @@ eae6320::cResult cSprite::Initialize() {
 
 			vertexData[2].x = 1.0f;
 			vertexData[2].y = 1.0f;
+
+			vertexData[3].x = 0.0f;
+			vertexData[3].y = 0.0f;
+
+			vertexData[4].x = 1.0f;
+			vertexData[4].y = 1.0f;
+
+			vertexData[5].x = 0.0f;
+			vertexData[5].y = 1.0f;
+
 		}
 		const auto bufferSize = vertexCount * sizeof(eae6320::Graphics::VertexFormats::sGeometry);
 		EAE6320_ASSERT(bufferSize < (uint64_t(1u) << (sizeof(GLsizeiptr) * 8)));
@@ -150,7 +160,7 @@ void cSprite::Draw() {
 		constexpr GLint indexOfFirstVertexToRender = 0;
 		// As of this comment we are only drawing a single triangle
 		// (you will have to update this code in future assignments!)
-		constexpr unsigned int triangleCount = 1;
+		constexpr unsigned int triangleCount = 2;
 		constexpr unsigned int vertexCountPerTriangle = 3;
 		constexpr auto vertexCountToRender = triangleCount * vertexCountPerTriangle;
 		glDrawArrays(mode, indexOfFirstVertexToRender, vertexCountToRender);
