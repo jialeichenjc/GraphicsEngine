@@ -155,3 +155,12 @@ OnExit:
 	}
 	return result;
 }
+
+void cEffect::Bind_Platform() {
+	{
+		EAE6320_ASSERT(s_programId != 0);
+		glUseProgram(s_programId);
+		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+	}
+	s_renderState.Bind();
+}

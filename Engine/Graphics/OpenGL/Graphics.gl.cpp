@@ -169,14 +169,8 @@ void eae6320::Graphics::RenderFrame()
 	}
 
 	// Bind the shading data
-	{
-		{
-			EAE6320_ASSERT( effect.s_programId != 0 );
-			glUseProgram( effect.s_programId );
-			EAE6320_ASSERT( glGetError() == GL_NO_ERROR );
-		}
-		effect.s_renderState.Bind();
-	}
+	effect.Bind();
+	
 	// Draw the geometry
 	{
 		// Bind a specific vertex buffer to the device as a data source
