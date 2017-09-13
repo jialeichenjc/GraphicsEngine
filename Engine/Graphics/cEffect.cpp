@@ -23,6 +23,8 @@ eae6320::cResult cEffect::Initialize() {
 			goto OnExit;
 		}
 	}
+
+	result = Initialize_Platform();
 	OnExit:
 
 	return result;
