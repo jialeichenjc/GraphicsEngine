@@ -43,9 +43,24 @@
     <ClCompile Include="OpenGL\sContext.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="cEffects.cpp" />
     <ClCompile Include="Direct3D\cEffect.d3d.cpp">
       <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="cEffect.cpp" />
+    <ClCompile Include="cEffect.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cSprite.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="cSprite.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cView.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="cView.gl.cpp">
+      <Filter>OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,9 +82,9 @@
     <ClInclude Include="Windows\ExternalLibraries.win.h">
       <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Direct3D\cEffect.d3d.h">
-      <Filter>Direct3D</Filter>
-    </ClInclude>
+    <ClInclude Include="cEffect.h" />
+    <ClInclude Include="cSprite.h" />
+    <ClInclude Include="cView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cRenderState.inl" />

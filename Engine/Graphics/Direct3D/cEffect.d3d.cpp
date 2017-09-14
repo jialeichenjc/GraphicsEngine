@@ -1,59 +1,29 @@
-#include "cEffect.d3d.h"
+#include "../cEffect.h"
 
-eae6320::cResult cEffectD3D::InitializeEffect() {
+eae6320::cResult cEffect::Initialize_Platform() {
 	auto result = eae6320::Results::Success;
-
-	if (!(result = eae6320::Graphics::cShader::s_manager.Load("data/Shaders/Vertex/example.shd",
-		m_vertexShader, eae6320::Graphics::ShaderTypes::Vertex)))
-	{
-		EAE6320_ASSERT(false);
-		goto OnExit;
-	}
-
-OnExit:
 
 	return result;
 }
 
-eae6320::cResult cEffectD3D::CleanUp() {
-	auto result = eae6320::Results::Success;
+void cEffect::Bind_Platform() {
+	ID3D11ClassInstance* const* noInterfaces = nullptr;
+	constexpr unsigned int interfaceCount = 0;
+	auto* const direct3dImmediateContext = eae6320::Graphics::sContext::g_context.direct3dImmediateContext;
 
-	if (m_vertexShader)
+	// Vertex shader
 	{
-		const auto localResult = eae6320::Graphics::cShader::s_manager.Release(m_vertexShader);
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
+		EAE6320_ASSERT(s_vertexShader);
+		auto* const shader = eae6320::Graphics::cShader::s_manager.Get(s_vertexShader);
+		EAE6320_ASSERT(shader && shader->m_shaderObject.vertex);
+		direct3dImmediateContext->VSSetShader(shader->m_shaderObject.vertex, noInterfaces, interfaceCount);
 	}
-	if (m_fragmentShader)
+	// Fragment shader
 	{
-		const auto localResult = eae6320::Graphics::cShader::s_manager.Release(m_fragmentShader);
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
+		EAE6320_ASSERT(s_fragmentShader);
+		auto* const shader = eae6320::Graphics::cShader::s_manager.Get(s_fragmentShader);
+		EAE6320_ASSERT(shader && shader->m_shaderObject.fragment);
+		direct3dImmediateContext->PSSetShader(shader->m_shaderObject.fragment, noInterfaces, interfaceCount);
 	}
-
-	{
-		const auto localResult = m_renderState.CleanUp();
-		if (!localResult)
-		{
-			EAE6320_ASSERT(false);
-			if (result)
-			{
-				result = localResult;
-			}
-		}
-	}
-
-	return result;
+	s_renderState.Bind();
 }
