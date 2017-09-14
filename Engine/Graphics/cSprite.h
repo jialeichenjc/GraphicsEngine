@@ -38,7 +38,7 @@ public:
 	ID3D11InputLayout* s_vertexInputLayout = nullptr;
 #endif
 
-	eae6320::cResult Initialize();
+	eae6320::cResult Initialize(float p1, float p2, float p3, float p4);
 
 	void Draw();
 

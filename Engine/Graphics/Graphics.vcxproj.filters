@@ -50,11 +50,16 @@
     <ClCompile Include="cEffect.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="cSprite.cpp" />
     <ClCompile Include="cSprite.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
     <ClCompile Include="cSprite.gl.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cView.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="cView.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,6 +84,7 @@
     </ClInclude>
     <ClInclude Include="cEffect.h" />
     <ClInclude Include="cSprite.h" />
+    <ClInclude Include="cView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cRenderState.inl" />

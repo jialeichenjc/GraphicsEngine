@@ -1,6 +1,6 @@
 #include "cSprite.h"
 
-eae6320::cResult cSprite::Initialize() {
+eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 	auto result = eae6320::Results::Success;
 
 	auto* const direct3dDevice = eae6320::Graphics::sContext::g_context.direct3dDevice;
@@ -67,23 +67,23 @@ eae6320::cResult cSprite::Initialize() {
 		const auto vertexCount = triangleCount * vertexCountPerTriangle;
 		eae6320::Graphics::VertexFormats::sGeometry vertexData[vertexCount];
 		{
-			vertexData[0].x = 0.0f;
-			vertexData[0].y = 0.0f;
+			vertexData[0].x = p1;
+			vertexData[0].y = p2;
 
-			vertexData[1].x = 1.0f;
-			vertexData[1].y = 1.0f;
+			vertexData[1].x = p3;
+			vertexData[1].y = p4;
 
-			vertexData[2].x = 1.0f;
-			vertexData[2].y = 0.0f;
+			vertexData[2].x = p3;
+			vertexData[2].y = p2;
 
-			vertexData[3].x = 0.0f;
-			vertexData[3].y = 0.0f;
+			vertexData[3].x = p1;
+			vertexData[3].y = p2;
 
-			vertexData[4].x = 0.0f;
-			vertexData[4].y = 1.0f;
+			vertexData[4].x = p1;
+			vertexData[4].y = p4;
 
-			vertexData[5].x = 1.0f;
-			vertexData[5].y = 1.0f;
+			vertexData[5].x = p3;
+			vertexData[5].y = p4;
 		}
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
