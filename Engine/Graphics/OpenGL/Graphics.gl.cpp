@@ -1,6 +1,6 @@
 // Include Files
 //==============
-
+/*
 #include "../Graphics.h"
 
 #include "Includes.h"
@@ -60,13 +60,13 @@ namespace
 
 	// Shading Data
 	//-------------
-	/*
+
 	eae6320::Graphics::cShader::Handle s_vertexShader;
 	eae6320::Graphics::cShader::Handle s_fragmentShader;
 	GLuint s_programId = 0;
 
 	eae6320::Graphics::cRenderState s_renderState;
-	*/
+
 	cEffect effect;
 	// Geometry Data
 	//--------------
@@ -352,3 +352,4 @@ namespace
 	}
 
 }
+*/
