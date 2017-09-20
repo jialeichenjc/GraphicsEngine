@@ -3,16 +3,16 @@ void cEffect::Bind() {
 	Bind_Platform();
 }
 
-eae6320::cResult cEffect::Initialize() {
+eae6320::cResult cEffect::Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState) {
 	auto result = eae6320::Results::Success;
 
-	if (!(result = eae6320::Graphics::cShader::s_manager.Load("data/Shaders/Vertex/example.shd",
+	if (!(result = eae6320::Graphics::cShader::s_manager.Load(vertexPath,
 		s_vertexShader, eae6320::Graphics::ShaderTypes::Vertex)))
 	{
 		EAE6320_ASSERT(false);
 		goto OnExit;
 	}
-	if (!(result = eae6320::Graphics::cShader::s_manager.Load("data/Shaders/Fragment/example.shd",
+	if (!(result = eae6320::Graphics::cShader::s_manager.Load(fragPath,
 		s_fragmentShader, eae6320::Graphics::ShaderTypes::Fragment)))
 	{
 		EAE6320_ASSERT(false);

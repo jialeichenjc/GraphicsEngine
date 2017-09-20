@@ -2,12 +2,14 @@
 //==============
 
 #include "cExampleGame.h"
-
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/UserInput/UserInput.h>
 
 // Inherited Implementation
 //=========================
+void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
+
+}
 
 // Run
 //----

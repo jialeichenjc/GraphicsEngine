@@ -28,7 +28,7 @@ public:
 
 	eae6320::Graphics::cRenderState s_renderState;
 
-	eae6320::cResult Initialize();
+	eae6320::cResult Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState);
 
 	void Bind();
 
