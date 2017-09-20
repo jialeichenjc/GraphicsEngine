@@ -71,7 +71,7 @@ namespace eae6320
 		//----
 
 		virtual void UpdateBasedOnInput() override;
-
+		virtual void SubmitDataToBeRendered(const float, const float) override;
 		// Initialization / Clean Up
 		//--------------------------
 

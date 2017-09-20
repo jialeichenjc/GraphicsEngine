@@ -22,6 +22,7 @@
 #include "Engine\Graphics\cSprite.h"
 #include "cView.h"
 
+#include <vector>
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>
 #include <Engine/Logging/Logging.h>
@@ -49,6 +50,8 @@ namespace
 	struct sDataRequiredToRenderAFrame
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
+		std::vector<float> backgroundColor;
+		std::vector<std::pair<cSprite *, cEffect *>> renderDataVec;
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -69,7 +72,8 @@ namespace
 
 	// Shading Data
 	//-------------
-	cEffect effect;
+	cEffect effect1;
+	cEffect effect2;
 	// Geometry Data
 	//--------------
 	cSprite sprite1;
@@ -151,10 +155,12 @@ void eae6320::Graphics::RenderFrame()
 	}
 
 	// Bind the shading data
-	effect.Bind();
+	effect1.Bind();
 
 	// Draw the geometry
 	sprite1.Draw();
+
+	effect2.Bind();
 	sprite2.Draw();
 
 	view.Buffer();
@@ -272,7 +278,8 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	result = sprite1.CleanUp();
 	result = sprite2.CleanUp();
 
-	result = effect.CleanUp();
+	result = effect1.CleanUp();
+	result = effect2.CleanUp();
 
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
@@ -334,13 +341,18 @@ namespace
 		auto result = eae6320::Results::Success;
 		result = sprite1.Initialize(0.0f, 0.0f, 1.0f, 1.0f);
 		result = sprite2.Initialize(-1.0f, -1.0f, 0.0f, 0.0f);
-
+	
 		return result;
 	}
 
 	eae6320::cResult InitializeShadingData()
 	{
-		return effect.Initialize();
+		auto result = eae6320::Results::Success;
+
+		result = effect1.Initialize("data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
+		result = effect2.Initialize("data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+
+		return result;
 	}
 
 }
