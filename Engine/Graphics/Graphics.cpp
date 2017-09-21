@@ -70,15 +70,6 @@ namespace
 	// (the application loop thread waits for the signal)
 	eae6320::Concurrency::cEvent s_whenDataForANewFrameCanBeSubmittedFromApplicationThread;
 
-	// Shading Data
-	//-------------
-	cEffect * effect1;
-	cEffect * effect2;
-	// Geometry Data
-	//--------------
-	cSprite * sprite1;
-	cSprite * sprite2;
-
 	cView view;
 
 }
@@ -294,18 +285,19 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	result = view.CleanUp();
 
-	result = cSprite::CleanUpSprite(sprite1);
-	result = cSprite::CleanUpSprite(sprite2);
-
-	result = cEffect::CleanUpEffect(effect1);
-	result = cEffect::CleanUpEffect(effect2);
 	
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 		data.first->DecrementReferenceCount();
 		data.second->DecrementReferenceCount();
 	}
-
 	s_dataBeingRenderedByRenderThread->renderDataVec.clear();
+
+	for (auto data : s_dataBeingSubmittedByApplicationThread->renderDataVec) {
+		data.first->DecrementReferenceCount();
+		data.second->DecrementReferenceCount();
+	}
+
+	s_dataBeingSubmittedByApplicationThread->renderDataVec.clear();
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
 		if (!localResult)
@@ -364,17 +356,13 @@ namespace
 	eae6320::cResult InitializeGeometry()
 	{
 		auto result = eae6320::Results::Success;
-		result = cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
-		result = cSprite::CreateSprite(sprite2, -1.0f, -1.0f, 0.0f, 0.0f);
+		
 		return result;
 	}
 
 	eae6320::cResult InitializeShadingData()
 	{
 		auto result = eae6320::Results::Success;
-
-		result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
-		result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
 
 		return result;
 	}
