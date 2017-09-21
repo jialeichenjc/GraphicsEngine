@@ -1,4 +1,18 @@
 #include "cSprite.h"
+eae6320::cResult cSprite::CreateSprite(cSprite *& sprite, float p1, float p2, float p3, float p4) {
+	auto result = eae6320::Results::Success;
+	sprite = new cSprite();
+	result = sprite->Initialize(p1, p2, p3, p4);
+	if (result) {
+		goto OnExit;
+	}
+	else {
+		EAE6320_ASSERT(false);
+	}
+OnExit:
+
+	return result;
+}
 
 eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 	auto result = eae6320::Results::Success;
@@ -166,6 +180,14 @@ void cSprite::Draw() {
 		glDrawArrays(mode, indexOfFirstVertexToRender, vertexCountToRender);
 		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
 	}
+}
+
+eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
+	auto result = sprite->CleanUp();
+	sprite->DecrementReferenceCount();
+	sprite = NULL;
+
+	return result;
 }
 
 eae6320::cResult cSprite::CleanUp() {

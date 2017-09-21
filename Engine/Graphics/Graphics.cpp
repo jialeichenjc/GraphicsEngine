@@ -72,12 +72,12 @@ namespace
 
 	// Shading Data
 	//-------------
-	cEffect effect1;
-	cEffect effect2;
+	cEffect * effect1;
+	cEffect * effect2;
 	// Geometry Data
 	//--------------
-	cSprite sprite1;
-	cSprite sprite2;
+	cSprite * sprite1;
+	cSprite * sprite2;
 
 	cView view;
 
@@ -288,11 +288,11 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	result = view.CleanUp();
 
-	result = sprite1.CleanUp();
-	result = sprite2.CleanUp();
+	result = cSprite::CleanUpSprite(sprite1);
+	result = cSprite::CleanUpSprite(sprite2);
 
-	result = effect1.CleanUp();
-	result = effect2.CleanUp();
+	result = cEffect::CleanUpEffect(effect1);
+	result = cEffect::CleanUpEffect(effect2);
 
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();

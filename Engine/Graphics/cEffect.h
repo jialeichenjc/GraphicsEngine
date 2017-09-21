@@ -32,7 +32,7 @@ public:
 	
 	static eae6320::cResult CreateEffect(cEffect *& effect, char* vertexPath, const char* fragPath, const uint8_t renderState);
 
-	eae6320::cResult CleanUpEffect(cEffect *& effect);
+	static eae6320::cResult CleanUpEffect(cEffect *& effect);
 	void Bind();
 
 	
@@ -52,5 +52,6 @@ private:
 
 	void Bind_Platform();
 	eae6320::cResult CleanUp();
-	~cEffect();
+
+	~cEffect() {};
 };
