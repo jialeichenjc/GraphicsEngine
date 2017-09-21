@@ -8,7 +8,7 @@
 // Inherited Implementation
 //=========================
 void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
-
+	eae6320::Graphics::SubmitBackgroundColor(0.0f, 0.0f, 128.0f, 1.0f);
 }
 
 // Run

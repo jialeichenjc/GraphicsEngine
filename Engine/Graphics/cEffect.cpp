@@ -3,6 +3,30 @@ void cEffect::Bind() {
 	Bind_Platform();
 }
 
+eae6320::cResult cEffect::CreateEffect(cEffect *& effect, char* vertexPath, const char* fragPath, const uint8_t renderState) {
+	auto result = eae6320::Results::Success;
+	effect = new cEffect();
+	effect->IncrementReferenceCount();
+
+	result = effect->Initialize(vertexPath, fragPath, renderState);
+	if(result) {
+		goto OnExit;
+	}
+	else {
+		EAE6320_ASSERT(false);
+	}
+OnExit:
+
+	return result;
+}
+
+eae6320::cResult cEffect::CleanUpEffect(cEffect *& effect) {
+	auto result = CleanUp();
+	DecrementReferenceCount();
+	effect = NULL;
+	return result;
+}
+
 eae6320::cResult cEffect::Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState) {
 	auto result = eae6320::Results::Success;
 

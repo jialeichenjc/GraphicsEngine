@@ -19,6 +19,7 @@
 #include <Engine/Platform/Platform.h>
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
+#include <Engine/Assets/ReferenceCountedAssets.h>
 #include <utility>
 
 class cEffect {
@@ -28,11 +29,16 @@ public:
 
 	eae6320::Graphics::cRenderState s_renderState;
 
-	eae6320::cResult Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState);
+	
+	static eae6320::cResult CreateEffect(cEffect *& effect, char* vertexPath, const char* fragPath, const uint8_t renderState);
 
+	eae6320::cResult CleanUpEffect(cEffect *& effect);
 	void Bind();
 
-	eae6320::cResult CleanUp();
+	
+	EAE6320_ASSETS_DECLAREREFERENCECOUNT();
+	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
+	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cEffect);
 
 #if defined( EAE6320_PLATFORM_GL )
 	GLuint s_programId = 0;
@@ -40,7 +46,11 @@ public:
 
 private:
 	eae6320::cResult Initialize_Platform();
+	// constructor
+	cEffect() = default;
+	eae6320::cResult Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState);
 
 	void Bind_Platform();
-
+	eae6320::cResult CleanUp();
+	~cEffect();
 };

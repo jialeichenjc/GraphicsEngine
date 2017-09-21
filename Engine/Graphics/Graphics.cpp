@@ -50,7 +50,7 @@ namespace
 	struct sDataRequiredToRenderAFrame
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
-		std::vector<float> backgroundColor;
+		float backgroundColor[4];
 		std::vector<std::pair<cSprite *, cEffect *>> renderDataVec;
 	};
 	// In our class there will be two copies of the data required to render a frame:
@@ -100,6 +100,14 @@ void eae6320::Graphics::SubmitElapsedTime(const float i_elapsedSecondCount_syste
 	constantData_perFrame.g_elapsedSecondCount_simulationTime = i_elapsedSecondCount_simulationTime;
 }
 
+// put it in the order of RGB A
+void eae6320::Graphics::SubmitBackgroundColor(const float r, const float g, const float b, const float a) {
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[0] = r;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[1] = g;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[2] = b;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[3] = a;
+}
+
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
 	return Concurrency::WaitForEvent(s_whenDataForANewFrameCanBeSubmittedFromApplicationThread, i_timeToWait_inMilliseconds);
@@ -143,9 +151,14 @@ void eae6320::Graphics::RenderFrame()
 			return;
 		}
 	}
-	view.Clear(0.0f, 1.0f, 0.0f, 1.0f);
+	
 
 	EAE6320_ASSERT(s_dataBeingRenderedByRenderThread);
+
+	view.Clear(s_dataBeingRenderedByRenderThread->backgroundColor[0],
+		s_dataBeingRenderedByRenderThread->backgroundColor[1],
+		s_dataBeingRenderedByRenderThread->backgroundColor[2],
+		s_dataBeingRenderedByRenderThread->backgroundColor[3]);
 
 	// Update the per-frame constant buffer
 	{

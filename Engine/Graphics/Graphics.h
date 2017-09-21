@@ -35,7 +35,7 @@ namespace eae6320
 		// for the frame currently being submitted
 		void SubmitElapsedTime( const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_simulationTime );
 
-		void SubmitBackgroundColor();
+		void SubmitBackgroundColor(const float r, const float g, const float b, const float a);
 
 		// When the application is ready to submit data for a new frame
 		// it should call this before submitting anything
