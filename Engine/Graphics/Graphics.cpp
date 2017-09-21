@@ -74,12 +74,6 @@ namespace
 
 }
 
-namespace
-{
-	eae6320::cResult InitializeGeometry();
-	eae6320::cResult InitializeShadingData();
-}
-
 // Submission
 //-----------
 
@@ -257,22 +251,6 @@ eae6320::cResult eae6320::Graphics::Initialize(const sInitializationParameters& 
 		}
 	}
 #endif
-	// Initialize the shading data
-	{
-		if (!(result = InitializeShadingData()))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-	}
-	// Initialize the geometry
-	{
-		if (!(result = InitializeGeometry()))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-	}
 
 OnExit:
 
@@ -348,23 +326,3 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	return result;
 }
 
-// Helper Function Definitions
-//============================
-
-namespace
-{
-	eae6320::cResult InitializeGeometry()
-	{
-		auto result = eae6320::Results::Success;
-		
-		return result;
-	}
-
-	eae6320::cResult InitializeShadingData()
-	{
-		auto result = eae6320::Results::Success;
-
-		return result;
-	}
-
-}
