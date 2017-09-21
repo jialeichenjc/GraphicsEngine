@@ -43,8 +43,6 @@ void eae6320::cExampleGame::UpdateBasedOnInput()
 eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
-	size_t s1 = sizeof(cEffect);
-	size_t s2 = sizeof(cSprite);
 	sizeof(cSprite);
 	cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
 	cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
