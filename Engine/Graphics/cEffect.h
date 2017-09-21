@@ -36,9 +36,9 @@ public:
 	void Bind();
 
 	
-	EAE6320_ASSETS_DECLAREREFERENCECOUNT();
-	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
-	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cEffect);
+	EAE6320_ASSETS_DECLAREREFERENCECOUNT()
+	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS()
+	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cEffect)
 
 #if defined( EAE6320_PLATFORM_GL )
 	GLuint s_programId = 0;
@@ -47,11 +47,11 @@ public:
 private:
 	eae6320::cResult Initialize_Platform();
 	// constructor
-	cEffect() = default;
+	cEffect() {}
 	eae6320::cResult Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState);
 
 	void Bind_Platform();
 	eae6320::cResult CleanUp();
 
-	~cEffect() {};
+	~cEffect() {}
 };

@@ -169,9 +169,13 @@ void cSprite::Draw() {
 }
 
 eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
-	auto result = sprite-> CleanUp();
-	sprite->DecrementReferenceCount();
-	sprite = NULL;
+	auto result = eae6320::Results::Success;
+	if (sprite != NULL) {
+		result = sprite->CleanUp();
+		sprite->DecrementReferenceCount();
+		sprite = NULL;
+	}
+	
 
 	return result;
 }

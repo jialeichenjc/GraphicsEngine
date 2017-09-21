@@ -20,9 +20,13 @@ OnExit:
 }
 
 eae6320::cResult cEffect::CleanUpEffect(cEffect *& effect) {
-	auto result = effect->CleanUp();
-	effect->DecrementReferenceCount();
-	effect = NULL;
+	auto result = eae6320::Results::Success;
+	if (effect != NULL) {
+		result = effect->CleanUp();
+		effect->DecrementReferenceCount();
+		effect = NULL;
+	}
+	
 	return result;
 }
 

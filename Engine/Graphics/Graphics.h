@@ -19,7 +19,8 @@
 
 // Interface
 //==========
-
+class cEffect;
+class cSprite;
 namespace eae6320
 {
 	namespace Graphics
@@ -68,7 +69,7 @@ namespace eae6320
 	#endif
 #endif
 		};
-
+		void SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite);
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
 	}

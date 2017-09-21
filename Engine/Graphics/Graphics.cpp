@@ -51,7 +51,7 @@ namespace
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
 		float backgroundColor[4];
-		std::vector<std::pair<cSprite *, cEffect *>> renderDataVec;
+		std::vector<std::pair<cEffect *, cSprite *>> renderDataVec;
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -107,7 +107,13 @@ void eae6320::Graphics::SubmitBackgroundColor(const float r, const float g, cons
 	s_dataBeingSubmittedByApplicationThread->backgroundColor[2] = b;
 	s_dataBeingSubmittedByApplicationThread->backgroundColor[3] = a;
 }
+void eae6320::Graphics::SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite) 
+{
+	iEffect->IncrementReferenceCount();
+	iSprite->IncrementReferenceCount();
 
+	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(std::make_pair(iEffect, iSprite));
+}
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
 	return Concurrency::WaitForEvent(s_whenDataForANewFrameCanBeSubmittedFromApplicationThread, i_timeToWait_inMilliseconds);
@@ -167,21 +173,21 @@ void eae6320::Graphics::RenderFrame()
 		s_constantBuffer_perFrame.Update(&constantData_perFrame);
 	}
 
-	// Bind the shading data
-	effect1.Bind();
-
-	// Draw the geometry
-	sprite1.Draw();
-
-	effect2.Bind();
-	sprite2.Draw();
-
+	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+		data.first->Bind();
+		data.second->Draw();
+	}
 	view.Buffer();
 	// Once everything has been drawn the data that was submitted for this frame
 	// should be cleaned up and cleared.
 	// so that the struct can be re-used (i.e. so that data for a new frame can be submitted to it)
 	{
-		// (At this point in the class there isn't anything that needs to be cleaned up)
+		for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+			data.first->DecrementReferenceCount();
+			data.second->DecrementReferenceCount();
+		}
+
+		s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 	}
 }
 
@@ -293,7 +299,13 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	result = cEffect::CleanUpEffect(effect1);
 	result = cEffect::CleanUpEffect(effect2);
+	
+	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+		data.first->DecrementReferenceCount();
+		data.second->DecrementReferenceCount();
+	}
 
+	s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
 		if (!localResult)
@@ -352,9 +364,8 @@ namespace
 	eae6320::cResult InitializeGeometry()
 	{
 		auto result = eae6320::Results::Success;
-		result = sprite1.Initialize(0.0f, 0.0f, 1.0f, 1.0f);
-		result = sprite2.Initialize(-1.0f, -1.0f, 0.0f, 0.0f);
-	
+		result = cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
+		result = cSprite::CreateSprite(sprite2, -1.0f, -1.0f, 0.0f, 0.0f);
 		return result;
 	}
 
@@ -362,8 +373,8 @@ namespace
 	{
 		auto result = eae6320::Results::Success;
 
-		result = effect1.Initialize("data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
-		result = effect2.Initialize("data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+		result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
+		result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
 
 		return result;
 	}
