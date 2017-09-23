@@ -10,7 +10,7 @@
 
 #include <Engine/Application/cbApplication.h>
 #include <Engine/Results/Results.h>
-
+#include <Engine/Graphics/Graphics.h>
 #if defined( EAE6320_PLATFORM_WINDOWS )
 	#include "Resource Files/Resource.h"
 #endif
@@ -71,7 +71,7 @@ namespace eae6320
 		//----
 
 		virtual void UpdateBasedOnInput() override;
-
+		virtual void SubmitDataToBeRendered(const float, const float) override;
 		// Initialization / Clean Up
 		//--------------------------
 

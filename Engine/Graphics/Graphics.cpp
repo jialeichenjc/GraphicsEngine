@@ -22,6 +22,7 @@
 #include "Engine\Graphics\cSprite.h"
 #include "cView.h"
 
+#include <vector>
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>
 #include <Engine/Logging/Logging.h>
@@ -49,6 +50,8 @@ namespace
 	struct sDataRequiredToRenderAFrame
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
+		float backgroundColor[4];
+		std::vector<std::pair<cEffect *, cSprite *>> renderDataVec;
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -67,22 +70,8 @@ namespace
 	// (the application loop thread waits for the signal)
 	eae6320::Concurrency::cEvent s_whenDataForANewFrameCanBeSubmittedFromApplicationThread;
 
-	// Shading Data
-	//-------------
-	cEffect effect;
-	// Geometry Data
-	//--------------
-	cSprite sprite1;
-	cSprite sprite2;
-
 	cView view;
 
-}
-
-namespace
-{
-	eae6320::cResult InitializeGeometry();
-	eae6320::cResult InitializeShadingData();
 }
 
 // Submission
@@ -96,6 +85,20 @@ void eae6320::Graphics::SubmitElapsedTime(const float i_elapsedSecondCount_syste
 	constantData_perFrame.g_elapsedSecondCount_simulationTime = i_elapsedSecondCount_simulationTime;
 }
 
+// put it in the order of RGB A
+void eae6320::Graphics::SubmitBackgroundColor(const float r, const float g, const float b, const float a) {
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[0] = r;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[1] = g;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[2] = b;
+	s_dataBeingSubmittedByApplicationThread->backgroundColor[3] = a;
+}
+void eae6320::Graphics::SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite) 
+{
+	iEffect->IncrementReferenceCount();
+	iSprite->IncrementReferenceCount();
+
+	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(std::make_pair(iEffect, iSprite));
+}
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
 	return Concurrency::WaitForEvent(s_whenDataForANewFrameCanBeSubmittedFromApplicationThread, i_timeToWait_inMilliseconds);
@@ -139,9 +142,14 @@ void eae6320::Graphics::RenderFrame()
 			return;
 		}
 	}
-	view.Clear(0.0f, 1.0f, 0.0f, 1.0f);
+	
 
 	EAE6320_ASSERT(s_dataBeingRenderedByRenderThread);
+
+	view.Clear(s_dataBeingRenderedByRenderThread->backgroundColor[0],
+		s_dataBeingRenderedByRenderThread->backgroundColor[1],
+		s_dataBeingRenderedByRenderThread->backgroundColor[2],
+		s_dataBeingRenderedByRenderThread->backgroundColor[3]);
 
 	// Update the per-frame constant buffer
 	{
@@ -150,19 +158,21 @@ void eae6320::Graphics::RenderFrame()
 		s_constantBuffer_perFrame.Update(&constantData_perFrame);
 	}
 
-	// Bind the shading data
-	effect.Bind();
-
-	// Draw the geometry
-	sprite1.Draw();
-	sprite2.Draw();
-
+	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+		data.first->Bind();
+		data.second->Draw();
+	}
 	view.Buffer();
 	// Once everything has been drawn the data that was submitted for this frame
 	// should be cleaned up and cleared.
 	// so that the struct can be re-used (i.e. so that data for a new frame can be submitted to it)
 	{
-		// (At this point in the class there isn't anything that needs to be cleaned up)
+		for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+			data.first->DecrementReferenceCount();
+			data.second->DecrementReferenceCount();
+		}
+
+		s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 	}
 }
 
@@ -241,22 +251,6 @@ eae6320::cResult eae6320::Graphics::Initialize(const sInitializationParameters& 
 		}
 	}
 #endif
-	// Initialize the shading data
-	{
-		if (!(result = InitializeShadingData()))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-	}
-	// Initialize the geometry
-	{
-		if (!(result = InitializeGeometry()))
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
-	}
 
 OnExit:
 
@@ -269,11 +263,19 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	result = view.CleanUp();
 
-	result = sprite1.CleanUp();
-	result = sprite2.CleanUp();
+	
+	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
+		data.first->DecrementReferenceCount();
+		data.second->DecrementReferenceCount();
+	}
+	s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 
-	result = effect.CleanUp();
+	for (auto data : s_dataBeingSubmittedByApplicationThread->renderDataVec) {
+		data.first->DecrementReferenceCount();
+		data.second->DecrementReferenceCount();
+	}
 
+	s_dataBeingSubmittedByApplicationThread->renderDataVec.clear();
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
 		if (!localResult)
@@ -324,23 +326,3 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	return result;
 }
 
-// Helper Function Definitions
-//============================
-
-namespace
-{
-	eae6320::cResult InitializeGeometry()
-	{
-		auto result = eae6320::Results::Success;
-		result = sprite1.Initialize(0.0f, 0.0f, 1.0f, 1.0f);
-		result = sprite2.Initialize(-1.0f, -1.0f, 0.0f, 0.0f);
-
-		return result;
-	}
-
-	eae6320::cResult InitializeShadingData()
-	{
-		return effect.Initialize();
-	}
-
-}

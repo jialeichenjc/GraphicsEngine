@@ -19,6 +19,8 @@
 #include <Engine/Platform/Platform.h>
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
+#include <Engine/Assets/ReferenceCountedAssets.h>
+
 #include <utility>
 
 class cSprite {
@@ -37,10 +39,15 @@ public:
 	// with the input from a vertex shader
 	ID3D11InputLayout* s_vertexInputLayout = nullptr;
 #endif
-
-	eae6320::cResult Initialize(float p1, float p2, float p3, float p4);
-
+	EAE6320_ASSETS_DECLAREREFERENCECOUNT();
+	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
+	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cSprite);
+	static eae6320::cResult CreateSprite(cSprite *& sprite, float p1, float p2, float p3, float p4);
+	static eae6320::cResult CleanUpSprite(cSprite *& sprite);
 	void Draw();
+private:
+	cSprite() = default;
+	eae6320::cResult Initialize(float p1, float p2, float p3, float p4);
 
 	eae6320::cResult CleanUp();
 

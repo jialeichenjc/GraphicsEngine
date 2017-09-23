@@ -19,7 +19,8 @@
 
 // Interface
 //==========
-
+class cEffect;
+class cSprite;
 namespace eae6320
 {
 	namespace Graphics
@@ -34,6 +35,8 @@ namespace eae6320
 		// of how the application submits the total elapsed times
 		// for the frame currently being submitted
 		void SubmitElapsedTime( const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_simulationTime );
+
+		void SubmitBackgroundColor(const float r, const float g, const float b, const float a);
 
 		// When the application is ready to submit data for a new frame
 		// it should call this before submitting anything
@@ -66,7 +69,7 @@ namespace eae6320
 	#endif
 #endif
 		};
-
+		void SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite);
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
 	}

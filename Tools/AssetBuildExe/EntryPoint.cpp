@@ -54,14 +54,8 @@ int main( int i_argumentCount, char** i_arguments )
 		std::string errorMessage;
 		int exitCode;
 		{
-			const auto shader_authored = engineSourceContentDir + "Shaders/Vertex/example."
-#if defined( EAE6320_PLATFORM_D3D )
-				"hlsl"
-#elif defined( EAE6320_PLATFORM_GL )
-				"glsl"
-#endif
-				;
-			const auto shader_built = gameInstallDir + "data/Shaders/Vertex/example.shd";
+			const auto shader_authored = engineSourceContentDir + "Shaders/Vertex/commonVertex1";
+			const auto shader_built = gameInstallDir + "data/Shaders/Vertex/example1.shd";
 			if ( result = eae6320::Platform::CreateDirectoryIfItDoesntExist( shader_built, &errorMessage) )
 			{
 				if ( result = eae6320::Platform::ExecuteCommand( ( std::string( "\"" ) + path_shaderBuilder
@@ -84,16 +78,41 @@ int main( int i_argumentCount, char** i_arguments )
 				eae6320::Assets::OutputErrorMessageWithFileInfo( __FILE__, __LINE__, errorMessage.c_str() );
 				goto OnExit;
 			}
+
 		}
+
 		{
-			const auto shader_authored = engineSourceContentDir + "Shaders/Fragment/example."
-#if defined( EAE6320_PLATFORM_D3D )
-				"hlsl"
-#elif defined( EAE6320_PLATFORM_GL )
-				"glsl"
-#endif
-				;
-			const auto shader_built = gameInstallDir + "data/Shaders/Fragment/example.shd";
+			const auto shader_authored = engineSourceContentDir + "Shaders/Vertex/commonVertex2";
+			const auto shader_built = gameInstallDir + "data/Shaders/Vertex/example2.shd";
+			if (result = eae6320::Platform::CreateDirectoryIfItDoesntExist(shader_built, &errorMessage))
+			{
+				if (result = eae6320::Platform::ExecuteCommand((std::string("\"") + path_shaderBuilder
+					+ "\" \"" + shader_authored + "\" \"" + shader_built + "\" vertex").c_str(),
+					&exitCode, &errorMessage))
+				{
+					if (exitCode != EXIT_SUCCESS)
+					{
+						return exitCode;
+					}
+				}
+				else
+				{
+					eae6320::Assets::OutputErrorMessageWithFileInfo(__FILE__, __LINE__, errorMessage.c_str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				eae6320::Assets::OutputErrorMessageWithFileInfo(__FILE__, __LINE__, errorMessage.c_str());
+				goto OnExit;
+			}
+		}
+
+		
+		{
+			const auto shader_authored = engineSourceContentDir + "Shaders/Fragment/commonFrag1";
+
+			const auto shader_built = gameInstallDir + "data/Shaders/Fragment/example1.shd";
 			if ( result = eae6320::Platform::CreateDirectoryIfItDoesntExist( shader_built, &errorMessage ) )
 			{
 				if ( result = eae6320::Platform::ExecuteCommand( ( std::string( "\"" ) + path_shaderBuilder
@@ -116,6 +135,36 @@ int main( int i_argumentCount, char** i_arguments )
 				eae6320::Assets::OutputErrorMessageWithFileInfo( __FILE__, __LINE__, errorMessage.c_str() );
 				goto OnExit;
 			}
+
+			
+		}
+
+		{
+			const auto shader_authored = engineSourceContentDir + "Shaders/Fragment/commonFrag2";
+
+			const auto shader_built = gameInstallDir + "data/Shaders/Fragment/example2.shd";
+			if (result = eae6320::Platform::CreateDirectoryIfItDoesntExist(shader_built, &errorMessage))
+			{
+				if (result = eae6320::Platform::ExecuteCommand((std::string("\"") + path_shaderBuilder
+					+ "\" \"" + shader_authored + "\" \"" + shader_built + "\" fragment").c_str(),
+					&exitCode, &errorMessage))
+				{
+					if (exitCode != EXIT_SUCCESS)
+					{
+						return exitCode;
+					}
+				}
+				else
+				{
+					eae6320::Assets::OutputErrorMessageWithFileInfo(__FILE__, __LINE__, errorMessage.c_str());
+					goto OnExit;
+				}
+			}
+			else
+			{
+				eae6320::Assets::OutputErrorMessageWithFileInfo(__FILE__, __LINE__, errorMessage.c_str());
+				goto OnExit;
+			}
 		}
 #if defined( EAE6320_PLATFORM_D3D )
 		{
@@ -136,7 +185,7 @@ int main( int i_argumentCount, char** i_arguments )
 				{
 					eae6320::Assets::OutputErrorMessageWithFileInfo( __FILE__, __LINE__, errorMessage.c_str() );
 					goto OnExit;
-				}
+				}                               
 			}
 			else
 			{

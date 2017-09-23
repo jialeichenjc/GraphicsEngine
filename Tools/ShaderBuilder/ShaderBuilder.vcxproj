@@ -39,7 +39,7 @@
       <Project>{464a6551-fca9-4027-bd9e-2b26914782ab}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Graphics\Graphics.vcxproj">
-      <Project>{6fb004ba-497f-4c5f-8150-4a6b38e7625b}</Project>
+      <Project>{27fef0dd-f73f-4958-8741-0b200dcb16af}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Platform\Platform.vcxproj">
       <Project>{7462d3a7-9936-442e-877c-89efda754596}</Project>
