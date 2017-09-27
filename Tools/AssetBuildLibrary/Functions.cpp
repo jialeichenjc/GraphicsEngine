@@ -642,10 +642,10 @@ namespace
 	{
 		// Argument #1: The source path
 		const char* i_path_source;
-		EAE6320_TODO	// How do you get the source path from the Lua state?
+		i_path_source = lua_tostring(io_luaState, 1);	// How do you get the source path from the Lua state?
 						// Argument #2: The target path
 			const char* i_path_target;
-		EAE6320_TODO	// How do you get the target path from the Lua state?
+		i_path_target = lua_tostring(io_luaState, 2);	// How do you get the target path from the Lua state?
 
 						// Copy the file
 		{
@@ -658,11 +658,18 @@ namespace
 		constexpr bool updateTheTargetFileTime = true;
 		if (eae6320::Platform::CopyFile(i_path_source, i_path_target, noErrorIfTargetAlreadyExists, updateTheTargetFileTime, &errorMessage))
 		{
-			EAE6320_TODO	// Return a boolean [true]
+			lua_pushboolean(io_luaState, true); // push true
+			constexpr int returnValueCount = 1;
+			return returnValueCount;
+			//EAE6320_TODO	// Return a boolean [true]
 		}
 		else
 		{
-			EAE6320_TODO	// On failure return two values: a boolean [false] and the error message
+			lua_pushboolean(io_luaState, false);
+			lua_pushstring(io_luaState, errorMessage.c_str());
+			constexpr int returnValueCount = 2;
+			return returnValueCount;
+			//EAE6320_TODO	// On failure return two values: a boolean [false] and the error message
 		}
 		}
 	}
@@ -671,16 +678,18 @@ namespace
 	{
 		// Argument #1: The path
 		const char* i_path;
-		EAE6320_TODO	// How do you get the path from the Lua state?
+		i_path = lua_tostring(io_luaState, 1);	// How do you get the path from the Lua state?
 
 			std::string errorMessage;
 		if (eae6320::Platform::CreateDirectoryIfItDoesntExist(i_path, &errorMessage))
 		{
-			EAE6320_TODO	// Return nothing (or [true], if you prefer)
+			constexpr int returnValueCount = 0;
+			return returnValueCount;	// Return nothing (or [true], if you prefer)
 		}
 		else
 		{
-			EAE6320_TODO	// Throw a Lua error with the error message
+			return luaL_error(io_luaState, errorMessage.c_str());
+			//EAE6320_TODO	// Throw a Lua error with the error message
 		}
 	}
 
@@ -767,11 +776,16 @@ namespace
 		std::string errorMessage;
 		if (eae6320::Platform::GetEnvironmentVariable(i_key, value, &errorMessage))
 		{
-			EAE6320_TODO	// Return the value as a string
+			lua_pushstring(io_luaState, value.c_str());
+			constexpr int returnValueCount = 1;	
+			return returnValueCount; // Return the value as a string //EAE6320_TODO
 		}
 		else
 		{
-			EAE6320_TODO	// On failure return two values: a nil and the error message
+			lua_pushnil(io_luaState);
+			lua_pushstring(io_luaState, errorMessage.c_str());
+			constexpr int returnValueCount = 2;
+			return returnValueCount; // On failure return two values: a nil and the error message
 		}
 	}
 
