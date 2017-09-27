@@ -43,13 +43,36 @@ void eae6320::cExampleGame::UpdateBasedOnInput()
 eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
-	sizeof(cSprite);
-	cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
-	cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+	auto result = eae6320::Results::Success;
+	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
 
-	cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
-	cSprite::CreateSprite(sprite2, -1.0f, -1.0f, 0.0f, 0.0f);
-	cSprite::CreateSprite(sprite3, -1.0f, 0.0f, 0.0f, 1.0f);
+	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	result = cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	result = cSprite::CreateSprite(sprite2, -1.0f, -1.0f, 0.0f, 0.0f);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	result = cSprite::CreateSprite(sprite3, -1.0f, 0.0f, 0.0f, 1.0f);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
 	return Results::Success;
 }
 
