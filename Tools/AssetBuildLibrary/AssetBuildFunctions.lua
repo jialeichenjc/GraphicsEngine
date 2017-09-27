@@ -221,5 +221,22 @@ function BuildAssets()
 		end
 	end
 
+	do
+		local sourceLicenses = GetFilesInDirectory( OutputDir )
+		for i, sourceLicense in ipairs( sourceLicenses ) do
+			local sourceFileName = sourceLicense:sub( #OutputDir + 1 )
+			if sourceFileName == "settings.ini" then 
+				local targetPath = OutputDir .. sourceFileName
+				local result, errorMessage = CopyFile( sourceLicense, targetPath )
+				if result then
+					-- Display a message
+					print( "Installed " .. sourceFileName )
+				else
+					wereThereErrors = true
+					OutputErrorMessage( "The user settings \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
+				end
+			end
+		end
+	end
 	return not wereThereErrors
 end
