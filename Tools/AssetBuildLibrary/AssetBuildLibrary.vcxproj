@@ -38,7 +38,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\..\AssetBuildLibrary\AssetBuildFunctions.lua">
+    <CustomBuild Include="AssetBuildFunctions.lua">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(OutputDir)luac.exe" -o "$(OutputDir)%(Identity)" "%(FullPath)" </Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Identity)</Message>
