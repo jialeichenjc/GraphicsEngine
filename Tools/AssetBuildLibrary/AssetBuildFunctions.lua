@@ -226,7 +226,7 @@ function BuildAssets()
 		for i, sourceLicense in ipairs( sourceLicenses ) do
 			local sourceFileName = sourceLicense:sub( #OutputDir + 1 )
 			if sourceFileName == "settings.ini" then 
-				local targetPath = OutputDir .. sourceFileName
+				local targetPath = GameInstallDir .. sourceFileName
 				local result, errorMessage = CopyFile( sourceLicense, targetPath )
 				if result then
 					-- Display a message
