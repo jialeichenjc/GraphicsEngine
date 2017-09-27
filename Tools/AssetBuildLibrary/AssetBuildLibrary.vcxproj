@@ -37,6 +37,11 @@
       <Project>{6ff846d1-2377-4601-b2f6-83e31748cb16}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\AssetBuildLibrary\AssetBuildFunctions.lua">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4438BC28-0C79-4907-BD5C-ABAD0DD78AEC}</ProjectGuid>
