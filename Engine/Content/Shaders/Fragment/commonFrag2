@@ -56,8 +56,6 @@ void main(
 		1.0, 1.0, 1.0,
 		// Alpha
 		1.0 );
-
-		//o_color.r = sin( g_elapsedSecondCount_simulationTime );
 		
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
@@ -68,6 +66,11 @@ void main(
 	//		o_color.r = ? sin( g_elapsedSecondCount_simulationTime ) ?
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
+
+	const float4 sampledColor = g_color_texture.Sample( g_color_samplerState, i_uv );
+
+	o_color = sampledColor;
+
 }
 
 #elif defined( EAE6320_PLATFORM_GL )
@@ -123,8 +126,6 @@ void main()
 		// Alpha
 		1.0 );
 	
-	//o_color.r = sin( g_elapsedSecondCount_simulationTime );
-
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
 	//	sin( g_elapsedSecondCount_simulationTime ) or cos( g_elapsedSecondCount_simulationTime )
@@ -134,6 +135,10 @@ void main()
 	//		o_color.r = ? sin( g_elapsedSecondCount_simulationTime ) ?
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
+
+	vec4 sampledColor = texture2D( g_color_texture, i_uv );
+
+	o_color = sampledColor;
 }
 
 #endif
