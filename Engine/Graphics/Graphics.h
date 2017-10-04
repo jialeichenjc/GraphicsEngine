@@ -21,6 +21,7 @@
 //==========
 class cEffect;
 class cSprite;
+class cTexture;
 namespace eae6320
 {
 	namespace Graphics
@@ -38,6 +39,7 @@ namespace eae6320
 
 		void SubmitBackgroundColor(const float r, const float g, const float b, const float a);
 
+		void SubmitTexture(const char* const i_path);
 		// When the application is ready to submit data for a new frame
 		// it should call this before submitting anything
 		// (or, said another way, it is not safe to submit data for a new frame

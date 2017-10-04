@@ -16,6 +16,7 @@
 #include "cRenderState.h"
 #include "cSamplerState.h"
 #include "cShader.h"
+#include "cTexture.h"
 #include "sContext.h"
 #include "VertexFormats.h"
 #include "Engine\Graphics\cEffect.h"
@@ -99,6 +100,11 @@ void eae6320::Graphics::SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSpri
 
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(std::make_pair(iEffect, iSprite));
 }
+
+void eae6320::Graphics::SubmitTexture(const char* const i_path) {
+
+}
+
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
 	return Concurrency::WaitForEvent(s_whenDataForANewFrameCanBeSubmittedFromApplicationThread, i_timeToWait_inMilliseconds);
