@@ -181,7 +181,7 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 				{
 					result = eae6320::Results::Failure;
 					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-					eae6320::Logging::OutputError("OpenGL failed to enable the TEXTCOORD vertex attribute at location %u: %s",
+					eae6320::Logging::OutputError("OpenGL failed to enable the TEXCOORD vertex attribute at location %u: %s",
 						vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 					goto OnExit;
 				}
@@ -190,7 +190,7 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 			{
 				result = eae6320::Results::Failure;
 				EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
-				eae6320::Logging::OutputError("OpenGL failed to set the TEXTCOORD vertex attribute at location %u: %s",
+				eae6320::Logging::OutputError("OpenGL failed to set the TEXCOORD vertex attribute at location %u: %s",
 					vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
 				goto OnExit;
 			}

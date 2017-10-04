@@ -61,7 +61,7 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 				{
 					auto& positionElement = layoutDescription[1];
 
-					positionElement.SemanticName = "TEXTCOORD";
+					positionElement.SemanticName = "TEXCOORD0";
 					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
 					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
 					positionElement.InputSlot = 1;
