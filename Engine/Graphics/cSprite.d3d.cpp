@@ -98,21 +98,33 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 		{
 			vertexData[0].x = p1;
 			vertexData[0].y = p2;
+			vertexData[0].u = 0;
+			vertexData[0].v = 1;
 
 			vertexData[1].x = p3;
 			vertexData[1].y = p4;
+			vertexData[1].u = 1;
+			vertexData[1].v = 0;
 
 			vertexData[2].x = p3;
 			vertexData[2].y = p2;
+			vertexData[2].u = 1;
+			vertexData[2].v = 1;
 
 			vertexData[3].x = p1;
 			vertexData[3].y = p2;
+			vertexData[3].u = 0;
+			vertexData[3].v = 1;
 
 			vertexData[4].x = p1;
 			vertexData[4].y = p4;
+			vertexData[4].u = 0;
+			vertexData[4].v = 0;
 
 			vertexData[5].x = p3;
 			vertexData[5].y = p4;
+			vertexData[5].u = 1;
+			vertexData[5].v = 0;
 		}
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
