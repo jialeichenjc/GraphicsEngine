@@ -21,10 +21,24 @@ cbuffer g_constantBuffer_perMaterial : register( b1 )
 	float4 g_color;
 }
 
+// Texture Objects
+//=================
+
+Texture2D g_color_texture : register( t0 );
+SamplerState g_color_samplerState : register( s0 );
+
 // Entry Point
 //============
 
 void main(
+
+	// Input
+	//======
+
+	// These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
+	in const float4 i_position : SV_POSITION,
+
+    in const float2 i_texture : TEXCOORD0,
 
 	// Output
 	//=======
@@ -77,6 +91,15 @@ layout( std140, binding = 1 ) uniform g_constantBuffer_perMaterial
 {
 	vec4 g_color;
 };
+
+// Texture
+//========
+
+layout( binding = 0 ) uniform sampler2D g_color_texture;
+
+// Input
+//======
+layout( location = 0 ) in vec2 i_texture;
 
 // Output
 //=======
