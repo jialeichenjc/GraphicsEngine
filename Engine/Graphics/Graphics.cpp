@@ -53,6 +53,7 @@ namespace
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
 		float backgroundColor[4];
 		std::vector<std::pair<cEffect *, cSprite *>> renderDataVec;
+		eae6320::Graphics::cTexture::Handle textureHandle;
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
