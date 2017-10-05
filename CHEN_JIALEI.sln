@@ -75,6 +75,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Engine\Graphics\Graphics.vcxproj", "{27FEF0DD-F73F-4958-8741-0B200DCB16AF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureBuilder", "Tools\TextureBuilder\TextureBuilder.vcxproj", "{37D50792-7ACF-496D-9239-2D656A57509C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B38967B9-886D-4E1F-B733-828D1783E2DC} = {B38967B9-886D-4E1F-B733-828D1783E2DC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -68,7 +68,7 @@ void main(
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
 
-	const float4 sampledColor = g_color_texture.Sample( g_color_samplerState, i_uv );
+	const float4 sampledColor = g_color_texture.Sample( g_color_samplerState, i_texture );
 
 	o_color = o_color * sampledColor;
 
@@ -137,7 +137,7 @@ void main()
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
 
-	vec4 sampledColor = texture2D( g_color_texture, i_uv );
+	vec4 sampledColor = texture2D( g_color_texture, i_texture );
 
 	o_color = o_color * sampledColor;
 }

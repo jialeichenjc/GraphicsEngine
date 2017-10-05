@@ -26,11 +26,8 @@
     <ClCompile Include="Windows\cTextureBuilder.win.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Engine\Asserts\Asserts.vcxproj">
-      <Project>{464a6551-fca9-4027-bd9e-2b26914782ab}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Engine\Graphics\Graphics.vcxproj">
-      <Project>{27fef0dd-f73f-4958-8741-0b200dcb16af}</Project>
+    <ProjectReference Include="..\..\Engine\Assets\Assets.vcxproj">
+      <Project>{e803347f-34d1-43ac-b234-5f8940fab26a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Math\Math.vcxproj">
       <Project>{999c3d5f-7f79-4bd7-ae21-92eeed0c5962}</Project>
@@ -38,20 +35,14 @@
     <ProjectReference Include="..\..\Engine\Platform\Platform.vcxproj">
       <Project>{7462d3a7-9936-442e-877c-89efda754596}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Engine\Windows\Windows.vcxproj">
-      <Project>{6ff846d1-2377-4601-b2f6-83e31748cb16}</Project>
+    <ProjectReference Include="..\..\Engine\Results\Results.vcxproj">
+      <Project>{5003f315-b5d5-48ab-ba3f-1cb0dec8c213}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\External\DirectXTex\DirectXTex.vcxproj">
       <Project>{7c13076e-4d47-4949-9b1f-ee1e8e7cb01b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\External\Lua\LuaLib.vcxproj">
       <Project>{a506e35d-bb34-468d-82cd-112386be29d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\External\Mcpp\Mcpp.vcxproj">
-      <Project>{dd1b3bf3-3c86-49f6-abf4-e021ebcdaf80}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\External\OpenGlExtensions\OpenGlExtensions.vcxproj">
-      <Project>{433f6d20-943a-4d7b-bffe-bc9dfc932e6e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\AssetBuildLibrary\AssetBuildLibrary.vcxproj">
       <Project>{4438bc28-0c79-4907-bd5c-abad0dd78aec}</Project>

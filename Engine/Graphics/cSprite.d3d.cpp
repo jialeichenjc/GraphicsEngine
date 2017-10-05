@@ -61,10 +61,10 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 				{
 					auto& positionElement = layoutDescription[1];
 
-					positionElement.SemanticName = "TEXCOORD0";
+					positionElement.SemanticName = "TEXCOORD";
 					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
 					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
-					positionElement.InputSlot = 1;
+					positionElement.InputSlot = 0;
 					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sGeometry, u);
 					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 					positionElement.InstanceDataStepRate = 0;	// (Must be zero for per-vertex data)

@@ -12,7 +12,7 @@
 
 #include <cstdint>
 #include <Engine/Results/Results.h>
-
+#include "cTexture.h"
 #if defined( EAE6320_PLATFORM_WINDOWS )
 	#include <Engine/Windows/Includes.h>
 #endif
@@ -29,6 +29,17 @@ namespace eae6320
 		// Submission
 		//-----------
 
+		struct renderData {
+			cEffect * effect;
+			cSprite * sprite;
+			cTexture::Handle textureHandle;
+
+			renderData() = default;
+
+			renderData(cEffect* iEffect, cSprite * iSprite, cTexture::Handle iTextureHandle)
+				: effect(iEffect), sprite(iSprite), textureHandle(iTextureHandle) {}
+
+		};
 		// These functions should be called from the application (on the application loop thread)
 
 		// As the class progresses you will add your own functions for submitting data,
@@ -39,7 +50,6 @@ namespace eae6320
 
 		void SubmitBackgroundColor(const float r, const float g, const float b, const float a);
 
-		void SubmitTexture(const char* const i_path);
 		// When the application is ready to submit data for a new frame
 		// it should call this before submitting anything
 		// (or, said another way, it is not safe to submit data for a new frame
@@ -71,7 +81,7 @@ namespace eae6320
 	#endif
 #endif
 		};
-		void SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite);
+		void SubmitEffectAndSprite(eae6320::Graphics::renderData);
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
 	}

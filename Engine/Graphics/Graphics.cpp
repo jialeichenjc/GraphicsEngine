@@ -52,8 +52,7 @@ namespace
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
 		float backgroundColor[4];
-		std::vector<std::pair<cEffect *, cSprite *>> renderDataVec;
-		eae6320::Graphics::cTexture::Handle textureHandle;
+		std::vector<eae6320::Graphics::renderData> renderDataVec;
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -94,17 +93,15 @@ void eae6320::Graphics::SubmitBackgroundColor(const float r, const float g, cons
 	s_dataBeingSubmittedByApplicationThread->backgroundColor[2] = b;
 	s_dataBeingSubmittedByApplicationThread->backgroundColor[3] = a;
 }
-void eae6320::Graphics::SubmitEffectAndSprite(cEffect * iEffect, cSprite * iSprite) 
+void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data)
 {
-	iEffect->IncrementReferenceCount();
-	iSprite->IncrementReferenceCount();
-
-	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(std::make_pair(iEffect, iSprite));
+	data.effect->IncrementReferenceCount();
+	data.sprite->IncrementReferenceCount();
+	cTexture::s_manager.Get(data.textureHandle)->IncrementReferenceCount();
+	
+	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
 
-void eae6320::Graphics::SubmitTexture(const char* const i_path) {
-
-}
 
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
@@ -166,8 +163,9 @@ void eae6320::Graphics::RenderFrame()
 	}
 
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
-		data.first->Bind();
-		data.second->Draw();
+		data.effect->Bind();
+		cTexture::s_manager.Get(data.textureHandle)->Bind(0);
+		data.sprite->Draw();
 	}
 	view.Buffer();
 	// Once everything has been drawn the data that was submitted for this frame
@@ -175,8 +173,9 @@ void eae6320::Graphics::RenderFrame()
 	// so that the struct can be re-used (i.e. so that data for a new frame can be submitted to it)
 	{
 		for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
-			data.first->DecrementReferenceCount();
-			data.second->DecrementReferenceCount();
+			data.effect->DecrementReferenceCount();
+			cTexture::s_manager.Release(data.textureHandle);
+			data.sprite->DecrementReferenceCount();
 		}
 
 		s_dataBeingRenderedByRenderThread->renderDataVec.clear();
@@ -272,14 +271,16 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
-		data.first->DecrementReferenceCount();
-		data.second->DecrementReferenceCount();
+		data.effect->DecrementReferenceCount();
+		cTexture::s_manager.Release(data.textureHandle);
+		data.sprite->DecrementReferenceCount();
 	}
 	s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 
 	for (auto data : s_dataBeingSubmittedByApplicationThread->renderDataVec) {
-		data.first->DecrementReferenceCount();
-		data.second->DecrementReferenceCount();
+		data.effect->DecrementReferenceCount();
+		cTexture::s_manager.Release(data.textureHandle);
+		data.sprite->DecrementReferenceCount();
 	}
 
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.clear();
