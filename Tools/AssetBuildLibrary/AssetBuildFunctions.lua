@@ -203,6 +203,90 @@ function BuildAssets()
 			end
 		end
 	end
+
+	-- Build three textures
+	local path_textureBuilder = OutputDir .. "TextureBuilder.exe"
+		do
+			local texture_authored = EngineSourceContentDir .. "Textures/shifu.jpg"
+			local texture_built = GameInstallDir .. "data/Textures/shifu.jpg"
+			CreateDirectoryIfItDoesntExist( texture_built )
+			local command = "\"" .. path_textureBuilder .. "\""
+				.. " \"" .. texture_authored .. "\" \"" .. texture_built
+			local result, exitCode = ExecuteCommand( command )
+			if result then
+				if exitCode == 0 then
+					-- Display a message for each asset
+					print( "Built " .. texture_authored )
+				else
+					wereThereErrors = true
+					-- The builder should already output a descriptive error message if there was an error
+					-- (remember that you write the builder code,
+					-- and so if the build process failed it means that _your_ code has returned an error code)
+					-- but it can be helpful to still return an additional vague error message here
+					-- in case there is a bug in the specific builder that doesn't output an error message
+					OutputErrorMessage( "The command " .. command .. " failed with exit code " .. tostring( exitCode ), texture_authored )
+				end
+			else
+				wereThereErrors = true
+				-- If the command wasn't executed then the second return value is an error message
+				OutputErrorMessage( "The command " .. command .. " couldn't be executed: " .. tostring( exitCode ), texture_authored )
+			end
+		end
+
+		do
+			local texture_authored = EngineSourceContentDir .. "Textures/babyPanda.jpg"
+			local texture_built = GameInstallDir .. "data/Textures/babyPanda.jpg"
+			CreateDirectoryIfItDoesntExist( texture_built )
+			local command = "\"" .. path_textureBuilder .. "\""
+				.. " \"" .. texture_authored .. "\" \"" .. texture_built
+			local result, exitCode = ExecuteCommand( command )
+			if result then
+				if exitCode == 0 then
+					-- Display a message for each asset
+					print( "Built " .. texture_authored )
+				else
+					wereThereErrors = true
+					-- The builder should already output a descriptive error message if there was an error
+					-- (remember that you write the builder code,
+					-- and so if the build process failed it means that _your_ code has returned an error code)
+					-- but it can be helpful to still return an additional vague error message here
+					-- in case there is a bug in the specific builder that doesn't output an error message
+					OutputErrorMessage( "The command " .. command .. " failed with exit code " .. tostring( exitCode ), texture_authored )
+				end
+			else
+				wereThereErrors = true
+				-- If the command wasn't executed then the second return value is an error message
+				OutputErrorMessage( "The command " .. command .. " couldn't be executed: " .. tostring( exitCode ), texture_authored )
+			end
+		end
+
+		do
+			local texture_authored = EngineSourceContentDir .. "Textures/cupcake.jpg"
+			local texture_built = GameInstallDir .. "data/Textures/cupcake.jpg"
+			CreateDirectoryIfItDoesntExist( texture_built )
+			local command = "\"" .. path_textureBuilder .. "\""
+				.. " \"" .. texture_authored .. "\" \"" .. texture_built
+			local result, exitCode = ExecuteCommand( command )
+			if result then
+				if exitCode == 0 then
+					-- Display a message for each asset
+					print( "Built " .. texture_authored )
+				else
+					wereThereErrors = true
+					-- The builder should already output a descriptive error message if there was an error
+					-- (remember that you write the builder code,
+					-- and so if the build process failed it means that _your_ code has returned an error code)
+					-- but it can be helpful to still return an additional vague error message here
+					-- in case there is a bug in the specific builder that doesn't output an error message
+					OutputErrorMessage( "The command " .. command .. " failed with exit code " .. tostring( exitCode ), texture_authored )
+				end
+			else
+				wereThereErrors = true
+				-- If the command wasn't executed then the second return value is an error message
+				OutputErrorMessage( "The command " .. command .. " couldn't be executed: " .. tostring( exitCode ), texture_authored )
+			end
+		end
+
 	-- Copy the licenses to the installation location
 	do
 		CreateDirectoryIfItDoesntExist( GameLicenseDir )
@@ -221,6 +305,7 @@ function BuildAssets()
 		end
 	end
 
+	-- Copy user settings
 	do
 		local sourceLicenses = GetFilesInDirectory( OutputDir )
 		for i, sourceLicense in ipairs( sourceLicenses ) do

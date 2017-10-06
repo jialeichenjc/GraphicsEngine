@@ -21,10 +21,25 @@ cbuffer g_constantBuffer_perMaterial : register( b1 )
 	float4 g_color;
 }
 
+// Texture Objects
+//=================
+
+Texture2D g_color_texture : register( t0 );
+SamplerState g_color_samplerState : register( s0 );
+
 // Entry Point
 //============
 
 void main(
+
+	// Input
+	//======
+
+	// These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
+	in const float4 i_position : SV_POSITION,
+
+    in const float2 i_texture : TEXCOORD0,
+
 
 	// Output
 	//=======
@@ -41,8 +56,6 @@ void main(
 		1.0, 1.0, 1.0,
 		// Alpha
 		1.0 );
-
-		//o_color.r = sin( g_elapsedSecondCount_simulationTime );
 		
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
@@ -53,6 +66,11 @@ void main(
 	//		o_color.r = ? sin( g_elapsedSecondCount_simulationTime ) ?
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
+
+	const float4 sampledColor = g_color_texture.Sample( g_color_samplerState, i_texture );
+
+	o_color = sampledColor;
+
 }
 
 #elif defined( EAE6320_PLATFORM_GL )
@@ -78,6 +96,17 @@ layout( std140, binding = 1 ) uniform g_constantBuffer_perMaterial
 	vec4 g_color;
 };
 
+
+// Texture
+//========
+
+layout( binding = 0 ) uniform sampler2D g_color_texture;
+
+
+// Input
+//======
+layout( location = 0 ) in vec2 i_texture;
+
 // Output
 //=======
 
@@ -97,8 +126,6 @@ void main()
 		// Alpha
 		1.0 );
 	
-	//o_color.r = sin( g_elapsedSecondCount_simulationTime );
-
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
 	//	sin( g_elapsedSecondCount_simulationTime ) or cos( g_elapsedSecondCount_simulationTime )
@@ -108,6 +135,10 @@ void main()
 	//		o_color.r = ? sin( g_elapsedSecondCount_simulationTime ) ?
 	// You can change .r, .g, and .b (but leave .a as 1.0).
 	// Remember that your final values should be [0,1], so you will have to do some math.
+
+	vec4 sampledColor = texture2D( g_color_texture, i_texture );
+
+	o_color = sampledColor;
 }
 
 #endif

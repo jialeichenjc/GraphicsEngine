@@ -35,7 +35,7 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 			// (by using so-called "semantic" names so that, for example,
 			// "POSITION" here matches with "POSITION" in shader code).
 			// Note that OpenGL uses arbitrarily assignable number IDs to do the same thing.
-			constexpr unsigned int vertexElementCount = 1;
+			constexpr unsigned int vertexElementCount = 2;
 			D3D11_INPUT_ELEMENT_DESC layoutDescription[vertexElementCount] = {};
 			{
 				// Slot 0
@@ -51,6 +51,21 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
 					positionElement.InputSlot = 0;
 					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sGeometry, x);
+					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+					positionElement.InstanceDataStepRate = 0;	// (Must be zero for per-vertex data)
+				}
+
+				// TEXTCOORD
+				// 2 floats == 8 bytes
+				// Offset = 8
+				{
+					auto& positionElement = layoutDescription[1];
+
+					positionElement.SemanticName = "TEXCOORD";
+					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
+					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
+					positionElement.InputSlot = 0;
+					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sGeometry, u);
 					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 					positionElement.InstanceDataStepRate = 0;	// (Must be zero for per-vertex data)
 				}
@@ -83,21 +98,33 @@ eae6320::cResult cSprite::Initialize(float p1, float p2, float p3, float p4) {
 		{
 			vertexData[0].x = p1;
 			vertexData[0].y = p2;
+			vertexData[0].u = 0;
+			vertexData[0].v = 1;
 
 			vertexData[1].x = p3;
 			vertexData[1].y = p4;
+			vertexData[1].u = 1;
+			vertexData[1].v = 0;
 
 			vertexData[2].x = p3;
 			vertexData[2].y = p2;
+			vertexData[2].u = 1;
+			vertexData[2].v = 1;
 
 			vertexData[3].x = p1;
 			vertexData[3].y = p2;
+			vertexData[3].u = 0;
+			vertexData[3].v = 1;
 
 			vertexData[4].x = p1;
 			vertexData[4].y = p4;
+			vertexData[4].u = 0;
+			vertexData[4].v = 0;
 
 			vertexData[5].x = p3;
 			vertexData[5].y = p4;
+			vertexData[5].u = 1;
+			vertexData[5].v = 0;
 		}
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
