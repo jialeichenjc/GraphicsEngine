@@ -78,3 +78,14 @@
 	#define GetSampledColor( i_colorTexture, i_sampler ) texture2D( i_colorTexture, i_texture );
 
 #endif
+
+// Vertex Position
+#if defined( EAE6320_PLATFORM_D3D )
+
+	#define PositionOutput o_position
+
+#elif defined( EAE6320_PLATFORM_GL )
+
+	#define PositionOutput gl_Position
+
+#endif
