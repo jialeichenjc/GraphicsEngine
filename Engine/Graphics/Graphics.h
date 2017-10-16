@@ -32,12 +32,12 @@ namespace eae6320
 		struct renderData {
 			cEffect * effect;
 			cSprite * sprite;
-			cTexture::Handle textureHandle;
+			cTexture * texture;
 
 			renderData() = default;
 
-			renderData(cEffect* iEffect, cSprite * iSprite, cTexture::Handle iTextureHandle)
-				: effect(iEffect), sprite(iSprite), textureHandle(iTextureHandle) {}
+			renderData(cEffect* iEffect, cSprite * iSprite, cTexture * iTexture)
+				: effect(iEffect), sprite(iSprite), texture(iTexture) {}
 
 		};
 		// These functions should be called from the application (on the application loop thread)
