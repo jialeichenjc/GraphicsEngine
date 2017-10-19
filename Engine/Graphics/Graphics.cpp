@@ -97,7 +97,7 @@ void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data
 {
 	data.effect->IncrementReferenceCount();
 	data.sprite->IncrementReferenceCount();
-	cTexture::s_manager.Get(data.textureHandle)->IncrementReferenceCount();
+	data.texture->IncrementReferenceCount();
 	
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
@@ -164,7 +164,7 @@ void eae6320::Graphics::RenderFrame()
 
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 		data.effect->Bind();
-		cTexture::s_manager.Get(data.textureHandle)->Bind(0);
+		data.texture->Bind(0);
 		data.sprite->Draw();
 	}
 	view.Buffer();
@@ -174,7 +174,7 @@ void eae6320::Graphics::RenderFrame()
 	{
 		for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 			data.effect->DecrementReferenceCount();
-			cTexture::s_manager.Release(data.textureHandle);
+			data.texture->DecrementReferenceCount();
 			data.sprite->DecrementReferenceCount();
 		}
 
@@ -272,14 +272,14 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 		data.effect->DecrementReferenceCount();
-		cTexture::s_manager.Release(data.textureHandle);
+		data.texture->DecrementReferenceCount();
 		data.sprite->DecrementReferenceCount();
 	}
 	s_dataBeingRenderedByRenderThread->renderDataVec.clear();
 
 	for (auto data : s_dataBeingSubmittedByApplicationThread->renderDataVec) {
 		data.effect->DecrementReferenceCount();
-		cTexture::s_manager.Release(data.textureHandle);
+		data.texture->DecrementReferenceCount();
 		data.sprite->DecrementReferenceCount();
 	}
 

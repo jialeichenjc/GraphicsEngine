@@ -50,21 +50,24 @@ void eae6320::cExampleGame::UpdateBasedOnInput()
 
 	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Tab))
 	{
-		data1.textureHandle = texture2;
+		data1.texture = eae6320::Graphics::cTexture::s_manager.Get(texture2);
 	}
-	else {
-		data1.textureHandle = texture1;
+	else 
+	{
+		data1.texture = eae6320::Graphics::cTexture::s_manager.Get(texture1);
 	}
 }
 
 void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_sinceLastUpdate) {
 	timer += i_elapsedSecondCount_sinceLastUpdate;
-	if (timer > 3) {
-		data2.textureHandle = texture3;
+	if (timer > 3) 
+	{
+		data2.texture = eae6320::Graphics::cTexture::s_manager.Get(texture3);
 	}
 
-	if (timer > 6) {
-		data2.textureHandle = texture2;
+	if (timer > 6) 
+	{
+		data2.texture = eae6320::Graphics::cTexture::s_manager.Get(texture2);
 		timer = 0.0f;
 	}
 
@@ -125,9 +128,9 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	}
 
 
-	data1 = eae6320::Graphics::renderData(effect1, sprite1, texture1);
-	data2 = eae6320::Graphics::renderData(effect2, sprite2, texture2);
-	data3 = eae6320::Graphics::renderData(effect2, sprite3, texture3);
+	data1 = eae6320::Graphics::renderData(effect1, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
+	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
+	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 	return Results::Success;
 }
 

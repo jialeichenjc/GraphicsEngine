@@ -25,9 +25,6 @@
     <ClInclude Include="Windows\ExternalLibraries.win.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cManager.inl" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Asserts\Asserts.vcxproj">
       <Project>{464a6551-fca9-4027-bd9e-2b26914782ab}</Project>
     </ProjectReference>
@@ -43,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Empty.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cManager.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
