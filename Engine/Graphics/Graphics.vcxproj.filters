@@ -74,6 +74,9 @@
     <ClCompile Include="Direct3D\cTexture.d3d.cpp">
       <Filter>Direct3D</Filter>
     </ClCompile>
+    <ClCompile Include="cMesh.d3d.cpp">
+      <Filter>Direct3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cConstantBuffer.h" />
