@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="cConstantBuffer.h" />
     <ClInclude Include="cEffect.h" />
+    <ClInclude Include="cMesh.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="ConstantBufferFormats.h" />
     <ClInclude Include="cRenderState.h" />

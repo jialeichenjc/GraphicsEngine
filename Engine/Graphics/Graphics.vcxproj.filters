@@ -99,6 +99,7 @@
     </ClInclude>
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="TextureFormats.h" />
+    <ClInclude Include="cMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cRenderState.inl" />
