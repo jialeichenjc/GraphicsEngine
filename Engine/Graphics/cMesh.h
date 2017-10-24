@@ -48,7 +48,7 @@ public:
 	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cMesh);
 
 
-	static eae6320::cResult CreateMesh(cMesh *& i_mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+	static eae6320::cResult CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 	static eae6320::cResult CleanUpSprite(cMesh *& i_mesh);
 	void DrawMesh();
