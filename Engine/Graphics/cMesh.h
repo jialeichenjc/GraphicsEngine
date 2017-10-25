@@ -50,10 +50,12 @@ public:
 
 	static eae6320::cResult CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
-	static eae6320::cResult CleanUpSprite(cMesh *& i_mesh);
+	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
 	void DrawMesh();
 private:
 	cMesh() = default;
+	static size_t m_indexCount;
+	static size_t m_vertexCount;
 	eae6320::cResult Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 

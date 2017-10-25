@@ -44,6 +44,7 @@ namespace eae6320
 				// 4 uint8_t == 4 bytes
 				// offset = 8
 				uint8_t r, g, b, a;
+				sMesh() : r(0), g(0), b(0), a(255) {}
 			};
 		}
 	}
