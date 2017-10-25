@@ -17,6 +17,7 @@
 #include "cSamplerState.h"
 #include "cShader.h"
 #include "cTexture.h"
+#include "cMesh.h"
 #include "sContext.h"
 #include "VertexFormats.h"
 #include "Engine\Graphics\cEffect.h"
@@ -53,6 +54,8 @@ namespace
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
 		float backgroundColor[4];
 		std::vector<eae6320::Graphics::renderData> renderDataVec;
+		std::vector<eae6320::Graphics::meshData> meshDataVec;
+
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -102,6 +105,12 @@ void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
 
+void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData data)
+{
+	data.effect->IncrementReferenceCount();
+	data.mesh->IncrementReferenceCount();
+	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+}
 
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {

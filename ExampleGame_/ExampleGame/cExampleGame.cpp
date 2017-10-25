@@ -5,6 +5,7 @@
 #include "Engine/Graphics/cEffect.h"
 #include "Engine/Graphics/cSprite.h"
 #include "Engine/Graphics/cTexture.h"
+#include "Engine/Graphics/cMesh.h"
 
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/UserInput/UserInput.h>
@@ -30,9 +31,9 @@ float timer = 0.0f;
 //=========================
 void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
 	eae6320::Graphics::SubmitBackgroundColor(0.0f, 0.0f, 128.0f, 1.0f);
-	eae6320::Graphics::SubmitEffectAndSprite(data1);
-	eae6320::Graphics::SubmitEffectAndSprite(data2);
-	eae6320::Graphics::SubmitEffectAndSprite(data3);
+	//eae6320::Graphics::SubmitEffectAndSprite(data1);
+	//eae6320::Graphics::SubmitEffectAndSprite(data2);
+	//eae6320::Graphics::SubmitEffectAndSprite(data3);
 }
 
 // Run

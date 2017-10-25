@@ -22,6 +22,7 @@
 class cEffect;
 class cSprite;
 class cTexture;
+class cMesh;
 namespace eae6320
 {
 	namespace Graphics
@@ -40,6 +41,19 @@ namespace eae6320
 				: effect(iEffect), sprite(iSprite), texture(iTexture) {}
 
 		};
+
+
+		struct meshData {
+			cEffect * effect;
+			cMesh * mesh;
+
+			meshData() = default;
+
+			meshData(cEffect * iEffect, cMesh * iMesh)
+				: effect(iEffect), mesh(iMesh) {}
+
+		};
+
 		// These functions should be called from the application (on the application loop thread)
 
 		// As the class progresses you will add your own functions for submitting data,
@@ -82,6 +96,8 @@ namespace eae6320
 #endif
 		};
 		void SubmitEffectAndSprite(eae6320::Graphics::renderData);
+		void SubmitEffectAndMesh(eae6320::Graphics::meshData);
+
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
 	}

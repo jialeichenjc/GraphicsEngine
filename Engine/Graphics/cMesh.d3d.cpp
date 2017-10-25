@@ -133,6 +133,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			eae6320::Logging::OutputError("Direct3D failed to create a geometry vertex buffer (HRESULT %#010x)", d3dResult);
 			goto OnExit;
 		}
+		delete[] vertexData;
 	}
 
 	// Index Buffer
@@ -170,6 +171,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			eae6320::Logging::OutputError("Direct3D failed to create a geometry vertex buffer (HRESULT %#010x)", d3dResult);
 			goto OnExit;
 		}
+		delete[] indexData;
 	}
 
 OnExit:
@@ -252,6 +254,10 @@ eae6320::cResult cMesh::CleanUp() {
 		s_vertexInputLayout->Release();
 		s_vertexInputLayout = nullptr;
 	}
-
+	if (s_indexBuffer)
+	{
+		s_indexBuffer->Release();
+		s_indexBuffer = nullptr;
+	}
 	return result;
 }
