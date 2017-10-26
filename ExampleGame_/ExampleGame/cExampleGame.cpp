@@ -17,6 +17,8 @@ cSprite * sprite1;
 cSprite * sprite2;
 cSprite * sprite3;
 
+cMesh * mesh1;
+
 eae6320::Graphics::cTexture::Handle texture1;
 eae6320::Graphics::cTexture::Handle texture2;
 eae6320::Graphics::cTexture::Handle texture3;
@@ -24,6 +26,8 @@ eae6320::Graphics::cTexture::Handle texture3;
 eae6320::Graphics::renderData data1;
 eae6320::Graphics::renderData data2;
 eae6320::Graphics::renderData data3;
+
+eae6320::Graphics::meshData data4;
 
 float timer = 0.0f;
 
@@ -34,6 +38,7 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	//eae6320::Graphics::SubmitEffectAndSprite(data1);
 	//eae6320::Graphics::SubmitEffectAndSprite(data2);
 	//eae6320::Graphics::SubmitEffectAndSprite(data3);
+	eae6320::Graphics::SubmitEffectAndMesh(data4)
 }
 
 // Run
@@ -128,10 +133,48 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec(4);
+	eae6320::Graphics::VertexFormats::sMesh vertex1;
+	vertex1.x = 0.0f;
+	vertex1.y = -1.0f;
+	vertex1.r = 255;
+
+	eae6320::Graphics::VertexFormats::sMesh vertex2;
+	vertex2.x = 1.0f;
+	vertex2.y = -1.0f;
+	vertex2.r = 255;
+	vertex2.g = 255;
+
+	eae6320::Graphics::VertexFormats::sMesh vertex3;
+	vertex3.x = 1.0f;
+	vertex3.y = 0.0f;
+	vertex3.r = 255;
+	vertex3.g = 255;
+
+	eae6320::Graphics::VertexFormats::sMesh vertex4;
+	vertex4.x = 0.0f;
+	vertex4.y = 0.0f;
+	vertex4.b = 255;
+	i_meshVec[0] = vertex1;
+	i_meshVec[1] = vertex2;
+	i_meshVec[2] = vertex3;
+	i_meshVec[3] = vertex4;
+
+	std::vector<uint16_t> i_indexVec(6);
+	i_indexVec[0] = 0;
+	i_indexVec[1] = 1;
+	i_indexVec[2] = 2;
+	i_indexVec[3] = 0;
+	i_indexVec[4] = 2;
+	i_indexVec[5] = 3;
+
+	result = cMesh::CreateMesh(mesh1, i_meshVec, i_indexVec);
 
 	data1 = eae6320::Graphics::renderData(effect1, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
+
+	data4 = eae6320::Graphics::meshData(effect1, mesh1);
 	return Results::Success;
 }
 
@@ -148,5 +191,6 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 	cSprite::CleanUpSprite(sprite2);
 	cSprite::CleanUpSprite(sprite3);
 
+	cMesh::CleanUpMesh(mesh1);
 	return Results::Success;
 }

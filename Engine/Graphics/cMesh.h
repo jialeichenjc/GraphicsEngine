@@ -31,6 +31,9 @@ public:
 	GLuint s_vertexBufferId = 0;
 	// A vertex array encapsulates the vertex data as well as the vertex input layout
 	GLuint s_vertexArrayId = 0;
+	// Index buffer
+	GLuint s_indexBufferId = 0;
+
 #endif
 
 #if defined( EAE6320_PLATFORM_D3D )
