@@ -18,6 +18,7 @@ cSprite * sprite2;
 cSprite * sprite3;
 
 cMesh * mesh1;
+cMesh * mesh2;
 
 eae6320::Graphics::cTexture::Handle texture1;
 eae6320::Graphics::cTexture::Handle texture2;
@@ -28,17 +29,19 @@ eae6320::Graphics::renderData data2;
 eae6320::Graphics::renderData data3;
 
 eae6320::Graphics::meshData data4;
+eae6320::Graphics::meshData data5;
 
 float timer = 0.0f;
 
 // Inherited Implementation
 //=========================
 void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
-	eae6320::Graphics::SubmitBackgroundColor(0.0f, 0.0f, 128.0f, 1.0f);
-	//eae6320::Graphics::SubmitEffectAndSprite(data1);
-	//eae6320::Graphics::SubmitEffectAndSprite(data2);
-	//eae6320::Graphics::SubmitEffectAndSprite(data3);
-	eae6320::Graphics::SubmitEffectAndMesh(data4)
+	eae6320::Graphics::SubmitBackgroundColor(125.0f, 0.0f, 128.0f, 1.0f);
+	eae6320::Graphics::SubmitEffectAndSprite(data2);
+
+	eae6320::Graphics::SubmitEffectAndMesh(data4);
+	eae6320::Graphics::SubmitEffectAndMesh(data5);
+
 }
 
 // Run
@@ -76,6 +79,17 @@ void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_
 		data2.texture = eae6320::Graphics::cTexture::s_manager.Get(texture2);
 		timer = 0.0f;
 	}
+
+}
+
+void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
+	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up))
+	{
+		data4.pos.y += 0.02f;
+	}
+}
+
+void  eae6320::cExampleGame::UpdateSimulationBasedOnTime(const float i_elapsedSecondCount_sinceLastUpdate) {
 
 }
 // Initialization / Clean Up
@@ -162,19 +176,59 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 
 	std::vector<uint16_t> i_indexVec(6);
 	i_indexVec[0] = 0;
-	i_indexVec[1] = 1;
-	i_indexVec[2] = 2;
+	i_indexVec[1] = 2;
+	i_indexVec[2] = 1;
 	i_indexVec[3] = 0;
-	i_indexVec[4] = 2;
-	i_indexVec[5] = 3;
+	i_indexVec[4] = 3;
+	i_indexVec[5] = 2;
 
 	result = cMesh::CreateMesh(mesh1, i_meshVec, i_indexVec);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
 
-	data1 = eae6320::Graphics::renderData(effect1, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2(3);
+	eae6320::Graphics::VertexFormats::sMesh vertex5;
+	vertex5.x = -1.0f;
+	vertex5.y = 0.0f;
+	vertex5.r = 127;
+	vertex5.g = 127;
+	vertex5.b = 127;
+
+	eae6320::Graphics::VertexFormats::sMesh vertex6;
+	vertex6.x = 0.0f;
+	vertex6.y = 0.0f;
+	vertex6.r = 255;
+	vertex6.g = 255;
+	vertex6.b = 255;
+
+	eae6320::Graphics::VertexFormats::sMesh vertex7;
+	vertex7.x = 0.0f;
+	vertex7.y = 1.0f;
+	vertex7.r = 255;
+
+	i_meshVec2[0] = vertex5;
+	i_meshVec2[1] = vertex6;
+	i_meshVec2[2] = vertex7;
+
+	std::vector<uint16_t> i_indexVec2(3);
+	i_indexVec2[0] = 0;
+	i_indexVec2[1] = 2;
+	i_indexVec2[2] = 1;
+
+	result = cMesh::CreateMesh(mesh2, i_meshVec2, i_indexVec2);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	data1 = eae6320::Graphics::renderData(effect2, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
 	data4 = eae6320::Graphics::meshData(effect1, mesh1);
+	data5 = eae6320::Graphics::meshData(effect1, mesh2);
 	return Results::Success;
 }
 
@@ -192,5 +246,7 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 	cSprite::CleanUpSprite(sprite3);
 
 	cMesh::CleanUpMesh(mesh1);
+	cMesh::CleanUpMesh(mesh2);
+
 	return Results::Success;
 }

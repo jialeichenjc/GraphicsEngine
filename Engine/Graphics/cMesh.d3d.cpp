@@ -2,8 +2,7 @@
 eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 	std::vector<uint16_t> & i_indexVec) {
 	auto result = eae6320::Results::Success;
-	m_indexCount = i_indexVec.size();
-	m_vertexCount = i_meshVec.size();
+
 	mesh = new cMesh();
 	result = mesh->Initialize(i_meshVec, i_indexVec);
 	if (result) {
@@ -19,6 +18,8 @@ OnExit:
 
 eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec, std::vector<uint16_t> & i_indexVec) {
 	auto result = eae6320::Results::Success;
+	m_indexCount = i_indexVec.size();
+	m_vertexCount = i_meshVec.size();
 
 	auto* const direct3dDevice = eae6320::Graphics::sContext::g_context.direct3dDevice;
 	EAE6320_ASSERT(direct3dDevice);
@@ -28,7 +29,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		// Load the compiled binary vertex shader for the input layout
 		eae6320::Platform::sDataFromFile vertexShaderDataFromFile;
 		std::string errorMessage;
-		if (result = eae6320::Platform::LoadBinaryFile("data/Shaders/Vertex/vertexInputLayout_geometry.shd", vertexShaderDataFromFile, &errorMessage))
+		if (result = eae6320::Platform::LoadBinaryFile("data/Shaders/Vertex/vertexInputLayout_mesh.shd", vertexShaderDataFromFile, &errorMessage))
 		{
 			// Create the vertex layout
 
@@ -163,7 +164,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			// (The other data members are ignored for non-texture buffers)
 		}
 
-		const auto d3dResult = direct3dDevice->CreateBuffer(&bufferDescription, &initialData, &s_vertexBuffer);
+		const auto d3dResult = direct3dDevice->CreateBuffer(&bufferDescription, &initialData, &s_indexBuffer);
 		if (FAILED(d3dResult))
 		{
 			result = eae6320::Results::Failure;
@@ -184,7 +185,7 @@ void cMesh::DrawMesh() {
 	constexpr unsigned int startingSlot = 0;
 	constexpr unsigned int vertexBufferCount = 1;
 	// The "stride" defines how large a single vertex is in the stream of data
-	constexpr unsigned int bufferStride = sizeof(eae6320::Graphics::VertexFormats::sGeometry);
+	constexpr unsigned int bufferStride = sizeof(eae6320::Graphics::VertexFormats::sMesh);
 	// It's possible to start streaming data in the middle of a vertex buffer
 	constexpr unsigned int bufferOffset = 0;
 	auto* const direct3dImmediateContext = eae6320::Graphics::sContext::g_context.direct3dImmediateContext;

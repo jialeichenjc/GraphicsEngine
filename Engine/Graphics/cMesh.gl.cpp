@@ -1,6 +1,7 @@
 #include "cMesh.h"
 eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 	std::vector<uint16_t> & i_indexVec) {
+	
 	auto result = eae6320::Results::Success;
 	mesh = new cMesh();
 	result = mesh->Initialize(i_meshVec, i_indexVec);
@@ -17,7 +18,8 @@ OnExit:
 
 eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec, std::vector<uint16_t> & i_indexVec) {
 	auto result = eae6320::Results::Success;
-
+	m_indexCount = i_indexVec.size();
+	m_vertexCount = i_meshVec.size();
 	// Create a vertex array object and make it active
 	{
 		constexpr GLsizei arrayCount = 1;
@@ -173,7 +175,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 	{
 		// The "stride" defines how large a single vertex is in the stream of data
 		// (or, said another way, how far apart each position element is)
-		const auto stride = static_cast<GLsizei>(sizeof(eae6320::Graphics::VertexFormats::sGeometry));
+		const auto stride = static_cast<GLsizei>(sizeof(eae6320::Graphics::VertexFormats::sMesh));
 
 		// Position (0)
 		// 2 floats == 8 bytes

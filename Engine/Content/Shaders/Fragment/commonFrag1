@@ -33,7 +33,7 @@ void main(
 	// These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
 	in const float4 i_position : SV_POSITION,
 
-    in const float2 i_texture : TEXCOORD0,
+    in const float4 i_color : COLOR0,
 
 	// Output
 	//=======
@@ -49,7 +49,7 @@ void main(
 // Input
 //======
 
-layout( location = 0 ) in vec2 i_texture;
+layout( location = 0 ) in vec4 i_color;
 
 // Output
 //=======
@@ -62,13 +62,9 @@ void main()
 #endif
 {
 	// Output solid white
-	o_color = float4(
-		// RGB
-		1.0, 1.0, 1.0,
-		// Alpha
-		1.0 );
+	o_color = i_color;
 
-		o_color.r = sin( g_elapsedSecondCount_simulationTime );
+	//	o_color.r = sin( g_elapsedSecondCount_simulationTime );
 		
 	// EAE6320_TODO: Change the color based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
@@ -82,9 +78,9 @@ void main()
 
 	// g_color_texture.Sample( g_color_samplerState, i_texture );
 
-	SampledColor sampledColor = GetSampledColor( g_color_texture, g_color_samplerState );
+	//SampledColor sampledColor = GetSampledColor( g_color_texture, g_color_samplerState );
 
-	o_color = o_color * sampledColor;
+	//o_color = o_color * sampledColor;
 
 }
 

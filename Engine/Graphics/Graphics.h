@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <Engine/Results/Results.h>
+#include <Engine\Math\sVector.h>
 #include "cTexture.h"
 #if defined( EAE6320_PLATFORM_WINDOWS )
 	#include <Engine/Windows/Includes.h>
@@ -48,8 +49,8 @@ namespace eae6320
 			cMesh * mesh;
 
 			meshData() = default;
-
-			meshData(cEffect * iEffect, cMesh * iMesh)
+			Math::sVector pos;
+;			meshData(cEffect * iEffect, cMesh * iMesh)
 				: effect(iEffect), mesh(iMesh) {}
 
 		};

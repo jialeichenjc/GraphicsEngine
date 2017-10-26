@@ -57,8 +57,8 @@ public:
 	void DrawMesh();
 private:
 	cMesh() = default;
-	static size_t m_indexCount;
-	static size_t m_vertexCount;
+	size_t m_indexCount;
+	size_t m_vertexCount;
 	eae6320::cResult Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 
