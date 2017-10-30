@@ -45,7 +45,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				// Slot 0
 
 				// POSITION
-				// 2 floats == 8 bytes
+				// 3 floats == 12 bytes
 				// Offset = 0
 				{
 					auto& positionElement = layoutDescription[0];

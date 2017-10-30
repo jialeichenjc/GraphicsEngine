@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExampleGame", "ExampleGame", "{AC0EBDC3-8723-4A43-9112-DB863C2C3694}"
 EndProject
@@ -78,6 +78,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureBuilder", "Tools\Tex
 	ProjectSection(ProjectDependencies) = postProject
 		{B38967B9-886D-4E1F-B733-828D1783E2DC} = {B38967B9-886D-4E1F-B733-828D1783E2DC}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Physics", "Engine\Physics\Physics.vcxproj", "{30E6BB9F-138D-4B44-9733-869263F7BAD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -295,6 +297,14 @@ Global
 		{37D50792-7ACF-496D-9239-2D656A57509C}.Release|x64.Build.0 = Release|x64
 		{37D50792-7ACF-496D-9239-2D656A57509C}.Release|x86.ActiveCfg = Release|Win32
 		{37D50792-7ACF-496D-9239-2D656A57509C}.Release|x86.Build.0 = Release|Win32
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Debug|x64.ActiveCfg = Debug|x64
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Debug|x64.Build.0 = Debug|x64
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Debug|x86.ActiveCfg = Debug|Win32
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Debug|x86.Build.0 = Debug|Win32
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x64.ActiveCfg = Release|x64
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x64.Build.0 = Release|x64
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x86.ActiveCfg = Release|Win32
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -327,6 +337,7 @@ Global
 		{6FF846D1-2377-4601-B2F6-83E31748CB16} = {E5C51EF7-81D3-4030-A4CE-0D2D666CEF4F}
 		{27FEF0DD-F73F-4958-8741-0B200DCB16AF} = {E5C51EF7-81D3-4030-A4CE-0D2D666CEF4F}
 		{37D50792-7ACF-496D-9239-2D656A57509C} = {31B05C03-4BB2-4A0D-B621-B41DA6B0F57E}
+		{30E6BB9F-138D-4B44-9733-869263F7BAD5} = {E5C51EF7-81D3-4030-A4CE-0D2D666CEF4F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A89F366F-0B7F-464F-90A8-A4828B273298}
