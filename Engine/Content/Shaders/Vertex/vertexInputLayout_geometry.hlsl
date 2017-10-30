@@ -15,7 +15,7 @@ void main(
 	// The "semantics" (the keywords in all caps after the colon) are arbitrary,
 	// but must match the C call to CreateInputLayout()
 
-	in const float2 i_position : POSITION,
+	in const float3 i_position : POSITION,
 	
 	in const float2 i_texture : TEXCOORD0,
 
