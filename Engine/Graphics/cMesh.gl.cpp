@@ -178,11 +178,11 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		const auto stride = static_cast<GLsizei>(sizeof(eae6320::Graphics::VertexFormats::sMesh));
 
 		// Position (0)
-		// 2 floats == 8 bytes
+		// 3 floats == 12 bytes
 		// Offset = 0
 		{
 			constexpr GLuint vertexElementLocation = 0;
-			constexpr GLint elementCount = 2;
+			constexpr GLint elementCount = 3;
 			constexpr GLboolean notNormalized = GL_FALSE;	// The given floats should be used as-is
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride,
 				reinterpret_cast<GLvoid*>(offsetof(eae6320::Graphics::VertexFormats::sMesh, x)));

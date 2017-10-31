@@ -52,7 +52,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 					positionElement.SemanticName = "POSITION";
 					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
-					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
+					positionElement.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 					positionElement.InputSlot = 0;
 					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sMesh, x);
 					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
