@@ -86,7 +86,7 @@ void main()
 		PositionOutput = float4( i_position.x, i_position.y, 0.0, 1.0 );
 		// Both of the following lines are exactly equivalent to the one above
 		PositionOutput = float4( i_position.xy, 0.0, 1.0 );
-		PositionOutput = float4( i_position, 0.0, 1.0 );
+		PositionOutput = float4( i_position, 1.0 );
 	}
 
     // Assign input UV's to output UV's

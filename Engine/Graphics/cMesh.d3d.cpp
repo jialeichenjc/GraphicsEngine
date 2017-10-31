@@ -101,6 +101,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		for (int i = 0; i < i_meshVec.size(); i++) {
 			vertexData[i].x = i_meshVec[i].x;
 			vertexData[i].y = i_meshVec[i].y;
+			vertexData[i].z = i_meshVec[i].z;
 
 			vertexData[i].r = i_meshVec[i].r;
 			vertexData[i].g = i_meshVec[i].g;

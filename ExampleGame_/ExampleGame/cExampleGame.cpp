@@ -151,23 +151,31 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	eae6320::Graphics::VertexFormats::sMesh vertex1;
 	vertex1.x = 0.0f;
 	vertex1.y = -1.0f;
+	vertex1.z = 0.0f;
+
 	vertex1.r = 255;
 
 	eae6320::Graphics::VertexFormats::sMesh vertex2;
 	vertex2.x = 1.0f;
 	vertex2.y = -1.0f;
+	vertex2.z = 0.0f;
+
 	vertex2.r = 255;
 	vertex2.g = 255;
 
 	eae6320::Graphics::VertexFormats::sMesh vertex3;
 	vertex3.x = 1.0f;
 	vertex3.y = 0.0f;
+	vertex3.z = 0.0f;
+
 	vertex3.r = 255;
 	vertex3.g = 255;
 
 	eae6320::Graphics::VertexFormats::sMesh vertex4;
 	vertex4.x = 0.0f;
 	vertex4.y = 0.0f;
+	vertex4.z = 0.0f;
+
 	vertex4.b = 255;
 	i_meshVec[0] = vertex1;
 	i_meshVec[1] = vertex2;
@@ -192,6 +200,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	eae6320::Graphics::VertexFormats::sMesh vertex5;
 	vertex5.x = -1.0f;
 	vertex5.y = 0.0f;
+	vertex5.z = 0.0f;
+
 	vertex5.r = 127;
 	vertex5.g = 127;
 	vertex5.b = 127;
@@ -199,6 +209,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	eae6320::Graphics::VertexFormats::sMesh vertex6;
 	vertex6.x = 0.0f;
 	vertex6.y = 0.0f;
+	vertex6.z = 0.0f;
+
 	vertex6.r = 255;
 	vertex6.g = 255;
 	vertex6.b = 255;
@@ -206,6 +218,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	eae6320::Graphics::VertexFormats::sMesh vertex7;
 	vertex7.x = 0.0f;
 	vertex7.y = 1.0f;
+	vertex7.z = 0.0f;
+
 	vertex7.r = 255;
 
 	i_meshVec2[0] = vertex5;
