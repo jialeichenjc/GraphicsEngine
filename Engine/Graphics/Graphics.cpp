@@ -32,6 +32,7 @@
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
 #include <Engine/Math/cMatrix_transformation.h>
+#include <Engine/Physics/sRigidBodyState.h>
 #include <utility>
 
 // Static Data Initialization
@@ -116,6 +117,30 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData data)
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+}
+
+void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera camera) {
+	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
+	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
+
+	static eae6320::Physics::sRigidBodyState rigidBodyState = camera.m_rigidBodyState;
+
+	rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+
+	constantData_perFrame.g_transform_worldToCamera = eae6320::Math::cMatrix_transformation::CreateWorldToCameraTransform(
+		rigidBodyState.orientation,
+		rigidBodyState.position);
+
+	constantData_perFrame.g_transform_cameraToProjected =
+		eae6320::Math::cMatrix_transformation::CreateCameraToProjectedTransform_perspective(
+			camera.m_verticalFieldOfView_inRadians, 
+			camera.m_aspectRatio,
+			camera.m_z_nearPlane, 
+			camera.m_z_farPlane);
+
+	//eae6320::Math::cQuaternion futureOrientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	//eae6320::Math::sVector futurePosition = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 }
 
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)

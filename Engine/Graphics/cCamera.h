@@ -43,28 +43,32 @@
 //		struct sVector;
 //	}
 //}
+namespace eae6320
+{
+	namespace Graphics {
+		class cCamera {
+		public:
 
+			//void UpdateSimulationBasedOnInput();
 
-class cCamera {
-public:
-	
-	//void UpdateSimulationBasedOnInput();
+			// probably not needed
+			eae6320::Math::cMatrix_transformation m_matrixTransform;
 
-	// probably not needed
-	eae6320::Math::cMatrix_transformation m_matrixTransform;
+			eae6320::Physics::sRigidBodyState m_rigidBodyState;
 
-	eae6320::Physics::sRigidBodyState m_rigidBodyState;
+			//eae6320::Math::cQuaternion m_orientation;
 
-	//eae6320::Math::cQuaternion m_orientation;
+			//eae6320::Math::sVector m_position;
 
-	//eae6320::Math::sVector m_position;
+			float m_verticalFieldOfView_inRadians;
 
-	float m_verticalFieldOfView_inRadians;
+			float m_aspectRatio;
 
-	float m_aspectRatio;
+			float m_z_nearPlane;
 
-	float m_z_nearPlane;
+			float m_z_farPlane;
+			//static cMatrix_transformation::CreateWorldToCameraTransform()
+		};
+	}
 
-	float m_z_farPlane;
-	//static cMatrix_transformation::CreateWorldToCameraTransform()
-};
+}

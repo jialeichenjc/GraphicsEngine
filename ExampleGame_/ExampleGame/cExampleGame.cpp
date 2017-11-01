@@ -6,9 +6,11 @@
 #include "Engine/Graphics/cSprite.h"
 #include "Engine/Graphics/cTexture.h"
 #include "Engine/Graphics/cMesh.h"
+#include "Engine/Graphics/cCamera.h"
 
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/UserInput/UserInput.h>
+#include <Engine/Math/Constants.h>
 
 cEffect * effect1;
 cEffect * effect2;
@@ -30,6 +32,8 @@ eae6320::Graphics::renderData data3;
 
 eae6320::Graphics::meshData data4;
 eae6320::Graphics::meshData data5;
+
+eae6320::Graphics::cCamera camera;
 
 float timer = 0.0f;
 
@@ -85,7 +89,7 @@ void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_
 void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up))
 	{
-		data4.pos.y += 0.02f;
+		//data4.pos.y += 0.02f;
 	}
 }
 
@@ -243,6 +247,11 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 
 	data4 = eae6320::Graphics::meshData(effect1, mesh1);
 	data5 = eae6320::Graphics::meshData(effect1, mesh2);
+
+	camera.m_verticalFieldOfView_inRadians = eae6320::Math::Pi / 4;
+	camera.m_z_nearPlane = 0.1f;
+	camera.m_z_farPlane = 100.0f;
+
 	return Results::Success;
 }
 

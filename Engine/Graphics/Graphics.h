@@ -13,7 +13,9 @@
 #include <cstdint>
 #include <Engine/Results/Results.h>
 #include <Engine\Math\sVector.h>
+#include <Engine\Physics\sRigidBodyState.h>
 #include "cTexture.h"
+#include "cCamera.h"
 #if defined( EAE6320_PLATFORM_WINDOWS )
 	#include <Engine/Windows/Includes.h>
 #endif
@@ -49,7 +51,9 @@ namespace eae6320
 			cMesh * mesh;
 
 			meshData() = default;
-			Math::sVector pos;
+			//Math::sVector pos;
+			
+			eae6320::Physics::sRigidBodyState rigidBodyState;
 ;			meshData(cEffect * iEffect, cMesh * iMesh)
 				: effect(iEffect), mesh(iMesh) {}
 
@@ -98,6 +102,7 @@ namespace eae6320
 		};
 		void SubmitEffectAndSprite(eae6320::Graphics::renderData);
 		void SubmitEffectAndMesh(eae6320::Graphics::meshData);
+		void SubmitCamera(eae6320::Graphics::cCamera);
 
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
