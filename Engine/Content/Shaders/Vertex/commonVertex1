@@ -5,10 +5,12 @@
 
 DeclareConstantBuffer( g_constantBuffer_perFrame, 0 )
 {
+	float4x4 g_transform_worldToCamera;
+	float4x4 g_transform_cameraToProjected;
+
 	float g_elapsedSecondCount_systemTime;
 	float g_elapsedSecondCount_simulationTime;
-	// For float4 alignment
-	float2 g_padding;
+	float2 g_padding; // For float4 alignment
 };
 
 DeclareConstantBuffer( g_constantBuffer_perMaterial, 1 )
@@ -19,7 +21,7 @@ DeclareConstantBuffer( g_constantBuffer_perMaterial, 1 )
 DeclareConstantBuffer( g_constantBuffer_perDrawCall, 2 )
 {
 	// This is a placeholder to prevent an empty constant buffer declaration
-	 float4 g_position;
+	float4x4 g_transform_localToWorld;
 };
 
 // Entry Point
@@ -86,7 +88,10 @@ void main()
 		//PositionOutput = float4( i_position.x, i_position.y, 0.0, 1.0 );
 		// Both of the following lines are exactly equivalent to the one above
 		//PositionOutput = float4( i_position.xy, 0.0, 1.0 );
-		PositionOutput = float4( i_position, 1.0 ) + g_position;
+		
+		// Dummy placeholder
+		PositionOutput = float4(0.0, 1.0, 0.0, 1.0);
+
 	}
 
     o_color = i_color;

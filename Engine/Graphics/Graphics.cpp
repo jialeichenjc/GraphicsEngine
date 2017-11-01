@@ -31,6 +31,7 @@
 #include <Engine/Platform/Platform.h>
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
+#include <Engine/Math/cMatrix_transformation.h>
 #include <utility>
 
 // Static Data Initialization
@@ -180,7 +181,7 @@ void eae6320::Graphics::RenderFrame()
 
 
 		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
-		constantData_perDraw.g_position.y = data.pos.y;
+		constantData_perDraw.g_transform_localToWorld = Math::cMatrix_transformation();
 		s_constantBuffer_perDraw.Update(&constantData_perDraw);
 
 		data.effect->Bind();
