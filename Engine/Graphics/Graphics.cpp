@@ -17,6 +17,7 @@
 #include "cSamplerState.h"
 #include "cShader.h"
 #include "cTexture.h"
+#include "cMesh.h"
 #include "sContext.h"
 #include "VertexFormats.h"
 #include "Engine\Graphics\cEffect.h"
@@ -40,6 +41,7 @@ namespace
 
 	// Constant buffer object
 	eae6320::Graphics::cConstantBuffer s_constantBuffer_perFrame(eae6320::Graphics::ConstantBufferTypes::PerFrame);
+	eae6320::Graphics::cConstantBuffer s_constantBuffer_perDraw(eae6320::Graphics::ConstantBufferTypes::PerDrawCall);
 	// In our class we will only have a single sampler state
 	eae6320::Graphics::cSamplerState s_samplerState;
 
@@ -51,8 +53,11 @@ namespace
 	struct sDataRequiredToRenderAFrame
 	{
 		eae6320::Graphics::ConstantBufferFormats::sPerFrame constantData_perFrame;
+		eae6320::Graphics::ConstantBufferFormats::sPerDrawCall constantData_perDraw;
 		float backgroundColor[4];
 		std::vector<eae6320::Graphics::renderData> renderDataVec;
+		std::vector<eae6320::Graphics::meshData> meshDataVec;
+
 	};
 	// In our class there will be two copies of the data required to render a frame:
 	//	* One of them will be getting populated by the data currently being submitted by the application loop thread
@@ -82,8 +87,11 @@ void eae6320::Graphics::SubmitElapsedTime(const float i_elapsedSecondCount_syste
 {
 	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
 	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
+	//auto& constantData_perDraw = s_dataBeingSubmittedByApplicationThread->constantData_perDraw;
+
 	constantData_perFrame.g_elapsedSecondCount_systemTime = i_elapsedSecondCount_systemTime;
 	constantData_perFrame.g_elapsedSecondCount_simulationTime = i_elapsedSecondCount_simulationTime;
+
 }
 
 // put it in the order of RGB A
@@ -102,6 +110,12 @@ void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
 
+void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData data)
+{
+	data.effect->IncrementReferenceCount();
+	data.mesh->IncrementReferenceCount();
+	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+}
 
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
 {
@@ -159,9 +173,19 @@ void eae6320::Graphics::RenderFrame()
 	{
 		// Copy the data from the system memory that the application owns to GPU memory
 		auto& constantData_perFrame = s_dataBeingRenderedByRenderThread->constantData_perFrame;
+
 		s_constantBuffer_perFrame.Update(&constantData_perFrame);
 	}
+	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 
+
+		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
+		constantData_perDraw.g_position.y = data.pos.y;
+		s_constantBuffer_perDraw.Update(&constantData_perDraw);
+
+		data.effect->Bind();
+		data.mesh->DrawMesh();
+	}
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 		data.effect->Bind();
 		data.texture->Bind(0);
@@ -172,6 +196,12 @@ void eae6320::Graphics::RenderFrame()
 	// should be cleaned up and cleared.
 	// so that the struct can be re-used (i.e. so that data for a new frame can be submitted to it)
 	{
+		for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
+			data.effect->DecrementReferenceCount();
+			data.mesh->DecrementReferenceCount();
+		}
+		s_dataBeingRenderedByRenderThread->meshDataVec.clear();
+		
 		for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 			data.effect->DecrementReferenceCount();
 			data.texture->DecrementReferenceCount();
@@ -212,6 +242,31 @@ eae6320::cResult eae6320::Graphics::Initialize(const sInitializationParameters& 
 			// and so it can be bound at initialization time and never unbound
 			s_constantBuffer_perFrame.Bind(
 				// In our class both vertex and fragment shaders use per-frame constant data
+				ShaderTypes::Vertex | ShaderTypes::Fragment);
+		}
+		else
+		{
+			EAE6320_ASSERT(false);
+			goto OnExit;
+		}
+		if (result = s_samplerState.Initialize())
+		{
+			// There is only a single sampler state that is re-used
+			// and so it can be bound at initialization time and never unbound
+			s_samplerState.Bind();
+		}
+		else
+		{
+			EAE6320_ASSERT(false);
+			goto OnExit;
+		}
+
+		if (result = s_constantBuffer_perDraw.Initialize())
+		{
+			// There is only a single per-frame constant buffer that is re-used
+			// and so it can be bound at initialization time and never unbound
+			s_constantBuffer_perDraw.Bind(
+				// In our class both vertex and fragment shaders use per-draw constant data
 				ShaderTypes::Vertex | ShaderTypes::Fragment);
 		}
 		else
@@ -284,6 +339,20 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	}
 
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.clear();
+
+	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
+		data.effect->DecrementReferenceCount();
+		data.mesh->DecrementReferenceCount();
+	}
+	s_dataBeingRenderedByRenderThread->meshDataVec.clear();
+
+	for (auto data : s_dataBeingSubmittedByApplicationThread->meshDataVec) {
+		data.effect->DecrementReferenceCount();
+		data.mesh->DecrementReferenceCount();
+	}
+
+	s_dataBeingSubmittedByApplicationThread->meshDataVec.clear();
+
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
 		if (!localResult)
@@ -295,6 +364,19 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 			}
 		}
 	}
+
+	{
+		const auto localResult = s_constantBuffer_perDraw.CleanUp();
+		if (!localResult)
+		{
+			EAE6320_ASSERT(false);
+			if (result)
+			{
+				result = localResult;
+			}
+		}
+	}
+
 	{
 		const auto localResult = s_samplerState.CleanUp();
 		if (!localResult)

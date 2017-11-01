@@ -19,7 +19,7 @@ DeclareConstantBuffer( g_constantBuffer_perMaterial, 1 )
 DeclareConstantBuffer( g_constantBuffer_perDrawCall, 2 )
 {
 	// This is a placeholder to prevent an empty constant buffer declaration
-	float4 DUMMY;
+	 float4 g_position;
 };
 
 // Entry Point
@@ -38,7 +38,7 @@ void main(
 	// These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
 	in const float2 i_position : POSITION,
 
-    in const float2 i_texture : TEXCOORD0,
+    in const float4 i_color : COLOR0,
 
 	// Output
 	//=======
@@ -47,7 +47,7 @@ void main(
 	// so that the GPU can figure out which fragments need to be shaded
 	out float4 o_position : SV_POSITION,
 
-    out float2 o_texture : TEXCOORD0 
+    out float4 o_color : COLOR0
 
 	)
 
@@ -62,11 +62,11 @@ void main(
 // These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
 layout( location = 0 ) in vec2 i_position;
 
-layout( location = 1 ) in vec2 i_texture;
+layout( location = 1 ) in vec4 i_color;
 
 // Output
 //=======
-layout( location = 0 ) out vec2 o_texture;
+layout( location = 0 ) out vec4 o_color;
 
 // The vertex shader must always output a position value,
 // but unlike HLSL where the value is explicit
@@ -83,14 +83,13 @@ void main()
 	// Calculate the position of this vertex on screen
 	{
 		// This example shader sets the "out" position directly from the "in" position:
-		PositionOutput = float4( i_position.x, i_position.y, 0.0, 1.0 );
+		//PositionOutput = float4( i_position.x, i_position.y, 0.0, 1.0 );
 		// Both of the following lines are exactly equivalent to the one above
-		PositionOutput = float4( i_position.xy, 0.0, 1.0 );
-		PositionOutput = float4( i_position, 0.0, 1.0 );
+		//PositionOutput = float4( i_position.xy, 0.0, 1.0 );
+		PositionOutput = float4( i_position, 0.0, 1.0 ) + g_position;
 	}
 
-    // Assign input UV's to output UV's
-    o_texture = i_texture;
+    o_color = i_color;
 
 	// EAE6320_TODO: Change the position based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:
