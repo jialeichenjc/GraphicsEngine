@@ -31,6 +31,8 @@
 #include <Engine/Platform/Platform.h>
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
+#include <Engine/Math/cMatrix_transformation.h>
+#include <Engine/Physics/sRigidBodyState.h>
 #include <utility>
 
 // Static Data Initialization
@@ -110,11 +112,45 @@ void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
 
-void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData data)
+void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, eae6320::Physics::sRigidBodyState & rigidBodyState)
 {
+	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
+	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
+
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
+	data.rigidBodyState = rigidBodyState;
+
+	//data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	//data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+//	rigidBodyState = data.rigidBodyState;
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+}
+
+void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera camera) {
+	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
+	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
+
+	//eae6320::Physics::sRigidBodyState rigidBodyState = camera.m_rigidBodyState;
+	eae6320::Physics::sRigidBodyState rigidBodyState;
+    rigidBodyState.orientation = camera.m_rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	rigidBodyState.position = camera.m_rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+
+	constantData_perFrame.g_transform_worldToCamera = eae6320::Math::cMatrix_transformation::CreateWorldToCameraTransform(
+		camera.m_rigidBodyState.orientation,
+		camera.m_rigidBodyState.position);
+		//rigidBodyState.orientation,
+		//rigidBodyState.position);
+
+	constantData_perFrame.g_transform_cameraToProjected =
+		eae6320::Math::cMatrix_transformation::CreateCameraToProjectedTransform_perspective(
+			camera.m_verticalFieldOfView_inRadians, 
+			camera.m_aspectRatio,
+			camera.m_z_nearPlane, 
+			camera.m_z_farPlane);
+
+	//eae6320::Math::cQuaternion futureOrientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	//eae6320::Math::sVector futurePosition = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 }
 
 eae6320::cResult eae6320::Graphics::WaitUntilDataForANewFrameCanBeSubmitted(const unsigned int i_timeToWait_inMilliseconds)
@@ -180,7 +216,10 @@ void eae6320::Graphics::RenderFrame()
 
 
 		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
-		constantData_perDraw.g_position.y = data.pos.y;
+
+		constantData_perDraw.g_transform_localToWorld = eae6320::Math::cMatrix_transformation(
+			data.rigidBodyState.orientation, data.rigidBodyState.position);
+
 		s_constantBuffer_perDraw.Update(&constantData_perDraw);
 
 		data.effect->Bind();

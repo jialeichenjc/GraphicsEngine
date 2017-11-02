@@ -9,6 +9,18 @@ void cView::Clear(float f1, float f2, float f3, float f4) {
 		glClear(clearColor);
 		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
 	}
+
+	{
+		glDepthMask(GL_TRUE);
+		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+		glClearDepth(1);
+		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+	}
+	{
+		constexpr GLbitfield clearDepth = GL_DEPTH_BUFFER_BIT;
+		glClear(clearDepth);
+		EAE6320_ASSERT(glGetError() == GL_NO_ERROR);
+	}
 }
 
 void cView::Buffer() {

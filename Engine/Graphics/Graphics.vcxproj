@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cConstantBuffer.cpp" />
     <ClCompile Include="cEffect.cpp" />
     <ClCompile Include="cEffect.gl.cpp">
@@ -109,6 +110,7 @@
     <ClCompile Include="sContext.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cCamera.h" />
     <ClInclude Include="cConstantBuffer.h" />
     <ClInclude Include="cEffect.h" />
     <ClInclude Include="cMesh.h" />

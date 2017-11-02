@@ -89,3 +89,14 @@
 	#define PositionOutput gl_Position
 
 #endif
+
+// Multiplication
+#if defined( EAE6320_PLATFORM_D3D )
+
+	#define Multiply( i_matrix, i_vector ) mul( i_matrix, i_vector)
+
+#elif defined( EAE6320_PLATFORM_GL )
+
+	#define Multiply( i_matrix, i_vector ) i_matrix * i_vector
+
+#endif

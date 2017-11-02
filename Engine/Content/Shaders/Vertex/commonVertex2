@@ -36,7 +36,7 @@ void main(
 	// but must match the C call to CreateInputLayout()
 
 	// These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
-	in const float2 i_position : POSITION,
+	in const float3 i_position : POSITION,
 
     in const float2 i_texture : TEXCOORD0,
 
@@ -60,7 +60,7 @@ void main(
 // but must match the C calls to glVertexAttribPointer()
 
 // These values come from one of the VertexFormats::sGeometry that the vertex buffer was filled with in C code
-layout( location = 0 ) in vec2 i_position;
+layout( location = 0 ) in vec3 i_position;
 
 layout( location = 1 ) in vec2 i_texture;
 
@@ -86,7 +86,7 @@ void main()
 		PositionOutput = float4( i_position.x, i_position.y, 0.0, 1.0 );
 		// Both of the following lines are exactly equivalent to the one above
 		PositionOutput = float4( i_position.xy, 0.0, 1.0 );
-		PositionOutput = float4( i_position, 0.0, 1.0 );
+		PositionOutput = float4( i_position, 1.0 );
 	}
 
     // Assign input UV's to output UV's

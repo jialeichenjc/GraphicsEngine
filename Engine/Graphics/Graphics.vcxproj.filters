@@ -80,6 +80,7 @@
     <ClCompile Include="cMesh.gl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="cCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cConstantBuffer.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="TextureFormats.h" />
     <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cRenderState.inl" />

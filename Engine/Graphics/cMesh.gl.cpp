@@ -112,7 +112,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			for (size_t i = 0; i < i_meshVec.size(); i++) {
 				vertexData[i].x = i_meshVec[i].x;
 				vertexData[i].y = i_meshVec[i].y;
-
+				vertexData[i].z = i_meshVec[i].z;
 				vertexData[i].r = i_meshVec[i].r;
 				vertexData[i].g = i_meshVec[i].g;
 				vertexData[i].b = i_meshVec[i].b;
@@ -178,11 +178,11 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		const auto stride = static_cast<GLsizei>(sizeof(eae6320::Graphics::VertexFormats::sMesh));
 
 		// Position (0)
-		// 2 floats == 8 bytes
+		// 3 floats == 12 bytes
 		// Offset = 0
 		{
 			constexpr GLuint vertexElementLocation = 0;
-			constexpr GLint elementCount = 2;
+			constexpr GLint elementCount = 3;
 			constexpr GLboolean notNormalized = GL_FALSE;	// The given floats should be used as-is
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride,
 				reinterpret_cast<GLvoid*>(offsetof(eae6320::Graphics::VertexFormats::sMesh, x)));

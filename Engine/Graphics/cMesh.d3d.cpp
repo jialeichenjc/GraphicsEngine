@@ -45,14 +45,14 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				// Slot 0
 
 				// POSITION
-				// 2 floats == 8 bytes
+				// 3 floats == 12 bytes
 				// Offset = 0
 				{
 					auto& positionElement = layoutDescription[0];
 
 					positionElement.SemanticName = "POSITION";
 					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
-					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
+					positionElement.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 					positionElement.InputSlot = 0;
 					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sMesh, x);
 					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -101,6 +101,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		for (int i = 0; i < i_meshVec.size(); i++) {
 			vertexData[i].x = i_meshVec[i].x;
 			vertexData[i].y = i_meshVec[i].y;
+			vertexData[i].z = i_meshVec[i].z;
 
 			vertexData[i].r = i_meshVec[i].r;
 			vertexData[i].g = i_meshVec[i].g;
