@@ -111,6 +111,9 @@ void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 
 	if (!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
 		rigidBody4.velocity.y = 0.0f;
+	}
+
+	if (!UserInput::IsKeyPressed(UserInput::KeyCodes::Left) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Right)) {
 		rigidBody4.velocity.x = 0.0f;
 	}
 	if (UserInput::IsKeyPressed('W')) {
