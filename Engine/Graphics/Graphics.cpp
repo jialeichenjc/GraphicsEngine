@@ -112,10 +112,18 @@ void eae6320::Graphics::SubmitEffectAndSprite(eae6320::Graphics::renderData data
 	s_dataBeingSubmittedByApplicationThread->renderDataVec.push_back(data);
 }
 
-void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData data)
+void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, eae6320::Physics::sRigidBodyState & rigidBodyState)
 {
+	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
+	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
+
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
+	data.rigidBodyState = rigidBodyState;
+
+	//data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	//data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+//	rigidBodyState = data.rigidBodyState;
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
 }
 
@@ -123,14 +131,16 @@ void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera camera) {
 	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
 	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
 
-	eae6320::Physics::sRigidBodyState rigidBodyState = camera.m_rigidBodyState;
-
-	rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
-	rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	//eae6320::Physics::sRigidBodyState rigidBodyState = camera.m_rigidBodyState;
+	eae6320::Physics::sRigidBodyState rigidBodyState;
+    rigidBodyState.orientation = camera.m_rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	rigidBodyState.position = camera.m_rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 
 	constantData_perFrame.g_transform_worldToCamera = eae6320::Math::cMatrix_transformation::CreateWorldToCameraTransform(
-		rigidBodyState.orientation,
-		rigidBodyState.position);
+		camera.m_rigidBodyState.orientation,
+		camera.m_rigidBodyState.position);
+		//rigidBodyState.orientation,
+		//rigidBodyState.position);
 
 	constantData_perFrame.g_transform_cameraToProjected =
 		eae6320::Math::cMatrix_transformation::CreateCameraToProjectedTransform_perspective(

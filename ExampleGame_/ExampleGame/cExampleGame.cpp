@@ -33,6 +33,9 @@ eae6320::Graphics::renderData data3;
 eae6320::Graphics::meshData data4;
 eae6320::Graphics::meshData data5;
 
+eae6320::Physics::sRigidBodyState rigidBody4; // for meshData4
+eae6320::Physics::sRigidBodyState rigidBody5; // for meshData4
+
 eae6320::Graphics::cCamera camera;
 
 float timer = 0.0f;
@@ -44,9 +47,9 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	//eae6320::Graphics::SubmitEffectAndSprite(data2);
 
 	eae6320::Graphics::SubmitCamera(camera);
-	eae6320::Graphics::SubmitEffectAndMesh(data4);
+	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
 
-	eae6320::Graphics::SubmitEffectAndMesh(data5);
+	eae6320::Graphics::SubmitEffectAndMesh(data5, rigidBody5);
 
 }
 
@@ -90,27 +93,56 @@ void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up)) {
-		data4.rigidBodyState.velocity.y = 0.5f;
+		//data4.rigidBodyState.velocity.y = 0.5f;
 		//data4.rigidBodyState.Update()
+		rigidBody4.velocity.y = 0.5f;
 	}
 	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
-		data4.rigidBodyState.velocity.y = -0.5f;
+		//data4.rigidBodyState.velocity.y = -0.5f;
+		rigidBody4.velocity.y = -0.5f;
 	}
 
 	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Left)) {
-		data4.rigidBodyState.velocity.x = -0.5f;
+		rigidBody4.velocity.x = -0.5f;
 	}
 	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Right)) {
-		data4.rigidBodyState.velocity.x = 0.5f;
+		rigidBody4.velocity.x = 0.5f;
 	}
-	else {
-		data4.rigidBodyState.velocity.y = 0.0f;
-		data4.rigidBodyState.velocity.x = 0.0f;
+
+	if (!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
+		rigidBody4.velocity.y = 0.0f;
+		rigidBody4.velocity.x = 0.0f;
 	}
+	if (UserInput::IsKeyPressed('W')) {
+		camera.m_rigidBodyState.velocity.z = -0.5f;
+	}
+
+	else if (UserInput::IsKeyPressed('S')) {
+		camera.m_rigidBodyState.velocity.z = 0.5f;
+	}
+	else if (UserInput::IsKeyPressed('A')) {
+		camera.m_rigidBodyState.velocity.x = -0.5f;
+	}
+	else if (UserInput::IsKeyPressed('D')) {
+		camera.m_rigidBodyState.velocity.x = 0.5f;
+	}
+
+	if (!UserInput::IsKeyPressed('W') && !UserInput::IsKeyPressed('S')) {
+		camera.m_rigidBodyState.velocity.z = 0.0f;
+	}
+
+	if (!UserInput::IsKeyPressed('A') && !UserInput::IsKeyPressed('D')) {
+		camera.m_rigidBodyState.velocity.x = 0.0f;
+	}
+
+	//if(!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down))
 }
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnTime(const float i_elapsedSecondCount_sinceLastUpdate) {
-	data4.rigidBodyState.Update(i_elapsedSecondCount_sinceLastUpdate);
+	rigidBody4.Update(i_elapsedSecondCount_sinceLastUpdate);
+	//data4.rigidBodyState = rigidBody4;
+	//data4.rigidBodyState.Update(i_elapsedSecondCount_sinceLastUpdate);
+	camera.m_rigidBodyState.Update(i_elapsedSecondCount_sinceLastUpdate);
 }
 // Initialization / Clean Up
 //--------------------------
@@ -233,25 +265,25 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	
 	// bottom
 	i_indexVec[6] = 0;
-	i_indexVec[7] = 4;
-	i_indexVec[8] = 7;
-	i_indexVec[9] = 0;
-	i_indexVec[10] = 7;
-	i_indexVec[11] = 3;
+	i_indexVec[7] = 3;
+	i_indexVec[8] = 4;
+	i_indexVec[9] = 4;
+	i_indexVec[10] = 3;
+	i_indexVec[11] = 7;
 
 	// left
-	i_indexVec[12] = 0;
+	i_indexVec[12] = 5;
 	i_indexVec[13] = 1;
-	i_indexVec[14] = 5;
-	i_indexVec[15] = 0;
-	i_indexVec[16] = 5;
-	i_indexVec[17] = 4;
+	i_indexVec[14] = 4;
+	i_indexVec[15] = 4;
+	i_indexVec[16] = 1;
+	i_indexVec[17] = 0;
 
 	// right
 	i_indexVec[18] = 3;
 	i_indexVec[19] = 2;
-	i_indexVec[20] = 6;
-	i_indexVec[21] = 3;
+	i_indexVec[20] = 7;
+	i_indexVec[21] = 2;
 	i_indexVec[22] = 6;
 	i_indexVec[23] = 7;
 	
@@ -329,10 +361,9 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data5 = eae6320::Graphics::meshData(effect1, mesh2);
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
-	data4.rigidBodyState.position.x = 0.0f;
+	/*data4.rigidBodyState.position.x = 0.0f;
 	data4.rigidBodyState.position.y = 0.0f;
-	data4.rigidBodyState.position.z = 0.0f;
-	//camera.m_rigidBodyState.position.x = 0;
+	data4.rigidBodyState.position.z = 0.0f;*/
 	camera.m_rigidBodyState.position = position;
 
 	camera.m_verticalFieldOfView_inRadians = eae6320::Math::Pi / 4;
