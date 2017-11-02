@@ -22,6 +22,10 @@ void cView::Clear(float f1, float f2, float f3, float f4) {
 		float clearColor[4]{ f1, f2, f3, f4 };
 
 		direct3dImmediateContext->ClearRenderTargetView(s_renderTargetView, clearColor);
+
+		EAE6320_ASSERT(s_depthStencilView);
+		constexpr uint8_t stencilValue = 0; // Arbitrary if stencil isn't used
+		direct3dImmediateContext->ClearDepthStencilView(s_depthStencilView, D3D11_CLEAR_DEPTH, 1, stencilValue);
 	}
 }
 eae6320::cResult cView::InitializeViews(const unsigned int i_resolutionWidth, const unsigned int i_resolutionHeight) {

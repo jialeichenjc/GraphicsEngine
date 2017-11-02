@@ -90,7 +90,15 @@ void main()
 		//PositionOutput = float4( i_position.xy, 0.0, 1.0 );
 		
 		// Dummy placeholder
-		PositionOutput = float4(0.0, 1.0, 0.0, 1.0);
+		float4 vertexPosition_local = float4( i_position, 1.0 );
+
+		float4 vertexPosition_world =  Multiply(g_transform_localToWorld, vertexPosition_local);
+
+		float4 vertexPosition_camera = Multiply(g_transform_worldToCamera, vertexPosition_world);
+
+		float4 vertexPosition_projected = Multiply(g_transform_cameraToProjected, vertexPosition_camera);
+
+		PositionOutput = vertexPosition_projected;
 
 	}
 

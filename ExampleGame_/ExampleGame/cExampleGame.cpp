@@ -41,9 +41,11 @@ float timer = 0.0f;
 //=========================
 void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
 	eae6320::Graphics::SubmitBackgroundColor(125.0f, 0.0f, 128.0f, 1.0f);
-	eae6320::Graphics::SubmitEffectAndSprite(data2);
+	//eae6320::Graphics::SubmitEffectAndSprite(data2);
 
+	eae6320::Graphics::SubmitCamera(camera);
 	eae6320::Graphics::SubmitEffectAndMesh(data4);
+
 	eae6320::Graphics::SubmitEffectAndMesh(data5);
 
 }
@@ -87,14 +89,28 @@ void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_
 }
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
-	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up))
-	{
-		//data4.pos.y += 0.02f;
+	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up)) {
+		data4.rigidBodyState.velocity.y = 0.5f;
+		//data4.rigidBodyState.Update()
+	}
+	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
+		data4.rigidBodyState.velocity.y = -0.5f;
+	}
+
+	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Left)) {
+		data4.rigidBodyState.velocity.x = -0.5f;
+	}
+	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Right)) {
+		data4.rigidBodyState.velocity.x = 0.5f;
+	}
+	else {
+		data4.rigidBodyState.velocity.y = 0.0f;
+		data4.rigidBodyState.velocity.x = 0.0f;
 	}
 }
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnTime(const float i_elapsedSecondCount_sinceLastUpdate) {
-
+	data4.rigidBodyState.Update(i_elapsedSecondCount_sinceLastUpdate);
 }
 // Initialization / Clean Up
 //--------------------------
@@ -151,95 +167,159 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec(4);
-	eae6320::Graphics::VertexFormats::sMesh vertex1;
-	vertex1.x = 0.0f;
-	vertex1.y = -1.0f;
-	vertex1.z = 0.0f;
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec(8);
+	//eae6320::Graphics::VertexFormats::sMesh vertex1;
+	i_meshVec[0].x = -1.0f;
+	i_meshVec[0].y = -1.0f;
+	i_meshVec[0].z = 1.0f;
 
-	vertex1.r = 255;
+	i_meshVec[0].r = 255;
 
-	eae6320::Graphics::VertexFormats::sMesh vertex2;
-	vertex2.x = 1.0f;
-	vertex2.y = -1.0f;
-	vertex2.z = 0.0f;
+	i_meshVec[1].x = -1.0f;
+	i_meshVec[1].y = 1.0f;
+	i_meshVec[1].z = 1.0f;
 
-	vertex2.r = 255;
-	vertex2.g = 255;
+	i_meshVec[1].r = 255;
+	i_meshVec[1].g = 255;
 
-	eae6320::Graphics::VertexFormats::sMesh vertex3;
-	vertex3.x = 1.0f;
-	vertex3.y = 0.0f;
-	vertex3.z = 0.0f;
+	i_meshVec[2].x = 1.0f;
+	i_meshVec[2].y = 1.0f;
+	i_meshVec[2].z = 1.0f;
 
-	vertex3.r = 255;
-	vertex3.g = 255;
+	i_meshVec[2].r = 255;
+	i_meshVec[2].g = 255;
 
-	eae6320::Graphics::VertexFormats::sMesh vertex4;
-	vertex4.x = 0.0f;
-	vertex4.y = 0.0f;
-	vertex4.z = 0.0f;
+	i_meshVec[3].x = 1.0f;
+	i_meshVec[3].y = -1.0f;
+	i_meshVec[3].z = 1.0f;
 
-	vertex4.b = 255;
-	i_meshVec[0] = vertex1;
-	i_meshVec[1] = vertex2;
-	i_meshVec[2] = vertex3;
-	i_meshVec[3] = vertex4;
+	i_meshVec[3].b = 255;
 
-	std::vector<uint16_t> i_indexVec(6);
+	i_meshVec[4].x = -1.0f;
+	i_meshVec[4].y = -1.0f;
+	i_meshVec[4].z = -1.0f;
+
+	i_meshVec[4].r = 255;
+
+	i_meshVec[5].x = -1.0f;
+	i_meshVec[5].y = 1.0f;
+	i_meshVec[5].z = -1.0f;
+
+	i_meshVec[5].r = 255;
+	i_meshVec[5].g = 255;
+
+	i_meshVec[6].x = 1.0f;
+	i_meshVec[6].y = 1.0f;
+	i_meshVec[6].z = -1.0f;
+
+	i_meshVec[6].r = 255;
+	i_meshVec[6].g = 255;
+
+	i_meshVec[7].x = 1.0f;
+	i_meshVec[7].y = -1.0f;
+	i_meshVec[7].z = -1.0f;
+
+	i_meshVec[7].b = 255;
+	
+
+	std::vector<uint16_t> i_indexVec(36);
+	// front
 	i_indexVec[0] = 0;
-	i_indexVec[1] = 2;
-	i_indexVec[2] = 1;
+	i_indexVec[1] = 1;
+	i_indexVec[2] = 2;
 	i_indexVec[3] = 0;
-	i_indexVec[4] = 3;
-	i_indexVec[5] = 2;
+	i_indexVec[4] = 2;
+	i_indexVec[5] = 3;
+	
+	// bottom
+	i_indexVec[6] = 0;
+	i_indexVec[7] = 4;
+	i_indexVec[8] = 7;
+	i_indexVec[9] = 0;
+	i_indexVec[10] = 7;
+	i_indexVec[11] = 3;
+
+	// left
+	i_indexVec[12] = 0;
+	i_indexVec[13] = 1;
+	i_indexVec[14] = 5;
+	i_indexVec[15] = 0;
+	i_indexVec[16] = 5;
+	i_indexVec[17] = 4;
+
+	// right
+	i_indexVec[18] = 3;
+	i_indexVec[19] = 2;
+	i_indexVec[20] = 6;
+	i_indexVec[21] = 3;
+	i_indexVec[22] = 6;
+	i_indexVec[23] = 7;
+	
+	// top
+	i_indexVec[24] = 1;
+	i_indexVec[25] = 5;
+	i_indexVec[26] = 6;
+	i_indexVec[27] = 1;
+	i_indexVec[28] = 6;
+	i_indexVec[29] = 2;
+
+	// back
+	i_indexVec[30] = 4;
+	i_indexVec[31] = 5;
+	i_indexVec[32] = 6;
+	i_indexVec[33] = 4;
+	i_indexVec[34] = 6;
+	i_indexVec[35] = 7;
+
 
 	result = cMesh::CreateMesh(mesh1, i_meshVec, i_indexVec);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
+	
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2(4);
+	i_meshVec2[0].x = -3.0f;
+	i_meshVec2[0].y = -1.0f;
+	i_meshVec2[0].z = 2.0f;
 
-	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2(3);
-	eae6320::Graphics::VertexFormats::sMesh vertex5;
-	vertex5.x = -1.0f;
-	vertex5.y = 0.0f;
-	vertex5.z = 0.0f;
+	i_meshVec2[0].r = 127;
+	i_meshVec2[0].g = 127;
+	i_meshVec2[0].b = 127;
 
-	vertex5.r = 127;
-	vertex5.g = 127;
-	vertex5.b = 127;
+	i_meshVec2[1].x = 3.0f;
+	i_meshVec2[1].y = -1.0f;
+	i_meshVec2[1].z = 2.0f;
 
-	eae6320::Graphics::VertexFormats::sMesh vertex6;
-	vertex6.x = 0.0f;
-	vertex6.y = 0.0f;
-	vertex6.z = 0.0f;
+	i_meshVec2[1].r = 255;
+	i_meshVec2[1].g = 255;
+	i_meshVec2[1].b = 255;
 
-	vertex6.r = 255;
-	vertex6.g = 255;
-	vertex6.b = 255;
+	i_meshVec2[2].x = -3.0f;
+	i_meshVec2[2].y = -1.0f;
+	i_meshVec2[2].z = -2.0f;
 
-	eae6320::Graphics::VertexFormats::sMesh vertex7;
-	vertex7.x = 0.0f;
-	vertex7.y = 1.0f;
-	vertex7.z = 0.0f;
+	i_meshVec2[2].r = 255;
 
-	vertex7.r = 255;
+	i_meshVec2[3].x = 3.0f;
+	i_meshVec2[3].y = -1.0f;
+	i_meshVec2[3].z = -2.0f;
 
-	i_meshVec2[0] = vertex5;
-	i_meshVec2[1] = vertex6;
-	i_meshVec2[2] = vertex7;
-
-	std::vector<uint16_t> i_indexVec2(3);
+	std::vector<uint16_t> i_indexVec2(6);
 	i_indexVec2[0] = 0;
 	i_indexVec2[1] = 2;
-	i_indexVec2[2] = 1;
+	i_indexVec2[2] = 3;
+	i_indexVec2[3] = 0;
+	i_indexVec2[4] = 3;
+	i_indexVec2[5] = 1;
 
 	result = cMesh::CreateMesh(mesh2, i_meshVec2, i_indexVec2);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
+
+	
 
 	data1 = eae6320::Graphics::renderData(effect2, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
@@ -248,10 +328,17 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data4 = eae6320::Graphics::meshData(effect1, mesh1);
 	data5 = eae6320::Graphics::meshData(effect1, mesh2);
 
+	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
+	data4.rigidBodyState.position.x = 0.0f;
+	data4.rigidBodyState.position.y = 0.0f;
+	data4.rigidBodyState.position.z = 0.0f;
+	//camera.m_rigidBodyState.position.x = 0;
+	camera.m_rigidBodyState.position = position;
+
 	camera.m_verticalFieldOfView_inRadians = eae6320::Math::Pi / 4;
 	camera.m_z_nearPlane = 0.1f;
 	camera.m_z_farPlane = 100.0f;
-
+	camera.m_aspectRatio = 1;
 	return Results::Success;
 }
 
