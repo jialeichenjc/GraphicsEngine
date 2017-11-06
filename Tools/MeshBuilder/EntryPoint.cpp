@@ -1,8 +1,16 @@
-// MeshBuilder.cpp : Defines the entry point for the console application.
-//
+/*
+The main() function is where the program starts execution
+*/
 
-int main()
+// Include Files
+//==============
+
+#include "cMeshBuilder.h"
+
+// Entry Point
+//============
+
+int main(int i_argumentCount, char** i_arguments)
 {
-    return 0;
+	return eae6320::Assets::Build<eae6320::Assets::cMeshBuilder>(i_arguments, i_argumentCount);
 }
-

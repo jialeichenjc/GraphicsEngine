@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExampleGame", "ExampleGame", "{AC0EBDC3-8723-4A43-9112-DB863C2C3694}"
 EndProject
@@ -41,6 +41,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logging", "Engine\Logging\Logging.vcxproj", "{A5C152AD-26A3-4835-BB10-EF292DAF94AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lua", "Lua", "{3E8C98E7-04FE-4E50-841F-C30E30E2F42D}"
+	ProjectSection(SolutionItems) = preProject
+		meshAsset.lua = meshAsset.lua
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaCompiler", "External\Lua\LuaCompiler.vcxproj", "{0B19945A-9CA2-4ED3-84D8-0924B5428925}"
 EndProject
@@ -80,6 +83,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureBuilder", "Tools\Tex
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Physics", "Engine\Physics\Physics.vcxproj", "{30E6BB9F-138D-4B44-9733-869263F7BAD5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshBuilder", "Tools\MeshBuilder\MeshBuilder.vcxproj", "{E2791B1C-2E37-4CA9-86D1-507248B841C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -305,6 +310,14 @@ Global
 		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x64.Build.0 = Release|x64
 		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x86.ActiveCfg = Release|Win32
 		{30E6BB9F-138D-4B44-9733-869263F7BAD5}.Release|x86.Build.0 = Release|Win32
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Debug|x64.ActiveCfg = Debug|x64
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Debug|x64.Build.0 = Debug|x64
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Debug|x86.ActiveCfg = Debug|Win32
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Debug|x86.Build.0 = Debug|Win32
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Release|x64.ActiveCfg = Release|x64
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Release|x64.Build.0 = Release|x64
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Release|x86.ActiveCfg = Release|Win32
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -338,6 +351,7 @@ Global
 		{27FEF0DD-F73F-4958-8741-0B200DCB16AF} = {E5C51EF7-81D3-4030-A4CE-0D2D666CEF4F}
 		{37D50792-7ACF-496D-9239-2D656A57509C} = {31B05C03-4BB2-4A0D-B621-B41DA6B0F57E}
 		{30E6BB9F-138D-4B44-9733-869263F7BAD5} = {E5C51EF7-81D3-4030-A4CE-0D2D666CEF4F}
+		{E2791B1C-2E37-4CA9-86D1-507248B841C6} = {31B05C03-4BB2-4A0D-B621-B41DA6B0F57E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A89F366F-0B7F-464F-90A8-A4828B273298}

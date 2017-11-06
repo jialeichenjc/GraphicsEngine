@@ -1,0 +1,2 @@
+﻿  EntryPoint.cpp
+c:\users\u1086833\documents\chen_jialei\tools\meshbuilder\cmeshbuilder.h(11): fatal error C1083: Cannot open include file: 'Tools/AssetBuildLibrary/cbBuilder.h': No such file or directory
