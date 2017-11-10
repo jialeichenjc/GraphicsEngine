@@ -5,6 +5,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EntryPoint.cpp" />
+    <ClCompile Include="cMeshBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMeshBuilder.h" />
