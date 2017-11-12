@@ -21,7 +21,7 @@
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
 #include <Engine/Assets/ReferenceCountedAssets.h>
-
+#include <External\Lua\Includes.h>
 #include <utility>
 
 class cMesh {
@@ -54,6 +54,9 @@ public:
 	static eae6320::cResult CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
+
+	// Input the path to a mesh file, extract mesh info from that file (lua file)
+	static eae6320::cResult Load(const char* const i_path);
 	void DrawMesh();
 private:
 	cMesh() = default;
@@ -63,5 +66,7 @@ private:
 		std::vector<uint16_t> & i_indexVec);
 
 	eae6320::cResult CleanUp();
+
+	eae6320::Results LoadMeshValues(*luaState);
 
 };
