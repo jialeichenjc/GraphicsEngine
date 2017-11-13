@@ -43,7 +43,9 @@ public:
 #if defined( EAE6320_PLATFORM_GL )
 	GLuint s_programId = 0;
 #endif
-
+	~cEffect() {
+		CleanUp();
+	}
 private:
 	eae6320::cResult Initialize_Platform();
 	// constructor
@@ -52,6 +54,5 @@ private:
 
 	void Bind_Platform();
 	eae6320::cResult CleanUp();
-
-	~cEffect() {}
+	
 };

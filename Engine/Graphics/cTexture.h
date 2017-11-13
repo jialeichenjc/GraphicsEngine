@@ -91,9 +91,7 @@ namespace eae6320
 			EAE6320_ASSETS_DECLAREREFERENCECOUNT();
 
 			TextureFormats::sTextureInfo m_info;
-
-			// Implementation
-			//===============
+			~cTexture();
 
 		private:
 
@@ -101,10 +99,9 @@ namespace eae6320
 			//--------------------------
 
 			cResult Initialize( const char* const i_path, const void* const i_textureData, const size_t i_textureDataSize );
-			cResult CleanUp();
-
+			
 			cTexture( const TextureFormats::sTextureInfo& i_info );
-			~cTexture();
+			cResult CleanUp();
 		};
 	}
 }

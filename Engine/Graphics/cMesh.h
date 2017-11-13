@@ -75,6 +75,9 @@ public:
 	static eae6320::cResult LoadMesh(const char* const i_path, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 	void DrawMesh();
+	~cMesh() {
+		CleanUp();
+	}
 private:
 	cMesh() = default;
 	size_t m_indexCount;
@@ -88,6 +91,5 @@ private:
 		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 
-	static float readVertexParamFromLua(lua_State & io_luaState);
 	static void readIndexValueFromLua(lua_State & io_luaState, std::vector<uint16_t> & indexVec, int numIndex);
 };

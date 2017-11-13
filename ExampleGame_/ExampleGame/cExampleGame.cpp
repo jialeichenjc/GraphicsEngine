@@ -97,27 +97,25 @@ void  eae6320::cExampleGame::UpdateBasedOnTime(const float i_elapsedSecondCount_
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Up)) {
-		//data4.rigidBodyState.velocity.y = 0.5f;
-		//data4.rigidBodyState.Update()
 		rigidBody4.velocity.y = 0.5f;
 	}
 	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
 		//data4.rigidBodyState.velocity.y = -0.5f;
 		rigidBody4.velocity.y = -0.5f;
 	}
+	else {
+		rigidBody4.velocity.y = 0.0f;
+	}
 
-	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Left)) {
+	if (UserInput::IsKeyPressed(UserInput::KeyCodes::Left)) {
 		rigidBody4.velocity.x = -0.5f;
 	}
+	
 	else if (UserInput::IsKeyPressed(UserInput::KeyCodes::Right)) {
 		rigidBody4.velocity.x = 0.5f;
 	}
 
-	if (!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down)) {
-		rigidBody4.velocity.y = 0.0f;
-	}
-
-	if (!UserInput::IsKeyPressed(UserInput::KeyCodes::Left) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Right)) {
+	else {
 		rigidBody4.velocity.x = 0.0f;
 	}
 	if (UserInput::IsKeyPressed('W')) {
@@ -140,15 +138,6 @@ void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 	else {
 		camera.m_rigidBodyState.velocity.x = 0.0f;
 	}
-	/*if (!UserInput::IsKeyPressed('W') && !UserInput::IsKeyPressed('S')) {
-		camera.m_rigidBodyState.velocity.z = 0.0f;
-	}
-
-	if (!UserInput::IsKeyPressed('A') && !UserInput::IsKeyPressed('D')) {
-		camera.m_rigidBodyState.velocity.x = 0.0f;
-	}*/
-
-	//if(!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down))
 }
 
 void  eae6320::cExampleGame::UpdateSimulationBasedOnTime(const float i_elapsedSecondCount_sinceLastUpdate) {
@@ -257,19 +246,23 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 
 eae6320::cResult eae6320::cExampleGame::CleanUp()
 {
-	cEffect::CleanUpEffect(effect1);
-	cEffect::CleanUpEffect(effect2);
+	
+	effect1->DecrementReferenceCount();
+	effect2->DecrementReferenceCount();
 
 	eae6320::Graphics::cTexture::s_manager.Release(texture1);
 	eae6320::Graphics::cTexture::s_manager.Release(texture2);
 	eae6320::Graphics::cTexture::s_manager.Release(texture3);
 
-	cSprite::CleanUpSprite(sprite1);
-	cSprite::CleanUpSprite(sprite2);
-	cSprite::CleanUpSprite(sprite3);
+	sprite1->DecrementReferenceCount();
+	sprite2->DecrementReferenceCount();
+	sprite3->DecrementReferenceCount();
 
 	cMesh::s_manager.Release(mesh1);
 	cMesh::s_manager.Release(mesh2);
+
+	effect1;
+	effect2;
 
 	return Results::Success;
 }
