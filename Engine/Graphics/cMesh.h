@@ -21,8 +21,11 @@
 #include <Engine/Time/Time.h>
 #include <Engine/UserOutput/UserOutput.h>
 #include <Engine/Assets/ReferenceCountedAssets.h>
-
+#include <External\Lua\Includes.h>
 #include <utility>
+
+#include <Engine/Assets/cHandle.h>
+#include <Engine/Assets/cManager.h>
 
 class cMesh {
 public:
@@ -50,11 +53,31 @@ public:
 	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
 	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cMesh);
 
+	// Access
+	//-------
+
+	using Handle = eae6320::Assets::cHandle<cMesh>;
+	static eae6320::Assets::cManager<cMesh> s_manager;
+
 
 	static eae6320::cResult CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
+
+	static eae6320::cResult CreateMesh(cMesh *& mesh, const char* const i_path, 
+		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+		std::vector<uint16_t> & i_index);
+
 	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
+
+	static eae6320::cResult Load(const char* const i_path, cMesh*& o_mesh);
+
+	// Input the path to a mesh file, extract mesh info from that file (lua file)
+	static eae6320::cResult LoadMesh(const char* const i_path, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+		std::vector<uint16_t> & i_indexVec);
 	void DrawMesh();
+	~cMesh() {
+		CleanUp();
+	}
 private:
 	cMesh() = default;
 	size_t m_indexCount;
@@ -64,4 +87,9 @@ private:
 
 	eae6320::cResult CleanUp();
 
+	static eae6320::cResult LoadMeshValues(lua_State& io_luaState, 
+		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+		std::vector<uint16_t> & i_indexVec);
+
+	static void readIndexValueFromLua(lua_State & io_luaState, std::vector<uint16_t> & indexVec, int numIndex);
 };

@@ -119,15 +119,15 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, 
 
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
-	data.rigidBodyState = rigidBodyState;
+	//data.rigidBodyState = rigidBodyState;
 
-	//data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
-	//data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+	data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 //	rigidBodyState = data.rigidBodyState;
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
 }
 
-void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera camera) {
+void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera & camera) {
 	EAE6320_ASSERT(s_dataBeingSubmittedByApplicationThread);
 	auto& constantData_perFrame = s_dataBeingSubmittedByApplicationThread->constantData_perFrame;
 
@@ -137,10 +137,10 @@ void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera camera) {
 	rigidBodyState.position = camera.m_rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 
 	constantData_perFrame.g_transform_worldToCamera = eae6320::Math::cMatrix_transformation::CreateWorldToCameraTransform(
-		camera.m_rigidBodyState.orientation,
-		camera.m_rigidBodyState.position);
-		//rigidBodyState.orientation,
-		//rigidBodyState.position);
+		/*camera.m_rigidBodyState.orientation,
+		camera.m_rigidBodyState.position);*/
+		rigidBodyState.orientation,
+		rigidBodyState.position);
 
 	constantData_perFrame.g_transform_cameraToProjected =
 		eae6320::Math::cMatrix_transformation::CreateCameraToProjectedTransform_perspective(
