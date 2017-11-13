@@ -203,113 +203,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	}
 
 	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec;
-	//eae6320::Graphics::VertexFormats::sMesh vertex1;
-	//i_meshVec[0].x = -1.0f;
-	//i_meshVec[0].y = -1.0f;
-	//i_meshVec[0].z = 1.0f;
-
-	//i_meshVec[0].r = 255;
-
-	//i_meshVec[1].x = -1.0f;
-	//i_meshVec[1].y = 1.0f;
-	//i_meshVec[1].z = 1.0f;
-
-	//i_meshVec[1].r = 255;
-	//i_meshVec[1].g = 255;
-
-	//i_meshVec[2].x = 1.0f;
-	//i_meshVec[2].y = 1.0f;
-	//i_meshVec[2].z = 1.0f;
-
-	//i_meshVec[2].r = 255;
-	//i_meshVec[2].g = 255;
-
-	//i_meshVec[3].x = 1.0f;
-	//i_meshVec[3].y = -1.0f;
-	//i_meshVec[3].z = 1.0f;
-
-	//i_meshVec[3].b = 255;
-
-	//i_meshVec[4].x = -1.0f;
-	//i_meshVec[4].y = -1.0f;
-	//i_meshVec[4].z = -1.0f;
-
-	//i_meshVec[4].r = 255;
-
-	//i_meshVec[5].x = -1.0f;
-	//i_meshVec[5].y = 1.0f;
-	//i_meshVec[5].z = -1.0f;
-
-	//i_meshVec[5].r = 255;
-	//i_meshVec[5].g = 255;
-
-	//i_meshVec[6].x = 1.0f;
-	//i_meshVec[6].y = 1.0f;
-	//i_meshVec[6].z = -1.0f;
-
-	//i_meshVec[6].r = 255;
-	//i_meshVec[6].g = 255;
-
-	//i_meshVec[7].x = 1.0f;
-	//i_meshVec[7].y = -1.0f;
-	//i_meshVec[7].z = -1.0f;
-
-	//i_meshVec[7].b = 255;
-	
 
 	std::vector<uint16_t> i_indexVec;
-	//// front
-	//i_indexVec[0] = 0;
-	//i_indexVec[1] = 1;
-	//i_indexVec[2] = 2;
-	//i_indexVec[3] = 0;
-	//i_indexVec[4] = 2;
-	//i_indexVec[5] = 3;
-	//
-	//// bottom
-	//i_indexVec[6] = 0;
-	//i_indexVec[7] = 3;
-	//i_indexVec[8] = 4;
-	//i_indexVec[9] = 4;
-	//i_indexVec[10] = 3;
-	//i_indexVec[11] = 7;
-
-	//// left
-	//i_indexVec[12] = 5;
-	//i_indexVec[13] = 1;
-	//i_indexVec[14] = 4;
-	//i_indexVec[15] = 4;
-	//i_indexVec[16] = 1;
-	//i_indexVec[17] = 0;
-
-	//// right
-	//i_indexVec[18] = 3;
-	//i_indexVec[19] = 2;
-	//i_indexVec[20] = 7;
-	//i_indexVec[21] = 2;
-	//i_indexVec[22] = 6;
-	//i_indexVec[23] = 7;
-	//
-	//// top
-	//i_indexVec[24] = 1;
-	//i_indexVec[25] = 5;
-	//i_indexVec[26] = 6;
-	//i_indexVec[27] = 1;
-	//i_indexVec[28] = 6;
-	//i_indexVec[29] = 2;
-
-	//// back
-	//i_indexVec[30] = 4;
-	//i_indexVec[31] = 5;
-	//i_indexVec[32] = 6;
-	//i_indexVec[33] = 4;
-	//i_indexVec[34] = 6;
-	//i_indexVec[35] = 7;
-
-
-	//result = cMesh::CreateMesh(mesh1, i_meshVec, i_indexVec);
-
-	//.const char* const path = "GameInstallDirdata/Meshes/mesh1.lua";
 
 	result = cMesh::CreateMesh(mesh1, "data/Meshes/mesh1.lua", i_meshVec, i_indexVec);
 	if (!result) {
@@ -317,8 +212,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 	
-	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2(4);
-	i_meshVec2[0].x = -3.0f;
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2;
+	/*i_meshVec2[0].x = -3.0f;
 	i_meshVec2[0].y = -1.0f;
 	i_meshVec2[0].z = 2.0f;
 
@@ -343,16 +238,16 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	i_meshVec2[3].x = 3.0f;
 	i_meshVec2[3].y = -1.0f;
 	i_meshVec2[3].z = -2.0f;
-
-	std::vector<uint16_t> i_indexVec2(6);
-	i_indexVec2[0] = 0;
+*/
+	std::vector<uint16_t> i_indexVec2;
+	/*i_indexVec2[0] = 0;
 	i_indexVec2[1] = 2;
 	i_indexVec2[2] = 3;
 	i_indexVec2[3] = 0;
 	i_indexVec2[4] = 3;
-	i_indexVec2[5] = 1;
+	i_indexVec2[5] = 1;*/
 
-	result = cMesh::CreateMesh(mesh2, i_meshVec2, i_indexVec2);
+	result = cMesh::CreateMesh(mesh2, "data/Meshes/mesh2.lua", i_meshVec2, i_indexVec2);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
