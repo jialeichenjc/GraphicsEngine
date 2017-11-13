@@ -19,12 +19,14 @@ cSprite * sprite1;
 cSprite * sprite2;
 cSprite * sprite3;
 
-cMesh * mesh1;
-cMesh * mesh2;
+//cMesh * mesh2;
 
 eae6320::Graphics::cTexture::Handle texture1;
 eae6320::Graphics::cTexture::Handle texture2;
 eae6320::Graphics::cTexture::Handle texture3;
+
+cMesh::Handle mesh1;
+cMesh::Handle mesh2;
 
 eae6320::Graphics::renderData data1;
 eae6320::Graphics::renderData data2;
@@ -43,6 +45,8 @@ float timer = 0.0f;
 // Inherited Implementation
 //=========================
 void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCount_systemTime, const float i_elapsedSecondCount_sinceLastSimulationUpdate) {
+	eae6320::Graphics::SubmitElapsedTime(i_elapsedSecondCount_systemTime, i_elapsedSecondCount_sinceLastSimulationUpdate);
+
 	eae6320::Graphics::SubmitBackgroundColor(125.0f, 0.0f, 128.0f, 1.0f);
 	//eae6320::Graphics::SubmitEffectAndSprite(data2);
 
@@ -117,26 +121,32 @@ void  eae6320::cExampleGame::UpdateSimulationBasedOnInput() {
 		rigidBody4.velocity.x = 0.0f;
 	}
 	if (UserInput::IsKeyPressed('W')) {
-		camera.m_rigidBodyState.velocity.z = -0.5f;
+		camera.m_rigidBodyState.velocity.z = -1.0f;
 	}
 
 	else if (UserInput::IsKeyPressed('S')) {
-		camera.m_rigidBodyState.velocity.z = 0.5f;
+		camera.m_rigidBodyState.velocity.z = 1.0f;
 	}
-	else if (UserInput::IsKeyPressed('A')) {
+	else {
+		camera.m_rigidBodyState.velocity.z = 0.0f;
+	}
+	if (UserInput::IsKeyPressed('A')) {
 		camera.m_rigidBodyState.velocity.x = -0.5f;
 	}
 	else if (UserInput::IsKeyPressed('D')) {
 		camera.m_rigidBodyState.velocity.x = 0.5f;
 	}
 
-	if (!UserInput::IsKeyPressed('W') && !UserInput::IsKeyPressed('S')) {
+	else {
+		camera.m_rigidBodyState.velocity.x = 0.0f;
+	}
+	/*if (!UserInput::IsKeyPressed('W') && !UserInput::IsKeyPressed('S')) {
 		camera.m_rigidBodyState.velocity.z = 0.0f;
 	}
 
 	if (!UserInput::IsKeyPressed('A') && !UserInput::IsKeyPressed('D')) {
 		camera.m_rigidBodyState.velocity.x = 0.0f;
-	}
+	}*/
 
 	//if(!UserInput::IsKeyPressed(UserInput::KeyCodes::Up) && !UserInput::IsKeyPressed(UserInput::KeyCodes::Down))
 }
@@ -206,61 +216,31 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 
 	std::vector<uint16_t> i_indexVec;
 
-	result = cMesh::CreateMesh(mesh1, "data/Meshes/mesh1.lua", i_meshVec, i_indexVec);
+	//result = cMesh::CreateMesh(mesh1, "data/Meshes/mesh1.lua", i_meshVec, i_indexVec);
+	result = cMesh::s_manager.Load("data/Meshes/mesh1.lua", mesh1);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
 	
 	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2;
-	/*i_meshVec2[0].x = -3.0f;
-	i_meshVec2[0].y = -1.0f;
-	i_meshVec2[0].z = 2.0f;
-
-	i_meshVec2[0].r = 127;
-	i_meshVec2[0].g = 127;
-	i_meshVec2[0].b = 127;
-
-	i_meshVec2[1].x = 3.0f;
-	i_meshVec2[1].y = -1.0f;
-	i_meshVec2[1].z = 2.0f;
-
-	i_meshVec2[1].r = 255;
-	i_meshVec2[1].g = 255;
-	i_meshVec2[1].b = 255;
-
-	i_meshVec2[2].x = -3.0f;
-	i_meshVec2[2].y = -1.0f;
-	i_meshVec2[2].z = -2.0f;
-
-	i_meshVec2[2].r = 255;
-
-	i_meshVec2[3].x = 3.0f;
-	i_meshVec2[3].y = -1.0f;
-	i_meshVec2[3].z = -2.0f;
-*/
+	
 	std::vector<uint16_t> i_indexVec2;
-	/*i_indexVec2[0] = 0;
-	i_indexVec2[1] = 2;
-	i_indexVec2[2] = 3;
-	i_indexVec2[3] = 0;
-	i_indexVec2[4] = 3;
-	i_indexVec2[5] = 1;*/
 
-	result = cMesh::CreateMesh(mesh2, "data/Meshes/mesh2.lua", i_meshVec2, i_indexVec2);
+	//result = cMesh::CreateMesh(mesh2, "data/Meshes/mesh2.lua", i_meshVec2, i_indexVec2);
+	result = cMesh::s_manager.Load("data/Meshes/mesh2.lua", mesh2);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
-
 	
 
 	data1 = eae6320::Graphics::renderData(effect2, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	data4 = eae6320::Graphics::meshData(effect1, mesh1);
-	data5 = eae6320::Graphics::meshData(effect1, mesh2);
+	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1));
+	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	/*data4.rigidBodyState.position.x = 0.0f;
@@ -288,8 +268,8 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 	cSprite::CleanUpSprite(sprite2);
 	cSprite::CleanUpSprite(sprite3);
 
-	cMesh::CleanUpMesh(mesh1);
-	cMesh::CleanUpMesh(mesh2);
+	cMesh::s_manager.Release(mesh1);
+	cMesh::s_manager.Release(mesh2);
 
 	return Results::Success;
 }

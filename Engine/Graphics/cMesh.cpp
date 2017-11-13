@@ -10,6 +10,20 @@
 #include <new>
 #include <iostream>
 
+// Static Data Initialization
+//===========================
+
+eae6320::Assets::cManager<cMesh> cMesh::s_manager;
+
+eae6320::cResult cMesh::Load(const char* const i_path, cMesh*& o_mesh) {
+	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec;
+	std::vector<uint16_t> i_indexVec;
+
+	auto result = CreateMesh(o_mesh, i_path, i_meshVec, i_indexVec);
+
+	return result;
+}
+
 eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, const char* const i_path, 
 	std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 	std::vector<uint16_t> & i_indexVec) {

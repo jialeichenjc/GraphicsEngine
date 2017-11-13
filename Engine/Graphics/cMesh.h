@@ -24,6 +24,9 @@
 #include <External\Lua\Includes.h>
 #include <utility>
 
+#include <Engine/Assets/cHandle.h>
+#include <Engine/Assets/cManager.h>
+
 class cMesh {
 public:
 #if defined( EAE6320_PLATFORM_GL )
@@ -50,6 +53,12 @@ public:
 	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
 	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cMesh);
 
+	// Access
+	//-------
+
+	using Handle = eae6320::Assets::cHandle<cMesh>;
+	static eae6320::Assets::cManager<cMesh> s_manager;
+
 
 	static eae6320::cResult CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
@@ -59,6 +68,8 @@ public:
 		std::vector<uint16_t> & i_index);
 
 	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
+
+	static eae6320::cResult Load(const char* const i_path, cMesh*& o_mesh);
 
 	// Input the path to a mesh file, extract mesh info from that file (lua file)
 	static eae6320::cResult LoadMesh(const char* const i_path, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,

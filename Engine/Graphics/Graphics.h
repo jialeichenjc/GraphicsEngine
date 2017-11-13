@@ -102,7 +102,7 @@ namespace eae6320
 		};
 		void SubmitEffectAndSprite(eae6320::Graphics::renderData);
 		void SubmitEffectAndMesh(eae6320::Graphics::meshData&, eae6320::Physics::sRigidBodyState&);
-		void SubmitCamera(eae6320::Graphics::cCamera);
+		void SubmitCamera(eae6320::Graphics::cCamera &);
 
 		cResult Initialize( const sInitializationParameters& i_initializationParameters );
 		cResult CleanUp();
