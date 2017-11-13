@@ -201,20 +201,12 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec;
-
-	std::vector<uint16_t> i_indexVec;
-
 	//result = cMesh::CreateMesh(mesh1, "data/Meshes/mesh1.lua", i_meshVec, i_indexVec);
 	result = cMesh::s_manager.Load("data/Meshes/mesh1.lua", mesh1);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
-	
-	std::vector<eae6320::Graphics::VertexFormats::sMesh> i_meshVec2;
-	
-	std::vector<uint16_t> i_indexVec2;
 
 	//result = cMesh::CreateMesh(mesh2, "data/Meshes/mesh2.lua", i_meshVec2, i_indexVec2);
 	result = cMesh::s_manager.Load("data/Meshes/mesh2.lua", mesh2);
@@ -232,9 +224,6 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
-	/*data4.rigidBodyState.position.x = 0.0f;
-	data4.rigidBodyState.position.y = 0.0f;
-	data4.rigidBodyState.position.z = 0.0f;*/
 	camera.m_rigidBodyState.position = position;
 
 	camera.m_verticalFieldOfView_inRadians = eae6320::Math::Pi / 4;
@@ -260,9 +249,6 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 
 	cMesh::s_manager.Release(mesh1);
 	cMesh::s_manager.Release(mesh2);
-
-	effect1;
-	effect2;
 
 	return Results::Success;
 }
