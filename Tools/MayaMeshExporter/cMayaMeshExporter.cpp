@@ -789,8 +789,46 @@ namespace
 			fout << "return\n"
 				"{\n";
 			{
-				EAE6320_TODO	// Write out the data using your mesh file format
+				//EAE6320_TODO	// Write out the data using your mesh file format
+				fout << "numVertex = " << i_vertexArray.size() << ",\n";
+				
+				fout << "vertices = " << "\n";
+
+				fout << "{\n"; // open of vertices
+
+				for (int i = 0; i < i_vertexArray.size(); i++) {
+					fout << "	{\n";
+
+					fout << "		x = " << i_vertexArray[i].vertex.x << ",\n";
+					fout << "		y = " << i_vertexArray[i].vertex.y << ",\n";
+					fout << "		z = " << i_vertexArray[i].vertex.z << ",\n";
+
+					fout << "		r = " << i_vertexArray[i].vertex.r << ",\n";
+					fout << "		g = " << i_vertexArray[i].vertex.g << ",\n";
+					fout << "		b = " << i_vertexArray[i].vertex.b << ",\n";
+
+					fout << "		u = " << i_vertexArray[i].vertex.u << ",\n";
+					fout << "		v = " << i_vertexArray[i].vertex.v << ",\n";
+
+					fout << "	},\n";
+ 				}
+
+				fout << "},\n"; // close of vertices
+
+				fout << "numIndex = " << i_indexArray.size() << ",\n";
+
+				fout << "indices = " << "\n" << "{\n"; // open of indices
+
+				for (int i = 0; i < i_indexArray.size(); i += 3) {
+					fout << "	{\n";
+					fout << "		" << i_indexArray[i] << "," << i_indexArray[i + 1] << "," << i_indexArray[i + 2] << ",\n";
+					fout << "	},\n";
+				}
+
+				fout << "},\n"; // close of indices
 			}
+			
+			
 			// Close table
 			fout << "}\n";
 			fout.close();

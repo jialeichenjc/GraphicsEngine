@@ -36,7 +36,7 @@ namespace eae6320
 		// and then implement reader().
 
 		// You can choose what the default file extension of an exported mesh is
-		virtual MString defaultExtension() const override { return EAE6320_TODO; }	// A string literal like "mesh" will convert automatically to an MString
+		virtual MString defaultExtension() const override { return "lua"; }	// A string literal like "mesh" will convert automatically to an MString
 
 		// Interface
 		//==========

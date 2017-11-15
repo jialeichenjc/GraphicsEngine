@@ -147,8 +147,8 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 			for (size_t i = 0; i < i_indexVec.size(); i+=3) {
 				indexData[i] = i_indexVec[i];
-				indexData[i + 1] = i_indexVec[i + 2];
-				indexData[i + 2] = i_indexVec[i + 1];
+				indexData[i + 1] = i_indexVec[i + 1];
+				indexData[i + 2] = i_indexVec[i + 2];
 			}
 
 		}

@@ -143,10 +143,15 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		const auto indexCount = i_indexVec.size();
 		uint16_t * indexData = new uint16_t[indexCount];
 
-		for (int i = 0; i < i_indexVec.size(); i++) {
+		/*for (int i = 0; i < i_indexVec.size(); i++) {
 			indexData[i] = i_indexVec[i];
 		}
-
+*/
+		for (size_t i = 0; i < i_indexVec.size(); i += 3) {
+			indexData[i] = i_indexVec[i];
+			indexData[i + 2] = i_indexVec[i + 1];
+			indexData[i + 1] = i_indexVec[i + 2];
+		}
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
 			const auto bufferSize = indexCount * sizeof(uint16_t);

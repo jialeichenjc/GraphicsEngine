@@ -19,7 +19,7 @@
 namespace
 {
 	// This will be displayed in Maya's dropdown list of available export formats
-	const auto* const s_pluginName = EAE6320_TODO	//"[YOUR NAME HERE]'s EAE6320 Mesh Format";
+	const auto* const s_pluginName = "Joyce's EAE6320 Mesh Format";
 }
 
 // Entry Point
