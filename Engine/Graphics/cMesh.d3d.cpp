@@ -39,7 +39,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			// (by using so-called "semantic" names so that, for example,
 			// "POSITION" here matches with "POSITION" in shader code).
 			// Note that OpenGL uses arbitrarily assignable number IDs to do the same thing.
-			constexpr unsigned int vertexElementCount = 2;
+			constexpr unsigned int vertexElementCount = 3;
 			D3D11_INPUT_ELEMENT_DESC layoutDescription[vertexElementCount] = {};
 			{
 				// Slot 0
@@ -70,6 +70,21 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 					positionElement.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 					positionElement.InputSlot = 0;
 					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sMesh, r);
+					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+					positionElement.InstanceDataStepRate = 0;	// (Must be zero for per-vertex data)
+				}
+
+				// TEXTCOORD
+				// 2 floats == 8 bytes
+				// Offset = 16
+				{
+					auto& positionElement = layoutDescription[2];
+
+					positionElement.SemanticName = "TEXCOORD";
+					positionElement.SemanticIndex = 0;	// (Semantics without modifying indices at the end can always use zero)
+					positionElement.Format = DXGI_FORMAT_R32G32_FLOAT;
+					positionElement.InputSlot = 0;
+					positionElement.AlignedByteOffset = offsetof(eae6320::Graphics::VertexFormats::sMesh, u);
 					positionElement.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 					positionElement.InstanceDataStepRate = 0;	// (Must be zero for per-vertex data)
 				}
@@ -106,7 +121,9 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			vertexData[i].r = i_meshVec[i].r;
 			vertexData[i].g = i_meshVec[i].g;
 			vertexData[i].b = i_meshVec[i].b;
-			//vertexData[i].a = i_meshVec[i].a;
+
+			vertexData[i].u = i_meshVec[i].u;
+			vertexData[i].v = i_meshVec[i].v;
 		}
 
 		D3D11_BUFFER_DESC bufferDescription{};

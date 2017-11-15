@@ -42,6 +42,8 @@ void main(
 
     in const float4 i_color : COLOR0,
 
+    in const float2 i_texture : TEXCOORD0,
+
 	// Output
 	//=======
 
@@ -49,7 +51,9 @@ void main(
 	// so that the GPU can figure out which fragments need to be shaded
 	out float4 o_position : SV_POSITION,
 
-    out float4 o_color : COLOR0
+    out float4 o_color : COLOR0,
+
+    out float2 o_texture : TEXCOORD0
 
 	)
 
@@ -66,9 +70,13 @@ layout( location = 0 ) in vec3 i_position;
 
 layout( location = 1 ) in vec4 i_color;
 
+layout( location = 2 ) in vec2 i_texture;
+
 // Output
 //=======
 layout( location = 0 ) out vec4 o_color;
+
+layout( location = 0 ) out vec2 o_texture;
 
 // The vertex shader must always output a position value,
 // but unlike HLSL where the value is explicit
@@ -103,6 +111,9 @@ void main()
 	}
 
     o_color = i_color;
+
+    // Assign input UV's to output UV's
+    o_texture = i_texture;
 
 	// EAE6320_TODO: Change the position based on time!
 	// The value g_elapsedSecondCount_simulationTime constantly changes as the simulation progresses, and so by doing something like:

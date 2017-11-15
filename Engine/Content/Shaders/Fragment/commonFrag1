@@ -37,6 +37,8 @@ void main(
 
     in const float4 i_color : COLOR0,
 
+    in const float2 i_texture : TEXCOORD0,
+
 	// Output
 	//=======
 
@@ -52,6 +54,8 @@ void main(
 //======
 
 layout( location = 0 ) in vec4 i_color;
+
+layout( location = 1 ) in vec2 i_texture;
 
 // Output
 //=======
@@ -80,9 +84,9 @@ void main()
 
 	// g_color_texture.Sample( g_color_samplerState, i_texture );
 
-	//SampledColor sampledColor = GetSampledColor( g_color_texture, g_color_samplerState );
+	SampledColor sampledColor = GetSampledColor( g_color_texture, g_color_samplerState );
 
-	//o_color = o_color * sampledColor;
+	o_color = o_color * sampledColor;
 
 }
 
