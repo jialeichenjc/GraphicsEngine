@@ -48,14 +48,15 @@ namespace eae6320
 
 		struct meshData {
 			cEffect * effect;
+			cTexture * texture;
 			cMesh * mesh;
 
 			meshData() = default;
 			//Math::sVector pos;
 			
 			eae6320::Physics::sRigidBodyState rigidBodyState;
-;			meshData(cEffect * iEffect, cMesh * iMesh)
-				: effect(iEffect), mesh(iMesh) {}
+;			meshData(cEffect * iEffect, cMesh * iMesh, cTexture *iTexture)
+				: effect(iEffect), mesh(iMesh), texture(iTexture) {}
 
 		};
 

@@ -220,8 +220,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1));
-	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2));
+	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	camera.m_rigidBodyState.position = position;

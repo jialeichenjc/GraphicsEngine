@@ -230,6 +230,21 @@ eae6320::cResult cMesh::LoadMeshValues(lua_State& io_luaState,
 		vertex.b = static_cast<uint8_t>(lua_tonumber(&io_luaState, -1) * 255.0f);
 		lua_pop(&io_luaState, 1);
 
+		// u value
+		constexpr auto* const key_u = "u";
+		lua_pushstring(&io_luaState, key_u);
+		// individual vertex at -2
+		lua_gettable(&io_luaState, -2);
+		vertex.u = (float)lua_tonumber(&io_luaState, -1);
+		lua_pop(&io_luaState, 1);
+
+		// v value
+		constexpr auto* const key_v = "v";
+		lua_pushstring(&io_luaState, key_v);
+		// individual vertex at -2
+		lua_gettable(&io_luaState, -2);
+		vertex.v = (float)lua_tonumber(&io_luaState, -1);
+		lua_pop(&io_luaState, 1);
 
 		i_meshVec.push_back(vertex);
 		lua_pop(&io_luaState, 1);

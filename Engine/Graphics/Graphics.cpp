@@ -119,7 +119,8 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, 
 
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
-	//data.rigidBodyState = rigidBodyState;
+	data.texture->IncrementReferenceCount();
+	//data.rigidBodyState = rigidBodyState;\
 
 	data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 	data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
@@ -223,6 +224,7 @@ void eae6320::Graphics::RenderFrame()
 		s_constantBuffer_perDraw.Update(&constantData_perDraw);
 
 		data.effect->Bind();
+		data.texture->Bind(0);
 		data.mesh->DrawMesh();
 	}
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
@@ -238,6 +240,7 @@ void eae6320::Graphics::RenderFrame()
 		for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 			data.effect->DecrementReferenceCount();
 			data.mesh->DecrementReferenceCount();
+			data.texture->DecrementReferenceCount();
 		}
 		s_dataBeingRenderedByRenderThread->meshDataVec.clear();
 		
@@ -381,6 +384,7 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 
 	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 		data.effect->DecrementReferenceCount();
+		data.texture->DecrementReferenceCount();
 		data.mesh->DecrementReferenceCount();
 	}
 	s_dataBeingRenderedByRenderThread->meshDataVec.clear();
@@ -388,6 +392,7 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	for (auto data : s_dataBeingSubmittedByApplicationThread->meshDataVec) {
 		data.effect->DecrementReferenceCount();
 		data.mesh->DecrementReferenceCount();
+		data.texture->DecrementReferenceCount();
 	}
 
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.clear();

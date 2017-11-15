@@ -33,4 +33,5 @@ void main(
 	// The shader program is only used to generate a vertex input layout object;
 	// the actual shading code is never used
 	o_position = float4( i_position, 1.0 );
+	o_texture = i_texture;
 }

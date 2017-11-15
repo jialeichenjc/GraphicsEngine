@@ -68,7 +68,7 @@ void main()
 #endif
 {
 	// Output solid white
-	o_color = i_color;
+	//o_color = i_color;
 
 	//	o_color.r = sin( g_elapsedSecondCount_simulationTime );
 		
@@ -86,7 +86,7 @@ void main()
 
 	SampledColor sampledColor = GetSampledColor( g_color_texture, g_color_samplerState );
 
-	o_color = o_color * sampledColor;
+	o_color = sampledColor;
 
 }
 
