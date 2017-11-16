@@ -123,7 +123,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			vertexData[i].b = i_meshVec[i].b;
 
 			vertexData[i].u = i_meshVec[i].u;
-			vertexData[i].v = i_meshVec[i].v;
+			vertexData[i].v = 1.0f - i_meshVec[i].v;
 		}
 
 		D3D11_BUFFER_DESC bufferDescription{};

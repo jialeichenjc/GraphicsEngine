@@ -76,7 +76,7 @@ layout( location = 2 ) in vec2 i_texture;
 //=======
 layout( location = 0 ) out vec4 o_color;
 
-layout( location = 0 ) out vec2 o_texture;
+layout( location = 1 ) out vec2 o_texture;
 
 // The vertex shader must always output a position value,
 // but unlike HLSL where the value is explicit

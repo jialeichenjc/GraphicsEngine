@@ -48,7 +48,7 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	eae6320::Graphics::SubmitElapsedTime(i_elapsedSecondCount_systemTime, i_elapsedSecondCount_sinceLastSimulationUpdate);
 
 	eae6320::Graphics::SubmitBackgroundColor(125.0f, 0.0f, 128.0f, 1.0f);
-	//eae6320::Graphics::SubmitEffectAndSprite(data2);
+	eae6320::Graphics::SubmitEffectAndSprite(data1);
 
 	eae6320::Graphics::SubmitCamera(camera);
 	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
@@ -165,7 +165,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	result = cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
+	result = cSprite::CreateSprite(sprite1, 0.5f, 0.5f, 1.0f, 1.0f);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
