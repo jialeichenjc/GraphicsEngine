@@ -236,19 +236,45 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 eae6320::cResult eae6320::cExampleGame::CleanUp()
 {
 	
-	effect1->DecrementReferenceCount();
-	effect2->DecrementReferenceCount();
+	if (effect1) {
+		effect1->DecrementReferenceCount();
+	}
+	
+	if (effect2) {
+		effect2->DecrementReferenceCount();
+	}
 
-	eae6320::Graphics::cTexture::s_manager.Release(texture1);
-	eae6320::Graphics::cTexture::s_manager.Release(texture2);
-	eae6320::Graphics::cTexture::s_manager.Release(texture3);
+	if (texture1) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture1);
+	}
 
-	sprite1->DecrementReferenceCount();
-	sprite2->DecrementReferenceCount();
-	sprite3->DecrementReferenceCount();
+	if (texture2) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture2);
+	}
 
-	cMesh::s_manager.Release(mesh1);
-	cMesh::s_manager.Release(mesh2);
+	if (texture3) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture3);
+	}
+
+	if (sprite1) {
+		sprite1->DecrementReferenceCount();
+	}
+
+	if (sprite2) {
+		sprite2->DecrementReferenceCount();
+	}
+
+	if (sprite3) {
+		sprite3->DecrementReferenceCount();
+	}
+	
+	if (mesh1) {
+		cMesh::s_manager.Release(mesh1);
+	}
+
+	if (mesh2) {
+		cMesh::s_manager.Release(mesh2);
+	}
 
 	return Results::Success;
 }

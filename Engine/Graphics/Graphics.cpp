@@ -316,17 +316,17 @@ eae6320::cResult eae6320::Graphics::Initialize(const sInitializationParameters& 
 			EAE6320_ASSERT(false);
 			goto OnExit;
 		}
-		if (result = s_samplerState.Initialize())
-		{
-			// There is only a single sampler state that is re-used
-			// and so it can be bound at initialization time and never unbound
-			s_samplerState.Bind();
-		}
-		else
-		{
-			EAE6320_ASSERT(false);
-			goto OnExit;
-		}
+		//if (result = s_samplerState.Initialize())
+		//{
+		//	// There is only a single sampler state that is re-used
+		//	// and so it can be bound at initialization time and never unbound
+		//	s_samplerState.Bind();
+		//}
+		//else
+		//{
+		//	EAE6320_ASSERT(false);
+		//	goto OnExit;
+		//}
 	}
 
 	// Initialize the events
