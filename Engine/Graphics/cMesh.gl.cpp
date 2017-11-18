@@ -116,6 +116,9 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				vertexData[i].r = i_meshVec[i].r;
 				vertexData[i].g = i_meshVec[i].g;
 				vertexData[i].b = i_meshVec[i].b;
+				vertexData[i].u = i_meshVec[i].u;
+				vertexData[i].v = i_meshVec[i].v;
+
 				//vertexData[i].a = i_meshVec[i].a;
 
 			}
@@ -147,8 +150,8 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 			for (size_t i = 0; i < i_indexVec.size(); i+=3) {
 				indexData[i] = i_indexVec[i];
-				indexData[i + 1] = i_indexVec[i + 2];
-				indexData[i + 2] = i_indexVec[i + 1];
+				indexData[i + 1] = i_indexVec[i + 1];
+				indexData[i + 2] = i_indexVec[i + 2];
 			}
 
 		}
@@ -219,6 +222,39 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			constexpr GLboolean normalized = GL_TRUE;	// normalized
 			glVertexAttribPointer(vertexElementLocation, elementCount, GL_UNSIGNED_BYTE, normalized, stride,
 				reinterpret_cast<GLvoid*>(offsetof(eae6320::Graphics::VertexFormats::sMesh, r)));
+			const auto errorCode = glGetError();
+			if (errorCode == GL_NO_ERROR)
+			{
+				glEnableVertexAttribArray(vertexElementLocation);
+				const GLenum errorCode = glGetError();
+				if (errorCode != GL_NO_ERROR)
+				{
+					result = eae6320::Results::Failure;
+					EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					eae6320::Logging::OutputError("OpenGL failed to enable the TEXCOORD vertex attribute at location %u: %s",
+						vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+					goto OnExit;
+				}
+			}
+			else
+			{
+				result = eae6320::Results::Failure;
+				EAE6320_ASSERTF(false, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+				eae6320::Logging::OutputError("OpenGL failed to set the TEXCOORD vertex attribute at location %u: %s",
+					vertexElementLocation, reinterpret_cast<const char*>(gluErrorString(errorCode)));
+				goto OnExit;
+			}
+		}
+
+		// Texture (8)
+		// 2 floats == 8 bytes
+		// Offset = 16
+		{
+			constexpr GLuint vertexElementLocation = 2;
+			constexpr GLint elementCount = 2;
+			constexpr GLboolean notNormalized = GL_FALSE;	// The given floats should be used as-is
+			glVertexAttribPointer(vertexElementLocation, elementCount, GL_FLOAT, notNormalized, stride,
+				reinterpret_cast<GLvoid*>(offsetof(eae6320::Graphics::VertexFormats::sMesh, u)));
 			const auto errorCode = glGetError();
 			if (errorCode == GL_NO_ERROR)
 			{

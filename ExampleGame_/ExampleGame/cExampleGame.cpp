@@ -48,7 +48,7 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	eae6320::Graphics::SubmitElapsedTime(i_elapsedSecondCount_systemTime, i_elapsedSecondCount_sinceLastSimulationUpdate);
 
 	eae6320::Graphics::SubmitBackgroundColor(125.0f, 0.0f, 128.0f, 1.0f);
-	//eae6320::Graphics::SubmitEffectAndSprite(data2);
+	eae6320::Graphics::SubmitEffectAndSprite(data1);
 
 	eae6320::Graphics::SubmitCamera(camera);
 	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
@@ -165,7 +165,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	result = cSprite::CreateSprite(sprite1, 0.0f, 0.0f, 1.0f, 1.0f);
+	result = cSprite::CreateSprite(sprite1, 0.5f, 0.5f, 1.0f, 1.0f);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
@@ -220,8 +220,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1));
-	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2));
+	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	camera.m_rigidBodyState.position = position;
@@ -236,19 +236,45 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 eae6320::cResult eae6320::cExampleGame::CleanUp()
 {
 	
-	effect1->DecrementReferenceCount();
-	effect2->DecrementReferenceCount();
+	if (effect1) {
+		effect1->DecrementReferenceCount();
+	}
+	
+	if (effect2) {
+		effect2->DecrementReferenceCount();
+	}
 
-	eae6320::Graphics::cTexture::s_manager.Release(texture1);
-	eae6320::Graphics::cTexture::s_manager.Release(texture2);
-	eae6320::Graphics::cTexture::s_manager.Release(texture3);
+	if (texture1) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture1);
+	}
 
-	sprite1->DecrementReferenceCount();
-	sprite2->DecrementReferenceCount();
-	sprite3->DecrementReferenceCount();
+	if (texture2) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture2);
+	}
 
-	cMesh::s_manager.Release(mesh1);
-	cMesh::s_manager.Release(mesh2);
+	if (texture3) {
+		eae6320::Graphics::cTexture::s_manager.Release(texture3);
+	}
+
+	if (sprite1) {
+		sprite1->DecrementReferenceCount();
+	}
+
+	if (sprite2) {
+		sprite2->DecrementReferenceCount();
+	}
+
+	if (sprite3) {
+		sprite3->DecrementReferenceCount();
+	}
+	
+	if (mesh1) {
+		cMesh::s_manager.Release(mesh1);
+	}
+
+	if (mesh2) {
+		cMesh::s_manager.Release(mesh2);
+	}
 
 	return Results::Success;
 }

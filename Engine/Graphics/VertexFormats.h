@@ -44,6 +44,12 @@ namespace eae6320
 				// 4 uint8_t == 4 bytes
 				// offset = 12
 				uint8_t r, g, b, a;
+
+				// TEXTURE
+				// 2 floats == 8 bytes
+				// Offset = 16
+				float u, v;
+
 				sMesh() : r(0), g(0), b(0), a(255) {}
 			};
 		}

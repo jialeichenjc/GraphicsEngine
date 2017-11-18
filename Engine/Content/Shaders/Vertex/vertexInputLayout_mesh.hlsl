@@ -19,6 +19,9 @@ void main(
 
 	in const float4 i_color : COLOR0,
 
+	in const float2 i_texture : TEXCOORD0,
+
+
 	// Output
 	//=======
 
@@ -26,7 +29,10 @@ void main(
 	// so that the GPU can figure out which fragments need to be shaded
 	out float4 o_position : SV_POSITION,
 
-	out float4 o_color : COLOR0
+	out float4 o_color : COLOR0,
+
+	out float2 o_texture : TEXCOORD0 
+
 
 )
 {
@@ -34,4 +40,5 @@ void main(
 	// the actual shading code is never used
 	o_position = float4(i_position, 1.0);
 	o_color = i_color;
+	o_texture = i_texture;
 }
