@@ -1,4 +1,10 @@
 #include "cSprite.h"
+
+// Static Data Initialization
+//===========================
+
+eae6320::Assets::cManager<cSprite> cSprite::s_manager;
+
 eae6320::cResult cSprite::CreateSprite(cSprite *& sprite, float p1, float p2, float p3, float p4) {
 	auto result = eae6320::Results::Success;
 	sprite = new cSprite();
@@ -194,24 +200,34 @@ void cSprite::Draw() {
 		direct3dImmediateContext->Draw(vertexCountToRender, indexOfFirstVertexToRender);
 	}
 }
-
-eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
-	auto result = eae6320::Results::Success;
-	if (sprite != NULL) {
-		result = sprite->CleanUp();
-		sprite->DecrementReferenceCount();
-		sprite = NULL;
-	}
-	
-
-	return result;
-}
+//
+//eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
+//	auto result = eae6320::Results::Success;
+//	if (sprite != NULL) {
+//		result = sprite->CleanUp();
+//		sprite->DecrementReferenceCount();
+//		sprite = NULL;
+//	}
+//	
+//
+//	return result;
+//}
 
 eae6320::cResult cSprite::CleanUp() {
 	auto result = eae6320::Results::Success;
 
 	if (s_vertexBuffer)
 	{
+		/*const auto localResult = s_vertexBuffer->Release();
+		if (!localResult)
+		{
+			EAE6320_ASSERT(false);
+			if (result)
+			{
+				result = localResult;
+			}
+		}*/
+		
 		s_vertexBuffer->Release();
 		s_vertexBuffer = nullptr;
 	}

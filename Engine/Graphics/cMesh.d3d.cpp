@@ -253,17 +253,17 @@ void cMesh::DrawMesh() {
 	direct3dImmediateContext->DrawIndexed(static_cast<unsigned int>(m_indexCount), indexOfFirstIndexToUse, offsetToAddToEachIndex);
 }
 
-eae6320::cResult cMesh::CleanUpMesh(cMesh *& mesh) {
-	auto result = eae6320::Results::Success;
-	if (mesh != NULL) {
-		result = mesh->CleanUp();
-		mesh->DecrementReferenceCount();
-		mesh = NULL;
-	}
-
-
-	return result;
-}
+//eae6320::cResult cMesh::CleanUpMesh(cMesh *& mesh) {
+//	auto result = eae6320::Results::Success;
+//	if (mesh != NULL) {
+//		result = mesh->CleanUp();
+//		mesh->DecrementReferenceCount();
+//		mesh = NULL;
+//	}
+//
+//
+//	return result;
+//}
 
 eae6320::cResult cMesh::CleanUp() {
 	auto result = eae6320::Results::Success;

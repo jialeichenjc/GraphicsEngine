@@ -67,7 +67,7 @@ public:
 		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_index);
 
-	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
+	//static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
 
 	static eae6320::cResult Load(const char* const i_path, cMesh*& o_mesh);
 
