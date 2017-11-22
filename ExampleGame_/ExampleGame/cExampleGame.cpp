@@ -11,6 +11,7 @@
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/UserInput/UserInput.h>
 #include <Engine/Math/Constants.h>
+#include <Engine/Graphics/cRenderState.h>
 
 cEffect * effect1;
 cEffect * effect2;
@@ -153,7 +154,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
 	auto result = eae6320::Results::Success;
-	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", 0);
+	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;

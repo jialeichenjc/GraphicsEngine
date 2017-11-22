@@ -46,8 +46,8 @@ eae6320::cResult cEffect::Initialize(const char* vertexPath, const char* fragPat
 		goto OnExit;
 	}
 	{
-		constexpr uint8_t defaultRenderState = 0;
-		if (!(result = s_renderState.Initialize(defaultRenderState)))
+		//constexpr uint8_t defaultRenderState = 0;
+		if (!(result = s_renderState.Initialize(renderState)))
 		{
 			EAE6320_ASSERT(false);
 			goto OnExit;
