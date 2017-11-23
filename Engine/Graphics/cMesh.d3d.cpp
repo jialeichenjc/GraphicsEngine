@@ -1,25 +1,26 @@
 #include "cMesh.h"
-eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
-	std::vector<uint16_t> & i_indexVec) {
+//eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+//	 std::vector<uint16_t> & i_indexVec) {
+//	auto result = eae6320::Results::Success;
+//
+//	mesh = new cMesh();
+//	result = mesh->Initialize(i_meshVec, i_indexVec);
+//	if (result) {
+//		goto OnExit;
+//	}
+//	else {
+//		EAE6320_ASSERT(false);
+//	}
+//OnExit:
+//
+//	return result;
+//}
+
+eae6320::cResult cMesh::Initialize(eae6320::Graphics::VertexFormats::sMesh *m_vertex,
+	uint16_t  *m_index) {
 	auto result = eae6320::Results::Success;
-
-	mesh = new cMesh();
-	result = mesh->Initialize(i_meshVec, i_indexVec);
-	if (result) {
-		goto OnExit;
-	}
-	else {
-		EAE6320_ASSERT(false);
-	}
-OnExit:
-
-	return result;
-}
-
-eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec, std::vector<uint16_t> & i_indexVec) {
-	auto result = eae6320::Results::Success;
-	m_indexCount = i_indexVec.size();
-	m_vertexCount = i_meshVec.size();
+	//m_indexCount = i_indexVec.size();
+	//m_vertexCount = i_meshVec.size();
 
 	auto* const direct3dDevice = eae6320::Graphics::sContext::g_context.direct3dDevice;
 	EAE6320_ASSERT(direct3dDevice);
@@ -110,7 +111,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 	}
 	// Vertex Buffer
 	{
-		const auto vertexCount = i_meshVec.size();
+		/*const auto vertexCount = i_meshVec.size();
 		eae6320::Graphics::VertexFormats::sMesh * vertexData = new eae6320::Graphics::VertexFormats::sMesh[vertexCount];
 
 		for (int i = 0; i < i_meshVec.size(); i++) {
@@ -124,11 +125,11 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 			vertexData[i].u = i_meshVec[i].u;
 			vertexData[i].v = 1.0f - i_meshVec[i].v;
-		}
+		}*/
 
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
-			const auto bufferSize = vertexCount * sizeof(eae6320::Graphics::VertexFormats::sMesh);
+			const auto bufferSize = m_vertexCount * sizeof(eae6320::Graphics::VertexFormats::sMesh);
 			EAE6320_ASSERT(bufferSize < (uint64_t(1u) << (sizeof(bufferDescription.ByteWidth) * 8)));
 			bufferDescription.ByteWidth = static_cast<unsigned int>(bufferSize);
 			bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;	// In our class the buffer will never change after it's been created
@@ -140,7 +141,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 		
 		D3D11_SUBRESOURCE_DATA initialData{};
 		{
-			initialData.pSysMem = vertexData;
+			initialData.pSysMem = m_vertex;
 			// (The other data members are ignored for non-texture buffers)
 		}
 		
@@ -152,26 +153,27 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			eae6320::Logging::OutputError("Direct3D failed to create a geometry vertex buffer (HRESULT %#010x)", d3dResult);
 			goto OnExit;
 		}
-		delete[] vertexData;
+		//delete[] vertexData;
 	}
 
 	// Index Buffer
 	{
-		const auto indexCount = i_indexVec.size();
-		uint16_t * indexData = new uint16_t[indexCount];
+		//const auto indexCount = i_indexVec.size();
+//		uint16_t * indexData = new uint16_t[indexCount];
+//
+//		/*for (int i = 0; i < i_indexVec.size(); i++) {
+//			indexData[i] = i_indexVec[i];
+//		}
+//*/
+//		for (size_t i = 0; i < i_indexVec.size(); i += 3) {
+//			indexData[i] = i_indexVec[i];
+//			indexData[i + 2] = i_indexVec[i + 1];
+//			indexData[i + 1] = i_indexVec[i + 2];
+//		}
 
-		/*for (int i = 0; i < i_indexVec.size(); i++) {
-			indexData[i] = i_indexVec[i];
-		}
-*/
-		for (size_t i = 0; i < i_indexVec.size(); i += 3) {
-			indexData[i] = i_indexVec[i];
-			indexData[i + 2] = i_indexVec[i + 1];
-			indexData[i + 1] = i_indexVec[i + 2];
-		}
 		D3D11_BUFFER_DESC bufferDescription{};
 		{
-			const auto bufferSize = indexCount * sizeof(uint16_t);
+			const auto bufferSize = m_indexCount * sizeof(uint16_t);
 			EAE6320_ASSERT(bufferSize < (uint64_t(1u) << (sizeof(bufferDescription.ByteWidth) * 8)));
 			bufferDescription.ByteWidth = static_cast<unsigned int>(bufferSize);
 			bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;	// In our class the buffer will never change after it's been created
@@ -183,7 +185,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 		D3D11_SUBRESOURCE_DATA initialData{};
 		{
-			initialData.pSysMem = indexData;
+			initialData.pSysMem = m_index;
 			// (The other data members are ignored for non-texture buffers)
 		}
 
@@ -195,7 +197,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 			eae6320::Logging::OutputError("Direct3D failed to create a geometry vertex buffer (HRESULT %#010x)", d3dResult);
 			goto OnExit;
 		}
-		delete[] indexData;
+		//delete[] indexData;
 	}
 
 OnExit:

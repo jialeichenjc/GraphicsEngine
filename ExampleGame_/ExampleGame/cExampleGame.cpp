@@ -12,6 +12,9 @@
 #include <Engine/UserInput/UserInput.h>
 #include <Engine/Math/Constants.h>
 #include <Engine/Graphics/cRenderState.h>
+#include <fstream>
+
+//#include <cstdio>
 
 cEffect * effect1;
 cEffect * effect2;
@@ -42,6 +45,12 @@ eae6320::Physics::sRigidBodyState rigidBody5; // for meshData4
 eae6320::Graphics::cCamera camera;
 
 float timer = 0.0f;
+
+// test function
+//void eae6320::cExampleGame::testWriteFile() {
+//	File * pfile;
+//	pFile
+//}
 
 // Inherited Implementation
 //=========================
@@ -203,14 +212,14 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	}
 
 	//result = cMesh::CreateMesh(mesh1, "data/Meshes/mesh1.lua", i_meshVec, i_indexVec);
-	result = cMesh::s_manager.Load("data/Meshes/mesh1.lua", mesh1);
+	result = cMesh::s_manager.Load("data/Meshes/mesh1.lua.bin", mesh1);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
 
 	//result = cMesh::CreateMesh(mesh2, "data/Meshes/mesh2.lua", i_meshVec2, i_indexVec2);
-	result = cMesh::s_manager.Load("data/Meshes/mesh2.lua", mesh2);
+	result = cMesh::s_manager.Load("data/Meshes/mesh2.lua.bin", mesh2);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
