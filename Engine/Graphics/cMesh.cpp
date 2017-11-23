@@ -52,13 +52,7 @@ eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, const char* const i_path,
 		ptr += sizeof(size_t);
 
 		mesh->m_index = reinterpret_cast<uint16_t*>(ptr);
-
-		for (size_t i = 0; i < mesh->m_indexCount; i++) 
-		{
-			uint16_t index = *reinterpret_cast<uint16_t*>(ptr);
-
-			ptr += sizeof(uint16_t);
-		}
+		
 	}
 
 	result = mesh->Initialize(mesh->m_vertex,mesh->m_index);
