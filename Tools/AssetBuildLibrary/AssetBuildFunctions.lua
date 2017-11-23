@@ -234,8 +234,8 @@ function BuildAssets()
 	-- Build three textures
 	local path_textureBuilder = OutputDir .. "TextureBuilder.exe"
 		do
-			local texture_authored = EngineSourceContentDir .. "Textures/shifu.jpg"
-			local texture_built = GameInstallDir .. "data/Textures/shifu.jpg"
+			local texture_authored = EngineSourceContentDir .. "Textures/shifu.png"
+			local texture_built = GameInstallDir .. "data/Textures/shifu.png"
 			CreateDirectoryIfItDoesntExist( texture_built )
 			local command = "\"" .. path_textureBuilder .. "\""
 				.. " \"" .. texture_authored .. "\" \"" .. texture_built
