@@ -18,17 +18,17 @@ OnExit:
 
 	return result;
 }
-
-eae6320::cResult cEffect::CleanUpEffect(cEffect *& effect) {
-	auto result = eae6320::Results::Success;
-	if (effect != NULL) {
-		result = effect->CleanUp();
-		effect->DecrementReferenceCount();
-		effect = NULL;
-	}
-	
-	return result;
-}
+//
+//eae6320::cResult cEffect::CleanUpEffect(cEffect *& effect) {
+//	auto result = eae6320::Results::Success;
+//	if (effect != NULL) {
+//		result = effect->CleanUp();
+//		effect->DecrementReferenceCount();
+//		effect = NULL;
+//	}
+//	
+//	return result;
+//}
 
 eae6320::cResult cEffect::Initialize(const char* vertexPath, const char* fragPath, const uint8_t renderState) {
 	auto result = eae6320::Results::Success;
@@ -46,8 +46,8 @@ eae6320::cResult cEffect::Initialize(const char* vertexPath, const char* fragPat
 		goto OnExit;
 	}
 	{
-		constexpr uint8_t defaultRenderState = 0;
-		if (!(result = s_renderState.Initialize(defaultRenderState)))
+		//constexpr uint8_t defaultRenderState = 0;
+		if (!(result = s_renderState.Initialize(renderState)))
 		{
 			EAE6320_ASSERT(false);
 			goto OnExit;

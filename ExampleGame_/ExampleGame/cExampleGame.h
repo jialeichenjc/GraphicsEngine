@@ -83,6 +83,8 @@ namespace eae6320
 		virtual cResult Initialize() override;
 		virtual cResult CleanUp() override;
 
+		void testWriteFile();
+
 	};
 }
 

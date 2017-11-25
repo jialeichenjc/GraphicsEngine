@@ -67,29 +67,33 @@ public:
 		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_index);
 
-	static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
+	//static eae6320::cResult CleanUpMesh(cMesh *& i_mesh);
 
 	static eae6320::cResult Load(const char* const i_path, cMesh*& o_mesh);
 
-	// Input the path to a mesh file, extract mesh info from that file (lua file)
-	static eae6320::cResult LoadMesh(const char* const i_path, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
-		std::vector<uint16_t> & i_indexVec);
+	//// Input the path to a mesh file, extract mesh info from that file (lua file)
+	//static eae6320::cResult LoadMesh(const char* const i_path, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+	//	std::vector<uint16_t> & i_indexVec);
+	size_t m_indexCount;
+	size_t m_vertexCount;
+
+	eae6320::Graphics::VertexFormats::sMesh *m_vertex;
+	uint16_t  *m_index;
+
 	void DrawMesh();
 	~cMesh() {
 		CleanUp();
 	}
 private:
 	cMesh() = default;
-	size_t m_indexCount;
-	size_t m_vertexCount;
-	eae6320::cResult Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
-		std::vector<uint16_t> & i_indexVec);
+	eae6320::cResult Initialize(eae6320::Graphics::VertexFormats::sMesh *i_vertex,
+		uint16_t  *m_index);
 
 	eae6320::cResult CleanUp();
 
-	static eae6320::cResult LoadMeshValues(lua_State& io_luaState, 
+	/*static eae6320::cResult LoadMeshValues(lua_State& io_luaState, 
 		std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
 		std::vector<uint16_t> & i_indexVec);
 
-	static void readIndexValueFromLua(lua_State & io_luaState, std::vector<uint16_t> & indexVec, int numIndex);
+	static void readIndexValueFromLua(lua_State & io_luaState, std::vector<uint16_t> & indexVec, int numIndex);*/
 };

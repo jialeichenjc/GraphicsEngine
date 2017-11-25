@@ -227,16 +227,16 @@ void cSprite::Draw() {
 	}
 }
 
-eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
-	auto result = eae6320::Results::Success;
-	if (sprite != NULL) {
-		result = sprite->CleanUp();
-		sprite->DecrementReferenceCount();
-		sprite = NULL;
-	}
-
-	return result;
-}
+//eae6320::cResult cSprite::CleanUpSprite(cSprite *& sprite) {
+//	auto result = eae6320::Results::Success;
+//	if (sprite != NULL) {
+//		result = sprite->CleanUp();
+//		sprite->DecrementReferenceCount();
+//		sprite = NULL;
+//	}
+//
+//	return result;
+//}
 
 eae6320::cResult cSprite::CleanUp() {
 	auto result = eae6320::Results::Success;

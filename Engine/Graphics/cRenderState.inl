@@ -26,7 +26,7 @@ inline void eae6320::Graphics::RenderStates::DisableAlphaTransparency( uint8_t& 
 // Depth Buffering
 inline bool eae6320::Graphics::RenderStates::IsDepthBufferingEnabled( const uint8_t i_renderStateBits )
 {
-	return ( i_renderStateBits & DepthBuffering ) == 0;
+	return ( i_renderStateBits & DepthBuffering ) != 0;
 }
 inline void eae6320::Graphics::RenderStates::EnableDepthBuffering( uint8_t& io_renderStateBits )
 {

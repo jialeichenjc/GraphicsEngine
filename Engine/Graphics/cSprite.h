@@ -42,9 +42,20 @@ public:
 	EAE6320_ASSETS_DECLAREREFERENCECOUNT();
 	EAE6320_ASSETS_DECLAREREFERENCECOUNTINGFUNCTIONS();
 	EAE6320_ASSETS_DECLAREDELETEDREFERENCECOUNTEDFUNCTIONS(cSprite);
+
+	// Access
+	//-------
+
+	using Handle = eae6320::Assets::cHandle<cSprite>;
+	static eae6320::Assets::cManager<cSprite> s_manager;
+
 	static eae6320::cResult CreateSprite(cSprite *& sprite, float p1, float p2, float p3, float p4);
-	static eae6320::cResult CleanUpSprite(cSprite *& sprite);
+	//eae6320::cResult CleanUpSprite(cSprite *& sprite);
 	void Draw();
+
+	~cSprite() {
+		CleanUp();
+	}
 private:
 	cSprite() = default;
 	eae6320::cResult Initialize(float p1, float p2, float p3, float p4);

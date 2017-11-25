@@ -1,25 +1,26 @@
 #include "cMesh.h"
-eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
-	std::vector<uint16_t> & i_indexVec) {
-	
-	auto result = eae6320::Results::Success;
-	mesh = new cMesh();
-	result = mesh->Initialize(i_meshVec, i_indexVec);
-	if (result) {
-		goto OnExit;
-	}
-	else {
-		EAE6320_ASSERT(false);
-	}
-OnExit:
+//eae6320::cResult cMesh::CreateMesh(cMesh *& mesh, std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec,
+//	/*std::vector<uint16_t> & i_indexVec) {
+//	
+//	auto result = eae6320::Results::Success;
+//	mesh = new cMesh();
+//	result = mesh->Initialize(i_meshVec, i_indexVec);
+//	if (result) {
+//		goto OnExit;
+//	}
+//	else {
+//		EAE6320_ASSERT(false);
+//	}
+//OnExit:
+//
+//	return result;*/
+//}
 
-	return result;
-}
-
-eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats::sMesh> & i_meshVec, std::vector<uint16_t> & i_indexVec) {
+eae6320::cResult cMesh::Initialize(eae6320::Graphics::VertexFormats::sMesh *m_vertex,
+	uint16_t  *m_index) {
 	auto result = eae6320::Results::Success;
-	m_indexCount = i_indexVec.size();
-	m_vertexCount = i_meshVec.size();
+	/*m_indexCount = i_indexVec.size();
+	m_vertexCount = i_meshVec.size();*/
 	// Create a vertex array object and make it active
 	{
 		constexpr GLsizei arrayCount = 1;
@@ -105,10 +106,10 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 
 	// Assign the data to the buffer
 	{
-		const auto vertexCount = i_meshVec.size();
-		eae6320::Graphics::VertexFormats::sMesh * vertexData = new eae6320::Graphics::VertexFormats::sMesh[vertexCount];
+		/*const auto vertexCount = m_vertexCount;
+		eae6320::Graphics::VertexFormats::sMesh * vertexData = new eae6320::Graphics::VertexFormats::sMesh[vertexCount];*/
 
-		{
+		/*{
 			for (size_t i = 0; i < i_meshVec.size(); i++) {
 				vertexData[i].x = i_meshVec[i].x;
 				vertexData[i].y = i_meshVec[i].y;
@@ -119,14 +120,14 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				vertexData[i].u = i_meshVec[i].u;
 				vertexData[i].v = i_meshVec[i].v;
 
-				//vertexData[i].a = i_meshVec[i].a;
+				vertexData[i].a = i_meshVec[i].a;
 
 			}
 
-		}
-		const auto bufferSize = vertexCount * sizeof(eae6320::Graphics::VertexFormats::sMesh);
+		}*/
+		const auto bufferSize = m_vertexCount * sizeof(eae6320::Graphics::VertexFormats::sMesh);
 		EAE6320_ASSERT(bufferSize < (uint64_t(1u) << (sizeof(GLsizeiptr) * 8)));
-		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(bufferSize), reinterpret_cast<GLvoid*>(vertexData),
+		glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(bufferSize), reinterpret_cast<GLvoid*>(m_vertex),
 			// In our class we won't ever read from the buffer
 			GL_STATIC_DRAW);
 		const auto errorCode = glGetError();
@@ -138,27 +139,27 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				reinterpret_cast<const char*>(gluErrorString(errorCode)));
 			goto OnExit;
 		}
-		delete[] vertexData;
+		//delete[] vertexData;
 	}
 
 	// Assign the data to the index buffer
 	{
-		const auto indexCount = i_indexVec.size();
-		uint16_t * indexData = new uint16_t[indexCount];
+		const auto indexCount = m_indexCount;
+		//uint16_t * indexData = new uint16_t[indexCount];
 
 		{
 
-			for (size_t i = 0; i < i_indexVec.size(); i+=3) {
-				indexData[i] = i_indexVec[i];
-				indexData[i + 1] = i_indexVec[i + 1];
-				indexData[i + 2] = i_indexVec[i + 2];
+			/*for (size_t i = 0; i < indexCount; i += 3) {
+				indexData[i] = m_index[i];
+				indexData[i + 1] = m_index[i + 1];
+				indexData[i + 2] = m_index[i + 2];
 			}
-
+*/
 		}
 
-		const auto bufferSize = indexCount * sizeof(uint16_t);
+		const auto bufferSize = m_indexCount * sizeof(uint16_t);
 		EAE6320_ASSERT(bufferSize < (uint64_t(1u) << (sizeof(GLsizeiptr) * 8)));
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(bufferSize), reinterpret_cast<GLvoid*>(indexData),
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(bufferSize), reinterpret_cast<GLvoid*>(m_index),
 			// In our class we won't ever read from the buffer
 			GL_STATIC_DRAW);
 		const auto errorCode = glGetError();
@@ -170,7 +171,7 @@ eae6320::cResult cMesh::Initialize(std::vector<eae6320::Graphics::VertexFormats:
 				reinterpret_cast<const char*>(gluErrorString(errorCode)));
 			goto OnExit;
 		}
-		delete[] indexData;
+		//delete[] indexData;
 	}
 
 
@@ -307,16 +308,16 @@ void cMesh::DrawMesh() {
 	}
 }
 
-eae6320::cResult cMesh::CleanUpMesh(cMesh *& mesh) {
-	auto result = eae6320::Results::Success;
-	if (mesh != NULL) {
-		result = mesh->CleanUp();
-		mesh->DecrementReferenceCount();
-		mesh = NULL;
-	}
-
-	return result;
-}
+//eae6320::cResult cMesh::CleanUpMesh(cMesh *& mesh) {
+//	auto result = eae6320::Results::Success;
+//	if (mesh != NULL) {
+//		result = mesh->CleanUp();
+//		mesh->DecrementReferenceCount();
+//		mesh = NULL;
+//	}
+//
+//	return result;
+//}
 
 eae6320::cResult cMesh::CleanUp() {
 	auto result = eae6320::Results::Success;
