@@ -6,7 +6,9 @@ return
 {
 	meshes =
 	{
-		EAE6320_TODO
+		EngineSourceContentDir .. "Meshes/mesh1.lua",
+
+		EngineSourceContentDir .. "Meshes/mesh2.lua",
 	},
 	shaders =
 	{
@@ -15,8 +17,18 @@ return
 		-- but with my disk layout and file extension.
 		-- You need to update the paths to match your content
 		-- and then add the other shaders that you use.
-		{ path = "Shaders/Vertex/vertexInputLayout_mesh.shader", arguments = { "vertex" } },
-		{ path = "Shaders/Vertex/vertexInputLayout_sprite.shader", arguments = { "vertex" } },
+		-- { path = "Shaders/Vertex/vertexInputLayout_mesh.shader", arguments = { "vertex" } },
+		{ path = EngineSourceContentDir .. "Shaders/Vertex/commonVertex1", arguments = { "vertex" } },
+		
+		{ path = EngineSourceContentDir .. "Shaders/Vertex/commonVertex2", arguments = { "vertex" } },
+
+		{ path = EngineSourceContentDir .. "Shaders/Fragment/commonFrag1", arguments = { "fragment" } },
+
+		{ path = EngineSourceContentDir .. "Shaders/Fragment/commonFrag2", arguments = { "fragment" } },
+
+		{ path = EngineSourceContentDir .. "Shaders/Vertex/vertexInputLayout_geometry.hlsl", argument = { "vertex" } },
+
+		{ path = EngineSourceContentDir .. "Shaders/Vertex/Shaders/Vertex/vertexInputLayout_mesh.hlsl", argument = { "vertex" } },
 	},
 	textures =
 	{
@@ -24,7 +36,10 @@ return
 		-- These are some examples with my disk layout.
 		-- You need to update the paths to match your content
 		-- and then add the other textures that you use.
-		"Images/eaeAlien.png",
-		"Images/eaeGamePad.png",
+		EngineSourceContentDir .. "Textures/cupcake.jpg",
+
+		EngineSourceContentDir .. "Textures/babyPanda.jpg",
+
+		EngineSourceContentDir .. "Textures/shifu.png",
 	},
 }

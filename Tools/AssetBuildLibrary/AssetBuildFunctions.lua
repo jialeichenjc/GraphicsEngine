@@ -479,11 +479,38 @@ function BuildAssets( i_path_assetsToBuild )
 
 	-- Copy the licenses to the installation location
 	do
-		EAE6320_TODO
+		CreateDirectoryIfItDoesntExist( GameLicenseDir )
+        local sourceLicenses = GetFilesInDirectory( LicenseDir )
+        for i, sourceLicense in ipairs( sourceLicenses ) do
+            local sourceFileName = sourceLicense:sub( #LicenseDir + 1 )
+            local targetPath = GameLicenseDir .. sourceFileName
+            local result, errorMessage = CopyFile( sourceLicense, targetPath )
+            if result then
+                -- Display a message
+                print( "Installed " .. sourceFileName )
+            else
+                wereThereErrors = true
+                OutputErrorMessage( "The license \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
+            end
+        end
 	end
 	-- Copy the settings file to the installation location
 	do
-		EAE6320_TODO
+		local sourceLicenses = GetFilesInDirectory( OutputDir )
+        for i, sourceLicense in ipairs( sourceLicenses ) do
+            local sourceFileName = sourceLicense:sub( #OutputDir + 1 )
+            if sourceFileName == "settings.ini" then 
+                local targetPath = GameInstallDir .. sourceFileName
+                local result, errorMessage = CopyFile( sourceLicense, targetPath )
+                if result then
+                    -- Display a message
+                    print( "Installed " .. sourceFileName )
+                else
+                    wereThereErrors = true
+                    OutputErrorMessage( "The user settings \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
+                end
+            end
+        end
 	end
 
 	return not wereThereErrors
