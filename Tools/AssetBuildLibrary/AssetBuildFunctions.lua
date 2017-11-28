@@ -251,7 +251,10 @@ end
 
 NewAssetTypeInfo( "meshes",
 	{
-		EAE6320_TODO
+		--EAE6320_TODO
+		GetBuilderRelativePath = function()
+			return "MeshBuilder.exe"
+		end,
 	}
 )
 
@@ -479,39 +482,82 @@ function BuildAssets( i_path_assetsToBuild )
 
 	-- Copy the licenses to the installation location
 	do
-		CreateDirectoryIfItDoesntExist( GameLicenseDir )
-        local sourceLicenses = GetFilesInDirectory( LicenseDir )
-        for i, sourceLicense in ipairs( sourceLicenses ) do
-            local sourceFileName = sourceLicense:sub( #LicenseDir + 1 )
-            local targetPath = GameLicenseDir .. sourceFileName
-            local result, errorMessage = CopyFile( sourceLicense, targetPath )
-            if result then
-                -- Display a message
-                print( "Installed " .. sourceFileName )
-            else
-                wereThereErrors = true
-                OutputErrorMessage( "The license \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
-            end
-        end
+		-- Decide if the target needs to be built
+		local shouldTargetBeBuilt
+		do
+			-- The simplest reason a target should be built is if it doesn't exist
+			local doesTargetExist = DoesFileExist( GameLicenseDir )
+			if doesTargetExist then
+				-- Even if the target exists it may be out-of-date.
+				-- If the source has been modified more recently than the target
+				-- then the target should be re-built.
+				local lastWriteTime_source = GetLastWriteTime( LicenseDir )
+				local lastWriteTime_target = GetLastWriteTime( GameLicenseDir )
+				shouldTargetBeBuilt = lastWriteTime_source > lastWriteTime_target
+			else
+				shouldTargetBeBuilt = true;
+			end
+		end
+
+		if shouldTargetBeBuilt then
+			CreateDirectoryIfItDoesntExist( GameLicenseDir )
+			local sourceLicenses = GetFilesInDirectory( LicenseDir )
+			for i, sourceLicense in ipairs( sourceLicenses ) do
+				local sourceFileName = sourceLicense:sub( #LicenseDir + 1 )
+				local targetPath = GameLicenseDir .. sourceFileName
+				local result, errorMessage = CopyFile( sourceLicense, targetPath )
+				if result then
+					-- Display a message
+					print( "Installed " .. sourceFileName )
+				else
+					wereThereErrors = true
+					OutputErrorMessage( "The license \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
+				end
+			end
+		end
 	end
+
 	-- Copy the settings file to the installation location
 	do
-		local sourceLicenses = GetFilesInDirectory( OutputDir )
-        for i, sourceLicense in ipairs( sourceLicenses ) do
-            local sourceFileName = sourceLicense:sub( #OutputDir + 1 )
-            if sourceFileName == "settings.ini" then 
-                local targetPath = GameInstallDir .. sourceFileName
-                local result, errorMessage = CopyFile( sourceLicense, targetPath )
-                if result then
-                    -- Display a message
-                    print( "Installed " .. sourceFileName )
-                else
-                    wereThereErrors = true
-                    OutputErrorMessage( "The user settings \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
-                end
-            end
-        end
-	end
+		
+		-- Decide if the target needs to be built
+		local shouldTargetBeBuilt
+		local path_source = OutputDir .. "settings.ini"
+		local path_target = GameInstallDir .. "settings.ini"
+		do
+			-- The simplest reason a target should be built is if it doesn't exist
+			local doesTargetExist = DoesFileExist( path_source)
+			if doesTargetExist then
+				-- Even if the target exists it may be out-of-date.
+				-- If the source has been modified more recently than the target
+				-- then the target should be re-built.
+				local lastWriteTime_source = GetLastWriteTime( path_source )
+				local lastWriteTime_target = GetLastWriteTime( path_target )
+				shouldTargetBeBuilt = lastWriteTime_source > lastWriteTime_target
+			else
+				shouldTargetBeBuilt = true;
+			end
+		end	
+		
+		if shouldTargetBeBuilt then
+
+			local sourceLicenses = GetFilesInDirectory( OutputDir )
+			for i, sourceLicense in ipairs( sourceLicenses ) do
+				local sourceFileName = sourceLicense:sub( #OutputDir + 1 )
+				if sourceFileName == "settings.ini" then 
+					local targetPath = GameInstallDir .. sourceFileName
+					local result, errorMessage = CopyFile( sourceLicense, targetPath )
+					if result then
+						-- Display a message
+						print( "Installed " .. sourceFileName )
+					else
+						wereThereErrors = true
+						OutputErrorMessage( "The user settings \"" .. sourceLicense .. "\" couldn't be copied to \"" .. targetPath .. "\": " .. errorMessage )
+					end
+				end
+			end
+		end
+	end -- end of copy setting file
 
 	return not wereThereErrors
 end

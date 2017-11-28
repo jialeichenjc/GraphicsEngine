@@ -1,14 +1,66 @@
 --[[
 	This file lists every asset that must be built by the AssetBuildSystem
 ]]
+-- Environment Variables
+local EngineSourceContentDir, GameSourceContentDir, GameInstallDir, OutputDir, LicenseDir, GameLicenseDir
+do
+	-- EngineSourceContentDir
+	do
+		local errorMessage
+		EngineSourceContentDir, errorMessage = GetEnvironmentVariable( "EngineSourceContentDir" )
+		if not EngineSourceContentDir then
+			error( errorMessage )
+		end
+	end
+	-- GameSourceContentDir
+	do
+		local errorMessage
+		GameSourceContentDir, errorMessage = GetEnvironmentVariable( "GameSourceContentDir" )
+		if not GameSourceContentDir then
+			error( errorMessage )
+		end
+	end
+	-- GameInstallDir
+	do
+		local errorMessage
+		GameInstallDir, errorMessage = GetEnvironmentVariable( "GameInstallDir" )
+		if not GameInstallDir then
+			error( errorMessage )
+		end
+	end
+	-- OutputDir
+	do
+		local errorMessage
+		OutputDir, errorMessage = GetEnvironmentVariable( "OutputDir" )
+		if not OutputDir then
+			error( errorMessage )
+		end
+	end
+	-- LicenseDir
+	do
+		local errorMessage
+		LicenseDir, errorMessage = GetEnvironmentVariable( "LicenseDir" )
+		if not LicenseDir then
+			error( errorMessage )
+		end
+	end
+	-- GameLicenseDir
+	do
+		local errorMessage
+		GameLicenseDir, errorMessage = GetEnvironmentVariable( "GameLicenseDir" )
+		if not GameLicenseDir then
+			error( errorMessage )
+		end
+	end
+end
 
 return
 {
 	meshes =
 	{
-		EngineSourceContentDir .. "Meshes/mesh1.lua",
+		"Meshes/mesh1.lua", arguments = { "meshes" } ,
 
-		EngineSourceContentDir .. "Meshes/mesh2.lua",
+		"Meshes/mesh2.lua", arguments = { "meshes" } ,
 	},
 	shaders =
 	{
@@ -18,17 +70,17 @@ return
 		-- You need to update the paths to match your content
 		-- and then add the other shaders that you use.
 		-- { path = "Shaders/Vertex/vertexInputLayout_mesh.shader", arguments = { "vertex" } },
-		{ path = EngineSourceContentDir .. "Shaders/Vertex/commonVertex1", arguments = { "vertex" } },
+		{ path = "Shaders/Vertex/commonVertex1", arguments = { "vertex" } },
 		
-		{ path = EngineSourceContentDir .. "Shaders/Vertex/commonVertex2", arguments = { "vertex" } },
+		{ path = "Shaders/Vertex/commonVertex2", arguments = { "vertex" } },
 
-		{ path = EngineSourceContentDir .. "Shaders/Fragment/commonFrag1", arguments = { "fragment" } },
+		{ path = "Shaders/Fragment/commonFrag1", arguments = { "fragment" } },
 
-		{ path = EngineSourceContentDir .. "Shaders/Fragment/commonFrag2", arguments = { "fragment" } },
+		{ path = "Shaders/Fragment/commonFrag2", arguments = { "fragment" } },
 
-		{ path = EngineSourceContentDir .. "Shaders/Vertex/vertexInputLayout_geometry.hlsl", argument = { "vertex" } },
+		{ path = "Shaders/Vertex/vertexInputLayout_geometry.hlsl", arguments = { "vertex" } },
 
-		{ path = EngineSourceContentDir .. "Shaders/Vertex/Shaders/Vertex/vertexInputLayout_mesh.hlsl", argument = { "vertex" } },
+		{ path = "Shaders/Vertex/vertexInputLayout_mesh.hlsl", arguments = { "vertex" } },
 	},
 	textures =
 	{
@@ -36,10 +88,10 @@ return
 		-- These are some examples with my disk layout.
 		-- You need to update the paths to match your content
 		-- and then add the other textures that you use.
-		EngineSourceContentDir .. "Textures/cupcake.jpg",
+		"Textures/cupcake.jpg",
 
-		EngineSourceContentDir .. "Textures/babyPanda.jpg",
+		"Textures/babyPanda.jpg",
 
-		EngineSourceContentDir .. "Textures/shifu.png",
+		"Textures/shifu.png",
 	},
 }
