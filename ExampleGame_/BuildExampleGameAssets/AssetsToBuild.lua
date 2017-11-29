@@ -92,6 +92,6 @@ return
 
 		"Textures/babyPanda.jpg",
 
-		"Textures/shifu.png",
+		"Textures/shifu.tga",
 	},
 }

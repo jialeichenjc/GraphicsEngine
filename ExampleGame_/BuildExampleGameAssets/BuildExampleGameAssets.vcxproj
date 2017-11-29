@@ -106,13 +106,16 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <CustomBuildStep>
-      <Command>"$(OutputDir)AssetBuildExe.exe"</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Building $(GameName) Assets</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>ALWAYS_RUN</Outputs>
+      <Outputs>
+      </Outputs>
       <Inputs>
       </Inputs>
     </CustomBuildStep>
@@ -124,13 +127,16 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <CustomBuildStep>
-      <Command>"$(OutputDir)AssetBuildExe.exe"</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Building $(GameName) Assets</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>ALWAYS_RUN</Outputs>
+      <Outputs>
+      </Outputs>
       <Inputs>
       </Inputs>
     </CustomBuildStep>
@@ -148,13 +154,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command>"$(OutputDir)AssetBuildExe.exe"</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Building $(GameName) Assets</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>ALWAYS_RUN</Outputs>
+      <Outputs>
+      </Outputs>
       <Inputs>
       </Inputs>
     </CustomBuildStep>
@@ -172,13 +181,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command>"$(OutputDir)AssetBuildExe.exe"</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Building $(GameName) Assets</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>ALWAYS_RUN</Outputs>
+      <Outputs>
+      </Outputs>
       <Inputs>
       </Inputs>
     </CustomBuildStep>

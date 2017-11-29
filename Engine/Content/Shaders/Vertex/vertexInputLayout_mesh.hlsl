@@ -4,6 +4,7 @@ This vertex shader is used to create a Direct3D vertex input layout object
 
 #include <Shaders/shaders.inc>
 
+#if defined( EAE6320_PLATFORM_D3D )
 // Entry Point
 //============
 
@@ -42,3 +43,4 @@ void main(
 	o_color = i_color;
 	o_texture = i_texture;
 }
+#endif

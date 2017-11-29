@@ -263,11 +263,14 @@ NewAssetTypeInfo( "meshes",
 
 NewAssetTypeInfo( "shaders",
 	{
-		--[[
+		
 		ConvertSourceRelativePathToBuiltRelativePath = function( i_sourceRelativePath )
-			-- EAE6320_TODO?
+			local relativeDirectory, file = i_sourceRelativePath:match( "(.-)([^/\\]+)$" )
+			local fileName, extensionWithPeriod = file:match( "([^%.]+)(.*)" )
+			-- By default the relative paths are the same
+			return relativeDirectory .. fileName .. ".shd"
 		end,
-		]]
+		
 		GetBuilderRelativePath = function()
 			return "ShaderBuilder.exe"
 		end,
@@ -526,7 +529,7 @@ function BuildAssets( i_path_assetsToBuild )
 		local path_target = GameInstallDir .. "settings.ini"
 		do
 			-- The simplest reason a target should be built is if it doesn't exist
-			local doesTargetExist = DoesFileExist( path_source)
+			local doesTargetExist = DoesFileExist( path_target)
 			if doesTargetExist then
 				-- Even if the target exists it may be out-of-date.
 				-- If the source has been modified more recently than the target

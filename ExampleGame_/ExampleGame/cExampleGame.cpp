@@ -163,13 +163,13 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
 	auto result = eae6320::Results::Success;
-	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", eae6320::Graphics::RenderStates::DepthBuffering);
+	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/commonvertex1.shd", "data/Shaders/Fragment/commonfrag1.shd", eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
 
-	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/commonvertex2.shd", "data/Shaders/Fragment/commonfrag2.shd", 0);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
@@ -205,7 +205,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/shifu.png", texture3);
+	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/shifu.tga", texture3);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
