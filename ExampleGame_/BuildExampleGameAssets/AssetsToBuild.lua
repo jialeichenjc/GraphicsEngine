@@ -61,6 +61,8 @@ return
 		"Meshes/mesh1.lua", arguments = { "meshes" } ,
 
 		"Meshes/mesh2.lua", arguments = { "meshes" } ,
+
+		"Meshes/mesh3.lua", arguments = { "meshes" } ,
 	},
 	shaders =
 	{
