@@ -18,6 +18,7 @@
 
 cEffect * effect1;
 cEffect * effect2;
+cEffect * effect3;
 
 cSprite * sprite1;
 cSprite * sprite2;
@@ -164,13 +165,21 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	
 	auto result = eae6320::Results::Success;
 	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/commonvertex1.shd", "data/Shaders/Fragment/commonfrag1.shd", 
-		eae6320::Graphics::RenderStates::AlphaTransparency | eae6320::Graphics::RenderStates::DepthBuffering);
+		eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
 
 	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/commonvertex2.shd", "data/Shaders/Fragment/commonfrag2.shd", 0);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	// effect3 is used for translucent meshes and has both depth buffering and transparency enabled
+	result = cEffect::CreateEffect(effect3, "data/Shaders/Vertex/commonvertex3.shd", "data/Shaders/Fragment/commonfrag3.shd", 
+		eae6320::Graphics::RenderStates::AlphaTransparency | eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
@@ -231,7 +240,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	// the almond shape is data4, and should be translucent
+	data4 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
 	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
@@ -253,6 +263,10 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 	
 	if (effect2) {
 		effect2->DecrementReferenceCount();
+	}
+
+	if (effect3) {
+		effect3->DecrementReferenceCount();
 	}
 
 	if (texture1) {
