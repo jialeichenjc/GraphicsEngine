@@ -163,7 +163,8 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
 	auto result = eae6320::Results::Success;
-	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/commonvertex1.shd", "data/Shaders/Fragment/commonfrag1.shd", eae6320::Graphics::RenderStates::DepthBuffering);
+	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/commonvertex1.shd", "data/Shaders/Fragment/commonfrag1.shd", 
+		eae6320::Graphics::RenderStates::AlphaTransparency | eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;

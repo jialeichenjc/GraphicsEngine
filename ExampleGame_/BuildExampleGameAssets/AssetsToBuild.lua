@@ -74,9 +74,13 @@ return
 		
 		{ path = "Shaders/Vertex/commonVertex2", arguments = { "vertex" } },
 
+		{ path = "Shaders/Vertex/commonVertex3", arguments = { "vertex" } },
+
 		{ path = "Shaders/Fragment/commonFrag1", arguments = { "fragment" } },
 
 		{ path = "Shaders/Fragment/commonFrag2", arguments = { "fragment" } },
+
+		{ path = "Shaders/Fragment/commonFrag3", arguments = { "fragment" } },
 
 		{ path = "Shaders/Vertex/vertexInputLayout_geometry.hlsl", arguments = { "vertex" } },
 
