@@ -120,11 +120,9 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, 
 	data.effect->IncrementReferenceCount();
 	data.mesh->IncrementReferenceCount();
 	data.texture->IncrementReferenceCount();
-	//data.rigidBodyState = rigidBodyState;\
 
 	data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 	data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
-//	rigidBodyState = data.rigidBodyState;
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
 }
 
@@ -316,17 +314,6 @@ eae6320::cResult eae6320::Graphics::Initialize(const sInitializationParameters& 
 			EAE6320_ASSERT(false);
 			goto OnExit;
 		}
-		//if (result = s_samplerState.Initialize())
-		//{
-		//	// There is only a single sampler state that is re-used
-		//	// and so it can be bound at initialization time and never unbound
-		//	s_samplerState.Bind();
-		//}
-		//else
-		//{
-		//	EAE6320_ASSERT(false);
-		//	goto OnExit;
-		//}
 	}
 
 	// Initialize the events

@@ -3,7 +3,7 @@
 */
 
 #include <Shaders/shaders.inc>
-
+#if defined( EAE6320_PLATFORM_D3D )
 // Entry Point
 //============
 
@@ -35,3 +35,4 @@ void main(
 	o_position = float4( i_position, 1.0 );
 	o_texture = i_texture;
 }
+#endif

@@ -18,6 +18,7 @@
 
 cEffect * effect1;
 cEffect * effect2;
+cEffect * effect3;
 
 cSprite * sprite1;
 cSprite * sprite2;
@@ -31,6 +32,7 @@ eae6320::Graphics::cTexture::Handle texture3;
 
 cMesh::Handle mesh1;
 cMesh::Handle mesh2;
+cMesh::Handle mesh3;
 
 eae6320::Graphics::renderData data1;
 eae6320::Graphics::renderData data2;
@@ -38,9 +40,11 @@ eae6320::Graphics::renderData data3;
 
 eae6320::Graphics::meshData data4;
 eae6320::Graphics::meshData data5;
+eae6320::Graphics::meshData data6;
 
 eae6320::Physics::sRigidBodyState rigidBody4; // for meshData4
-eae6320::Physics::sRigidBodyState rigidBody5; // for meshData4
+eae6320::Physics::sRigidBodyState rigidBody5; // for meshData5
+eae6320::Physics::sRigidBodyState rigidBody6; // for meshData6
 
 eae6320::Graphics::cCamera camera;
 
@@ -61,9 +65,10 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	eae6320::Graphics::SubmitEffectAndSprite(data1);
 
 	eae6320::Graphics::SubmitCamera(camera);
-	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
 
+	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
 	eae6320::Graphics::SubmitEffectAndMesh(data5, rigidBody5);
+	eae6320::Graphics::SubmitEffectAndMesh(data6, rigidBody6);
 
 }
 
@@ -163,13 +168,22 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 {
 	
 	auto result = eae6320::Results::Success;
-	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/example1.shd", "data/Shaders/Fragment/example1.shd", eae6320::Graphics::RenderStates::DepthBuffering);
+	result = cEffect::CreateEffect(effect1, "data/Shaders/Vertex/commonvertex1.shd", "data/Shaders/Fragment/commonfrag1.shd", 
+		eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
 	}
 
-	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/example2.shd", "data/Shaders/Fragment/example2.shd", 0);
+	result = cEffect::CreateEffect(effect2, "data/Shaders/Vertex/commonvertex2.shd", "data/Shaders/Fragment/commonfrag2.shd", 0);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
+	// effect3 is used for translucent meshes and has both depth buffering and transparency enabled
+	result = cEffect::CreateEffect(effect3, "data/Shaders/Vertex/commonvertex3.shd", "data/Shaders/Fragment/commonfrag3.shd", 
+		eae6320::Graphics::RenderStates::AlphaTransparency | eae6320::Graphics::RenderStates::DepthBuffering);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
@@ -205,7 +219,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/shifu.png", texture3);
+	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/shifu.tga", texture3);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
@@ -225,13 +239,20 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 	
+	result = cMesh::s_manager.Load("data/Meshes/mesh3.lua.bin", mesh3);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
 
 	data1 = eae6320::Graphics::renderData(effect2, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	// the almond shape is data4, and should be translucent
+	data4 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
 	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
+	data6 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh3), eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	camera.m_rigidBodyState.position = position;
@@ -252,6 +273,10 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 	
 	if (effect2) {
 		effect2->DecrementReferenceCount();
+	}
+
+	if (effect3) {
+		effect3->DecrementReferenceCount();
 	}
 
 	if (texture1) {
@@ -284,6 +309,11 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 
 	if (mesh2) {
 		cMesh::s_manager.Release(mesh2);
+	}
+
+
+	if (mesh3) {
+		cMesh::s_manager.Release(mesh3);
 	}
 
 	return Results::Success;
