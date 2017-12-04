@@ -254,6 +254,10 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data6 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh3), eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
+	rigidBody4.position.x = 0.5f;
+	rigidBody4.position.y = -0.3f;
+	rigidBody4.position.z = -0.5f;
+
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	camera.m_rigidBodyState.position = position;
 
