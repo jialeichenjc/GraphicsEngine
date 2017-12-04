@@ -59,6 +59,7 @@ namespace
 		float backgroundColor[4];
 		std::vector<eae6320::Graphics::renderData> renderDataVec;
 		std::vector<eae6320::Graphics::meshData> meshDataVec;
+		std::vector<eae6320::Graphics::meshData> meshTranslucent_DataVec;
 
 	};
 	// In our class there will be two copies of the data required to render a frame:
@@ -123,6 +124,11 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, 
 
 	data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 	data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
+
+	// for translucent meshes
+	if (data.effect->s_renderState.IsAlphaTransparencyEnabled()) {
+
+	}
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
 }
 
@@ -211,6 +217,7 @@ void eae6320::Graphics::RenderFrame()
 
 		s_constantBuffer_perFrame.Update(&constantData_perFrame);
 	}
+
 	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 
 
