@@ -33,6 +33,7 @@ eae6320::Graphics::cTexture::Handle texture3;
 cMesh::Handle mesh1;
 cMesh::Handle mesh2;
 cMesh::Handle mesh3;
+cMesh::Handle mesh4;
 
 eae6320::Graphics::renderData data1;
 eae6320::Graphics::renderData data2;
@@ -41,10 +42,12 @@ eae6320::Graphics::renderData data3;
 eae6320::Graphics::meshData data4;
 eae6320::Graphics::meshData data5;
 eae6320::Graphics::meshData data6;
+eae6320::Graphics::meshData data7;
 
 eae6320::Physics::sRigidBodyState rigidBody4; // for meshData4
 eae6320::Physics::sRigidBodyState rigidBody5; // for meshData5
 eae6320::Physics::sRigidBodyState rigidBody6; // for meshData6
+eae6320::Physics::sRigidBodyState rigidBody7; // for meshData7
 
 eae6320::Graphics::cCamera camera;
 
@@ -69,7 +72,7 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
 	eae6320::Graphics::SubmitEffectAndMesh(data5, rigidBody5);
 	eae6320::Graphics::SubmitEffectAndMesh(data6, rigidBody6);
-
+	eae6320::Graphics::SubmitEffectAndMesh(data7, rigidBody7);
 }
 
 // Run
@@ -245,18 +248,34 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
+	result = cMesh::s_manager.Load("data/Meshes/mesh4.lua.bin", mesh4);
+	if (!result) {
+		EAE6320_ASSERT(false);
+		return eae6320::Results::Failure;
+	}
+
 	data1 = eae6320::Graphics::renderData(effect2, sprite1, eae6320::Graphics::cTexture::s_manager.Get(texture1));
 	data2 = eae6320::Graphics::renderData(effect2, sprite2, eae6320::Graphics::cTexture::s_manager.Get(texture2));
 	data3 = eae6320::Graphics::renderData(effect2, sprite3, eae6320::Graphics::cTexture::s_manager.Get(texture3));
 
-	// the almond shape is data4, and should be translucent
-	data4 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	// data4: almond; data5: floor 
+	data4 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh1), eae6320::Graphics::cTexture::s_manager.Get(texture3));
 	data5 = eae6320::Graphics::meshData(effect1, cMesh::s_manager.Get(mesh2), eae6320::Graphics::cTexture::s_manager.Get(texture2));
-	data6 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh3), eae6320::Graphics::cTexture::s_manager.Get(texture3));
+	
+	// data6 and data7 are translucent balls
+	data6 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh4), eae6320::Graphics::cTexture::s_manager.Get(texture1));
+	data7 = eae6320::Graphics::meshData(effect3, cMesh::s_manager.Get(mesh4), eae6320::Graphics::cTexture::s_manager.Get(texture1));
 
 	rigidBody4.position.x = 0.5f;
 	rigidBody4.position.y = -0.3f;
 	rigidBody4.position.z = -0.5f;
+
+	rigidBody6.position.x = -1.0f;
+	rigidBody6.position.y = 1.5f;
+
+	rigidBody7.position.z = 1.0f;
+	rigidBody7.position.y = 1.0f;
+	
 
 	eae6320::Math::sVector position(0.0f, 0.0f, 10.0f);
 	camera.m_rigidBodyState.position = position;
@@ -315,9 +334,12 @@ eae6320::cResult eae6320::cExampleGame::CleanUp()
 		cMesh::s_manager.Release(mesh2);
 	}
 
-
 	if (mesh3) {
 		cMesh::s_manager.Release(mesh3);
+	}
+
+	if (mesh4) {
+		cMesh::s_manager.Release(mesh4);
 	}
 
 	return Results::Success;
