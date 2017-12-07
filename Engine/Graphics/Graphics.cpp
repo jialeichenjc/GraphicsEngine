@@ -25,6 +25,7 @@
 #include "cView.h"
 
 #include <vector>
+#include <algorithm>
 #include <Engine/Asserts/Asserts.h>
 #include <Engine/Concurrency/cEvent.h>
 #include <Engine/Logging/Logging.h>
@@ -59,6 +60,7 @@ namespace
 		float backgroundColor[4];
 		std::vector<eae6320::Graphics::renderData> renderDataVec;
 		std::vector<eae6320::Graphics::meshData> meshDataVec;
+		std::vector<eae6320::Graphics::meshData> meshTranslucentDataVec;
 
 	};
 	// In our class there will be two copies of the data required to render a frame:
@@ -123,7 +125,15 @@ void eae6320::Graphics::SubmitEffectAndMesh(eae6320::Graphics::meshData & data, 
 
 	data.rigidBodyState.orientation = rigidBodyState.PredictFutureOrientation(constantData_perFrame.g_elapsedSecondCount_simulationTime);
 	data.rigidBodyState.position = rigidBodyState.PredictFuturePosition(constantData_perFrame.g_elapsedSecondCount_simulationTime);
-	s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+
+	// for translucent meshes
+	if (data.effect->s_renderState.IsAlphaTransparencyEnabled()) {
+		s_dataBeingSubmittedByApplicationThread->meshTranslucentDataVec.push_back(data);
+	}
+	// for opaque meshes
+	else {
+		s_dataBeingSubmittedByApplicationThread->meshDataVec.push_back(data);
+	}
 }
 
 void eae6320::Graphics::SubmitCamera(eae6320::Graphics::cCamera & camera) {
@@ -211,8 +221,9 @@ void eae6320::Graphics::RenderFrame()
 
 		s_constantBuffer_perFrame.Update(&constantData_perFrame);
 	}
-	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 
+	// draw all the opaque meshes first
+	for (auto data : s_dataBeingRenderedByRenderThread->meshDataVec) {
 
 		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
 
@@ -225,6 +236,40 @@ void eae6320::Graphics::RenderFrame()
 		data.texture->Bind(0);
 		data.mesh->DrawMesh();
 	}
+	
+	// sort the for all translucent meshes
+	std::vector<std::pair<float, size_t>> translucentVecToSort;
+	for (size_t i = 0; i < s_dataBeingRenderedByRenderThread->meshTranslucentDataVec.size(); i++) {
+		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
+		auto& constantData_perFrame = s_dataBeingRenderedByRenderThread->constantData_perFrame;
+
+		auto& data = s_dataBeingRenderedByRenderThread->meshTranslucentDataVec[i];
+
+		constantData_perDraw.g_transform_localToWorld = eae6320::Math::cMatrix_transformation(
+			data.rigidBodyState.orientation, data.rigidBodyState.position);
+
+		auto dataCameraSpaceTransform = constantData_perFrame.g_transform_worldToCamera * constantData_perDraw.g_transform_localToWorld;
+		float dataZPosition = dataCameraSpaceTransform.GetTranslation().z;
+		translucentVecToSort.push_back(std::make_pair(dataZPosition, i));
+	}
+
+	std::sort(translucentVecToSort.begin(), translucentVecToSort.end());
+
+	for (size_t i = 0; i < translucentVecToSort.size(); i++) {
+		auto& data = s_dataBeingRenderedByRenderThread->meshTranslucentDataVec[translucentVecToSort[i].second];
+
+		auto& constantData_perDraw = s_dataBeingRenderedByRenderThread->constantData_perDraw;
+
+		constantData_perDraw.g_transform_localToWorld = eae6320::Math::cMatrix_transformation(
+			data.rigidBodyState.orientation, data.rigidBodyState.position);
+
+		s_constantBuffer_perDraw.Update(&constantData_perDraw);
+
+		data.effect->Bind();
+		data.texture->Bind(0);
+		data.mesh->DrawMesh();
+	}
+
 	for (auto data : s_dataBeingRenderedByRenderThread->renderDataVec) {
 		data.effect->Bind();
 		data.texture->Bind(0);
@@ -383,6 +428,21 @@ eae6320::cResult eae6320::Graphics::CleanUp()
 	}
 
 	s_dataBeingSubmittedByApplicationThread->meshDataVec.clear();
+
+	for (auto data : s_dataBeingRenderedByRenderThread->meshTranslucentDataVec) {
+		data.effect->DecrementReferenceCount();
+		data.texture->DecrementReferenceCount();
+		data.mesh->DecrementReferenceCount();
+	}
+	s_dataBeingRenderedByRenderThread->meshTranslucentDataVec.clear();
+
+	for (auto data : s_dataBeingSubmittedByApplicationThread->meshTranslucentDataVec) {
+		data.effect->DecrementReferenceCount();
+		data.mesh->DecrementReferenceCount();
+		data.texture->DecrementReferenceCount();
+	}
+
+	s_dataBeingSubmittedByApplicationThread->meshTranslucentDataVec.clear();
 
 	{
 		const auto localResult = s_constantBuffer_perFrame.CleanUp();
