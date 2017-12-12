@@ -69,10 +69,10 @@ void eae6320::cExampleGame::SubmitDataToBeRendered(const float i_elapsedSecondCo
 
 	eae6320::Graphics::SubmitCamera(camera);
 
-	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody4);
-	eae6320::Graphics::SubmitEffectAndMesh(data5, rigidBody5);
-	eae6320::Graphics::SubmitEffectAndMesh(data6, rigidBody6);
-	eae6320::Graphics::SubmitEffectAndMesh(data7, rigidBody7);
+	eae6320::Graphics::SubmitEffectAndMesh(data5, rigidBody4);
+	eae6320::Graphics::SubmitEffectAndMesh(data4, rigidBody5);
+	//eae6320::Graphics::SubmitEffectAndMesh(data6, rigidBody6);
+	//eae6320::Graphics::SubmitEffectAndMesh(data7, rigidBody7);
 }
 
 // Run
@@ -216,7 +216,7 @@ eae6320::cResult eae6320::cExampleGame::Initialize()
 		return eae6320::Results::Failure;
 	}
 
-	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/cupcake.jpg", texture2);
+	result = eae6320::Graphics::cTexture::s_manager.Load("data/Textures/wood.jpg", texture2);
 	if (!result) {
 		EAE6320_ASSERT(false);
 		return eae6320::Results::Failure;
