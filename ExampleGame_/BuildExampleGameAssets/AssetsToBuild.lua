@@ -102,5 +102,7 @@ return
 		"Textures/babyPanda.jpg",
 
 		"Textures/shifu.tga",
+
+		"textures/wood.jpg"
 	},
 }
